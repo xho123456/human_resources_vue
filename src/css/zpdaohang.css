@@ -1,0 +1,212 @@
+.iconfont{
+	    font-family:"iconfont" !important;
+	    font-size:18px;font-style:normal;
+	    -webkit-font-smoothing: antialiased;
+	    -webkit-text-stroke-width: 0.2px;
+	    -moz-osx-font-smoothing: grayscale;
+	}
+@font-face {
+	font-family: 'iconfont';  /* Project id 2985811 */
+	src: url('//at.alicdn.com/t/font_2985811_1w1zx8aj0qm.woff2?t=1639575288404') format('woff2'),
+	url('//at.alicdn.com/t/font_2985811_1w1zx8aj0qm.woff?t=1639575288404') format('woff'),
+	url('//at.alicdn.com/t/font_2985811_1w1zx8aj0qm.ttf?t=1639575288404') format('truetype');
+}
+	::selection {
+		color: #fff;
+		background: #085fc3;
+	}
+
+	.ant-layout.ant-layout-has-sider {
+		flex-direction: row;
+	}
+
+	.sider-view-left {
+		position: relative;
+	}
+
+	article,
+	aside,
+	dialog,
+	figcaption,
+	figure,
+	footer,
+	header,
+	hgroup,
+	main,
+	nav,
+	section {
+		display: block;
+	}
+
+	.hq-siderbar {
+		height: 100%;
+		overflow: hidden;
+	}
+
+	.ant-layout-sider.hq-siderbar {
+		position: relative;
+		min-width: 0;
+		background: #f2f6f8;
+		transition: all 0.5s;
+	}
+
+	.ant-layout-sider.hq-siderbar>div,
+	.ant-layout-sider.hq-siderbar .ant-layout-sider-children {
+		height: 100vh;
+		overflow-y: auto;
+		position: fixed;
+		overflow-x: hidden;
+	}
+
+	.ant-layout-sider-children {
+		height: 100%;
+		margin-top: -0.1px;
+		padding-top: 0.1px;
+	}
+
+	.hq-logo-wrapper {
+		height: 70px;
+		background: #085fc3;
+		padding: 15px 8px 24px 24px;
+		text-align: center;
+		vertical-align: middle;
+		line-height: 60px;
+	}
+
+	.custom-menu {
+		padding-bottom: 20px;
+	}
+	
+    /**
+	 * 菜单样式
+	 */
+	.el-menu {
+	    background-color: #f2f6f8 ;
+	    font-weight: bold;
+		height: 100%;
+	}
+	.el-menu-item{
+		margin-left: 16px;
+		font-weight: normal;
+		font-size: 13px;
+	}
+
+.ant-btn-primary:hover{
+	background-color: #297ccf;
+}
+.mr-20 {
+	margin-right: 0px;
+}
+
+.ml-20 {
+	margin-left: 0px;
+}
+
+.mt-20 {
+	margin-top: 20px;
+}
+
+a {
+	color: #085fc3;
+	background-color: transparent;
+}
+
+a, area, button, [role="button"], input:not([type="range"]), label, select, summary, textarea {
+	touch-action: manipulation;
+}
+
+a {
+	color: #366cb3;
+	text-decoration: none;
+	background-color: transparent;
+	outline: none;
+	cursor: pointer;
+	transition: color 0.3s;
+	-webkit-text-decoration-skip: objects;
+}
+
+button::-moz-focus-inner, [type="button"]::-moz-focus-inner, [type="reset"]::-moz-focus-inner, [type="submit"]::-moz-focus-inner {
+	border-style: none;
+}
+
+button::-moz-focus-inner, [type="button"]::-moz-focus-inner, [type="reset"]::-moz-focus-inner, [type="submit"]::-moz-focus-inner {
+	padding: 0;
+	border-style: none;
+}
+
+.ant-btn::before {
+	background: #fff;
+	border-radius: inherit;
+}
+
+.ant-btn::before {
+	position: absolute;
+	top: -1px;
+	right: -1px;
+	bottom: -1px;
+	left: -1px;
+	z-index: 1;
+	display: none;
+	background: #fff;
+	border-radius: inherit;
+	opacity: 0.35;
+	transition: opacity 0.2s;
+	content: '';
+	pointer-events: none;
+}
+
+button, html [type="button"], [type="reset"], [type="submit"] {
+	-webkit-appearance: button;
+}
+
+.ant-btn-primary {
+	color: #fff;
+	background-color: #085fc3;
+	border-color: #085fc3;
+	box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+}
+
+.ant-btn-primary {
+	color: #fff;
+	background-color: #366cb3;
+	border-color: #366cb3;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+	box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+}
+
+.ant-btn, .ant-btn:active, .ant-btn:focus {
+	outline: 0;
+}
+
+.ant-btn {
+	line-height: 1.499;
+	position: relative;
+	display: inline-block;
+	font-weight: 400;
+	white-space: nowrap;
+	text-align: center;
+	background-image: none;
+	border: 1px solid transparent;
+	box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+	cursor: pointer;
+	transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+	user-select: none;
+	touch-action: manipulation;
+	height: 32px;
+	padding: 0 15px;
+	font-size: 14px;
+	border-radius: 3px;
+	color: #606c82;
+	background-color: #fff;
+	border-color: #d3dae2;
+}
+
+.ant-btn-primary {
+	color: #fff;
+	background-color: #085fc3;
+	border-color: #085fc3;
+	box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+}
+
+
+	
