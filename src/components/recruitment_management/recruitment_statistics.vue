@@ -21,7 +21,7 @@
             <span style="display: block;float: right">
                 <el-form :inline="true" :model="formInline" class="demo-form-inline">
               <el-form-item label="" style="width: 300px">
-                <el-input v-model="formInline.user" placeholder=""></el-input>
+                <el-input v-model="formInline.user"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="">搜索</el-button>

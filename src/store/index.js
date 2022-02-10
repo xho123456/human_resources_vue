@@ -165,7 +165,7 @@ const store = createStore({
                 MENU_LEAF: 0,//是否有叶子 0有 1没有
                 son: [{
                     MENU_ID: 4.1,//菜单编号
-                    MENU_NAME: '基础设置',//菜单名称
+                    MENU_NAME: '排班管理',//菜单名称
                     PICTURE_ADDRESS: '&#xe64c;',//图片地址
                     MENU_ROUTE: 'attendance/check',//路由地址
                     MENU_MODULE: 'menu_skip',//组件地址
@@ -174,7 +174,7 @@ const store = createStore({
                     MENU_LEAF: 0,//是否有叶子 0有 1没有
                     son: [{
                         MENU_ID: 4.11,//菜单编号
-                        MENU_NAME: '班次管理',//菜单名称
+                        MENU_NAME: '班次设置',//菜单名称
                         PICTURE_ADDRESS: '&#xe64c;',//图片地址
                         MENU_ROUTE: '/time/yyx/shift',//路由地址
                         MENU_MODULE: 'time_modular/shift_yyx',//组件地址
@@ -200,51 +200,6 @@ const store = createStore({
                         MENU_STATE: 0,//是否启用 0启用 1禁用
                         MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
                         MENU_LEAF: 1,//是否有叶子 0有 1没有
-                    },{
-                        MENU_ID: 4.21,//菜单编号
-                        MENU_NAME: '打卡记录',//菜单名称
-                        PICTURE_ADDRESS: '&#xe64c;',//图片地址
-                        MENU_ROUTE: '/yyx/dacard',//路由地址
-                        MENU_MODULE: 'time_modular/dacard_yyx',//组件地址
-                        MENU_STATE: 0,//是否启用 0启用 1禁用
-                        MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
-                        MENU_LEAF: 1,//是否有叶子 0有 1没有
-                    }, {
-                        MENU_ID: 4.22,//菜单编号
-                        MENU_NAME: '加班查询',//菜单名称
-                        PICTURE_ADDRESS: '&#xe64c;',//图片地址
-                        MENU_ROUTE: '/yyx/workovertime',//路由地址
-                        MENU_MODULE: 'time_modular/workovertime_yyx',//组件地址
-                        MENU_STATE: 0,//是否启用 0启用 1禁用
-                        MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
-                        MENU_LEAF: 1,//是否有叶子 0有 1没有
-                    }, {
-                        MENU_ID: 4.23,//菜单编号
-                        MENU_NAME: '请假查询',//菜单名称
-                        PICTURE_ADDRESS: '&#xe64c;',//图片地址
-                        MENU_ROUTE: '/yyx/leave',//路由地址
-                        MENU_MODULE: 'time_modular/leave_yyx',//组件地址
-                        MENU_STATE: 0,//是否启用 0启用 1禁用
-                        MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
-                        MENU_LEAF: 1,//是否有叶子 0有 1没有
-                    }, {
-                        MENU_ID: 4.24,//菜单编号
-                        MENU_NAME: '出差查询',//菜单名称
-                        PICTURE_ADDRESS: '&#xe64c;',//图片地址
-                        MENU_ROUTE: '/yyx/outdifference',//路由地址
-                        MENU_MODULE: 'time_modular/outdifference_yyx',//组件地址
-                        MENU_STATE: 0,//是否启用 0启用 1禁用
-                        MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
-                        MENU_LEAF: 1,//是否有叶子 0有 1没有
-                    }, {
-                        MENU_ID: 4.25,//菜单编号
-                        MENU_NAME: '补打卡查询',//菜单名称
-                        PICTURE_ADDRESS: '&#xe64c;',//图片地址
-                        MENU_ROUTE: '/yyx/repaircard',//路由地址
-                        MENU_MODULE: 'time_modular/repaircard_yyx',//组件地址
-                        MENU_STATE: 0,//是否启用 0启用 1禁用
-                        MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
-                        MENU_LEAF: 1,//是否有叶子 0有 1没有
                     }]
                 }, {
                     MENU_ID: 4.3,//菜单编号
@@ -264,7 +219,36 @@ const store = createStore({
                         MENU_STATE: 0,//是否启用 0启用 1禁用
                         MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
                         MENU_LEAF: 1,//是否有叶子 0有 1没有
-                    },]
+                    },
+                        {
+                            MENU_ID: 4.22,//菜单编号
+                            MENU_NAME: '加班查询',//菜单名称
+                            PICTURE_ADDRESS: '&#xe64c;',//图片地址
+                            MENU_ROUTE: '/yyx/workovertime',//路由地址
+                            MENU_MODULE: 'time_modular/workovertime_yyx',//组件地址
+                            MENU_STATE: 0,//是否启用 0启用 1禁用
+                            MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
+                            MENU_LEAF: 1,//是否有叶子 0有 1没有
+                        }, {
+                            MENU_ID: 4.23,//菜单编号
+                            MENU_NAME: '请假查询',//菜单名称
+                            PICTURE_ADDRESS: '&#xe64c;',//图片地址
+                            MENU_ROUTE: '/yyx/leave',//路由地址
+                            MENU_MODULE: 'time_modular/leave_yyx',//组件地址
+                            MENU_STATE: 0,//是否启用 0启用 1禁用
+                            MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
+                            MENU_LEAF: 1,//是否有叶子 0有 1没有
+                        }, {
+                            MENU_ID: 4.24,//菜单编号
+                            MENU_NAME: '出差查询',//菜单名称
+                            PICTURE_ADDRESS: '&#xe64c;',//图片地址
+                            MENU_ROUTE: '/yyx/outdifference',//路由地址
+                            MENU_MODULE: 'time_modular/outdifference_yyx',//组件地址
+                            MENU_STATE: 0,//是否启用 0启用 1禁用
+                            MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
+                            MENU_LEAF: 1,//是否有叶子 0有 1没有
+                        }
+                    ]
                 }]
             },
             {

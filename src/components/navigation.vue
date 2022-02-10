@@ -6,12 +6,49 @@
            class="ant-popover singPop ant-popover-placement-bottomRight">
         <div class="ant-popover-content">
           <div class="ant-popover-inner">
-            <div style="height: 300px;width: 300px;background-color: red"></div>
+            <div style="height: 300px;width: 300px;background-color: white;box-shadow: rgba(12, 11, 11, 0.28) 0px 0px 5px;">
+              <!--日历-->
+                <div style="height: 50px; padding: 0 16px;border-bottom: 1px solid #e9e9e9;color: #666;">
+                  <div style="height: 100%;line-height: 50px;">
+                    <span><i class="iconfont" style="color: #61a8f5;font-size: 22px;margin-right: 8px;position: relative;top: 3px;">&#xe62b;</i></span>
+                    <span style="margin-right: 8px;font-size: 14px;color: #333;">{{gettime}}</span>
+                    <span style="font-size: 14px;color: #333;">{{week}}</span>
+                  </div>
+                </div>
+              <!--内容-->
+                <div style="height: 250px ; width: 100%">
+                   <div style="padding-bottom: 40px;;width: 275px;border-left: 1px solid #e6e6e6;margin-left: 25px">
+                     <div style="padding-top: 20px">
+                       <el-timeline >
+                         <el-timeline-item timestamp="上班时间"  placement="top" >
+                           <div>
+                             <span style="font-size: 12px;padding-right: 10px;">打卡时间</span>
+                             <span style="font-size: 12px">{{gettime}}</span>
+                           </div>
+                         </el-timeline-item>
+                         <el-timeline-item timestamp="下班时间" placement="top">
+                           <div>
+                             <span style="font-size: 12px;padding-right: 10px;">打卡时间</span>
+                             <span style="font-size: 12px">{{gettime}}</span>
+                             <p style="font-size: 12px">更新打卡时间</p>
+                           </div>
+                         </el-timeline-item>
+                       </el-timeline>
+                     </div>
+                   </div>
+                   <div></div>
+                </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+
+
+
+
   <el-container class="home-container">
     <!--头部区域-->
     <el-header>
@@ -31,7 +68,7 @@
         <!--考勤：考勤打卡-->
         <div style="padding-right: 185px;display: flex;align-items: center;cursor: pointer">
           <i class="iconfont" style="font-size: 19px">&#xe62b;</i>
-          <span style="font-size: 14px" @click="divDogs=!divDogs">考勤</span>
+          <span style="font-size: 12px" @click="divDogs=!divDogs">考勤</span>
         </div>
         <img src="./assets/syx.jpg" width="30" height="30" alt="">
         <span>
@@ -57,6 +94,8 @@
       <!--侧边栏-->
       <el-aside :width="isCollapse ? '64px' : '200px' ">
         <div class="toggle-button" @click="toggleCollapse()">|||</div>
+
+
         <el-menu active-text-color="#409EFF" background-color="#333744" text-color="#fff" :unique-opened="true"
                  :collapse="isCollapse" :collapse-transition="false" :router="true"
                  :default-active="activePath">
@@ -97,6 +136,8 @@
                 </el-menu-item>
               </template>
             </el-sub-menu>
+
+
             <!-- 判断一级导航是否有叶子: 无-->
             <el-menu-item :index="item.MENU_ROUTE +'' " :key="item.MENU_ID" v-if="item.MENU_LEAF==1"
                           @click="saveNavState(item.MENU_ROUTE)">
@@ -109,9 +150,9 @@
               </template>
             </el-menu-item>
           </template>
-
-
         </el-menu>
+
+
       </el-aside>
       <!--右侧主体区-->
       <el-main style="max-height: 671.2px;overflow-y:auto">
@@ -127,6 +168,10 @@ export default {
     return {
       //考勤打卡
       divDogs:false,
+      //当前时间
+      gettime:'',
+      //当前星期
+      week:'',
 
       menulist: this.$store.state.memuList,
       //是否折叠
@@ -137,10 +182,20 @@ export default {
     }
   },
   created() {
-    console.log(this.menulist)
-    console.log(this.activePath)
+    this.getCurrentTime();
+    console.log(this.getCurrentTime());
   },
   methods: {
+    getCurrentTime() {
+      let _this = this
+      let wk = new Date().getDay()
+      let yy = new Date().getFullYear()
+      let mm = (new Date().getMonth() + 1) < 10 ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1)
+      let dd = new Date().getDate() < 10 ? '0' + new Date().getDate() : new Date().getDate()
+      let weeks = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+      _this.week = weeks[wk]
+      _this.gettime = yy+'-'+mm+'-'+dd;
+    },
     //点击按钮切换菜单折叠与展开
     toggleCollapse() {
       this.isCollapse = !this.isCollapse
@@ -266,5 +321,26 @@ img {
   line-height: 1.6;
   font-weight: 400;
   text-align: left;
+}
+
+/deep/.el-timeline-item__tail {
+  position: absolute;
+  left: 0px;
+  height: 100%;
+  border-left: 0px solid var(--el-timeline-node-color);
+}
+/deep/.el-timeline-item__node--normal {
+  left: -7px;
+  width: var(--el-timeline-node-size-normal);
+  height: var(--el-timeline-node-size-normal);
+}
+/deep/.el-timeline-item__wrapper {
+  position: relative;
+  padding-left: 20px;
+  top: -3px;
+}
+/deep/.is-top {
+  color: #281a1aa3;
+  font-size: 11px;
 }
 </style>

@@ -66,7 +66,7 @@
                   <div class="db-dspan">
                     <span>在招职位：</span>
                     <div>
-                      <span style="font-weight:bold; color:#ff4949;">99</span>
+                      <span style="font-weight:bold; color:#ff4949;">{{allnumber.number1}}</span>
                       <i class="iconfonts">&#xe775;</i>
                     </div>
                   </div>
@@ -75,7 +75,7 @@
                   <div class="db-dspan">
                     <span>新应聘简历：</span>
                     <div>
-                      <span style="font-weight:bold; color:#ff4949;">99</span>
+                      <span style="font-weight:bold; color:#ff4949;">{{allnumber.number2}}</span>
                       <i class="iconfonts">&#xe775;</i>
                     </div>
                   </div>
@@ -84,7 +84,7 @@
                   <div class="db-dspan">
                     <span>候选人简历：</span>
                     <div>
-                      <span style="font-weight:bold; color:#ff4949;">99</span>
+                      <span style="font-weight:bold; color:#ff4949;">{{allnumber.number3}}</span>
                       <i class="iconfonts">&#xe775;</i>
                     </div>
                   </div>
@@ -105,7 +105,7 @@
                   <div class="db-dspan">
                     <span>待面试：</span>
                     <div>
-                      <span style="font-weight:bold; color:#ff4949;">99</span>
+                      <span style="font-weight:bold; color:#ff4949;">{{allnumber.number4}}</span>
                       <i class="iconfonts">&#xe775;</i>
                     </div>
                   </div>
@@ -114,7 +114,7 @@
                   <div class="db-dspan">
                     <span>已面试待处理：</span>
                     <div>
-                      <span style="font-weight:bold; color:#ff4949;">99</span>
+                      <span style="font-weight:bold; color:#ff4949;">{{allnumber.number5}}</span>
                       <i class="iconfonts">&#xe775;</i>
                     </div>
                   </div>
@@ -136,7 +136,7 @@
                   <div class="db-dspan">
                     <span>待发送offer：</span>
                     <div>
-                      <span style="font-weight:bold; color:#ff4949;">99</span>
+                      <span style="font-weight:bold; color:#ff4949;">{{allnumber.number5}}</span>
                       <i class="iconfonts">&#xe775;</i>
                     </div>
                   </div>
@@ -145,7 +145,7 @@
                   <div class="db-dspan">
                     <span>待接受offer：</span>
                     <div>
-                      <span style="font-weight:bold; color:#ff4949;">99</span>
+                      <span style="font-weight:bold; color:#ff4949;">{{allnumber.number7}}</span>
                       <i class="iconfonts">&#xe775;</i>
                     </div>
                   </div>
@@ -154,7 +154,7 @@
                   <div class="db-dspan">
                     <span>待入职：</span>
                     <div>
-                      <span style="font-weight:bold; color:#ff4949;">99</span>
+                      <span style="font-weight:bold; color:#ff4949;">{{allnumber.number8}}</span>
                       <i class="iconfonts">&#xe775;</i>
                     </div>
                   </div>
@@ -346,9 +346,148 @@ export default {
         pagesize: 5,
         total: 0
       },
+      allnumber: {
+        number1: '',
+        number2: '',
+        number3: '',
+        number4: '',
+        number5: '',
+        number7: '',
+        number8: '',
+      },
     }
   },
-  methods: {}
+  created() {
+    this.selectNumber1();
+    this.selectNumber2();
+    this.selectNumber3();
+    this.selectNumber4();
+    this.selectNumber5();
+    this.selectNumber7();
+    this.selectNumber8();
+
+  },
+  methods: {
+    //待办筛选：在找职位
+    selectNumber1(){
+      this.axios({
+        url: "http://localhost:8007/provider/work/recruites",
+        method: "post",
+        data: {
+          recruitmentZt:0
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.allnumber.number1 = response.data.data
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    //待办筛选：新简历
+    selectNumber2(){
+      this.axios({
+        url: "http://localhost:8007/provider/work/resumes",
+        method: "post",
+        data: {
+          resumeZt:0
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.allnumber.number2= response.data.data
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    //待办筛选：候选人
+    selectNumber3(){
+      this.axios({
+        url: "http://localhost:8007/provider/work/resumes",
+        method: "post",
+        data: {
+          resumeZt:1
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.allnumber.number3= response.data.data
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    //待办筛选：待面试
+    selectNumber4(){
+      this.axios({
+        url: "http://localhost:8007/provider/work/resumes",
+        method: "post",
+        data: {
+          resumeZt:2
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.allnumber.number4= response.data.data
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    //待办筛选：已面试待处理
+    selectNumber5(){
+      this.axios({
+        url: "http://localhost:8007/provider/work/resumes",
+        method: "post",
+        data: {
+          resumeZt:5
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.allnumber.number5= response.data.data
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    //待办筛选：待接受offer
+    selectNumber7(){
+      this.axios({
+        url: "http://localhost:8007/provider/work/resumes",
+        method: "post",
+        data: {
+          resumeZt:7
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.allnumber.number7= response.data.data
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    //待办筛选：待入职
+    selectNumber8(){
+      this.axios({
+        url: "http://localhost:8007/provider/work/resumes",
+        method: "post",
+        data: {
+          resumeZt:8
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.allnumber.number8= response.data.data
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+  }
 }
 
 </script>

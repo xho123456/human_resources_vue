@@ -168,10 +168,7 @@ const routes = [{
 		                component: modules[`${'../components/time_modular/attendance_main.vue'}`],
 		                redirect: "/time_modular/check",
 		                children: [
-							{//我的考勤
-								path: '/my/attendance',
-								component: modules[`${'../components/time_modular/my_attendance.vue'}`],
-							},
+
 		                    {//基础设置
 		                        path: '/time_modular/check',
 		                        component: modules[`${'../components/menu_skip.vue'}`],
@@ -181,28 +178,20 @@ const routes = [{
 		                                path: '/time/yyx/shift',
 		                                component: modules[`${'../components/time_modular/shift_yyx.vue'}`],
 		                            },
+									{//班次新增
+										path: '/yyx/dacard',
+										component: modules[`${'../components/time_modular/dacard_yyx.vue'}`],
+									},
 		                        ]
 		                    },
 		                    {//考勤记录
 		                        path: '/attendance/checking',
 		                        component: modules[`${'../components/menu_skip.vue'}`],
 		                        children: [
-		                            {//打卡记录
-		                                path: '/yyx/dacard',
-		                                component: modules[`${'../components/time_modular/dacard_yyx.vue'}`],
-		                            },
-		                            {//加班记录
-		                                path: '/yyx/workovertime',
-		                                component: modules[`${'../components/time_modular/workovertime_yyx.vue'}`],
-		                            },
-		                            {//请假记录
-		                                path: '/yyx/leave',
-		                                component: modules[`${'../components/time_modular/leave_yyx.vue'}`],
-		                            },
-		                            {//出差记录
-		                                path: '/yyx/outdifference',
-		                                component: modules[`${'../components/time_modular/outdifference_yyx.vue'}`],
-		                            },
+									{//我的考勤
+										path: '/my/attendance',
+										component: modules[`${'../components/time_modular/my_attendance.vue'}`],
+									},
 		                            {//补打卡记录
 		                                path: '/yyx/repaircard',
 		                                component: modules[`${'../components/time_modular/repaircard_yyx.vue'}`],
@@ -226,6 +215,18 @@ const routes = [{
 		                                path: '/yyx/statistics/archive',
 		                                component: modules[`${'../components/time_modular/attendance_history.vue'}`],
 		                            },
+									{//加班记录
+										path: '/yyx/workovertime',
+										component: modules[`${'../components/time_modular/workovertime_yyx.vue'}`],
+									},
+									{//请假记录
+										path: '/yyx/leave',
+										component: modules[`${'../components/time_modular/leave_yyx.vue'}`],
+									},
+									{//出差记录
+										path: '/yyx/outdifference',
+										component: modules[`${'../components/time_modular/outdifference_yyx.vue'}`],
+									},
 		                        ]
 		                    },
 		                ]

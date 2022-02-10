@@ -4,23 +4,17 @@
     <div class="ant-spin-nested-loading">
       <div class="ant-spin-container">
         <div class="mt-20 ml-20 mr-20">
-
-
           <el-button size="small" type="primary" plain @click="icons =! icons">筛选</el-button>
-
           <el-input
               v-model="pageInfo.resumeName"
               placeholder="请输入应聘者姓名"
               class="input-with-select"
               size="small"
-              style="width: 300px; float: right"
-          >
+              style="width: 300px; float: right">
             <template #append>
               <el-button @click="beckselectAllhxr()">搜索</el-button>
             </template>
           </el-input>
-
-
         </div>
       </div>
       <!--
@@ -43,7 +37,7 @@
           </el-col>
 
           <el-col :span="3.5">
-            <el-select v-model="pageInfo.deptMane" clearable ref="vueSelect"  size="small"
+            <el-select v-model="pageInfo.deptMane" clearable ref="vueSelect" size="small"
                        @click="onclicks()">
               <el-option hidden></el-option>
               <el-tree
@@ -100,6 +94,7 @@
           </el-col>
         </el-row>
       </div>
+
     </div>
     <br/>
     <!-- 表格数据 -->
@@ -110,7 +105,10 @@
         <el-table-column fixed="left" align="center" prop="resumeId" type="selection" width="80"/>
         <el-table-column fixed="left" label="姓名" width="100">
           <template #default="scope">
-            <router-link :to="{path:this.details,query:{path:this.$route.query.path,name:scope.row.resumeId,posta:scope.row.postName}}">{{scope.row.resumeName}}</router-link>
+            <router-link
+                :to="{path:this.details,query:{path:this.$route.query.path,name:scope.row.resumeId,posta:scope.row.postName}}">
+              {{ scope.row.resumeName }}
+            </router-link>
           </template>
         </el-table-column>
         <el-table-column fixed="left" prop="postName" label="投递职位" width="140"/>
@@ -139,19 +137,22 @@
             <div style="width: 135px">
               <el-button type="text" size="small" @click="invitedsignin(tableData[scope.$index].resumeId)">填写评价</el-button>
               &nbsp;
-              <router-link :to="{path:this.addenroll,query:{path:this.$route.query.path}}">
+              <router-link :to="{path:this.addenroll,query:{path:this.$route.query.path,id:scope.row.resumeId}}">
                 <el-button type="text" size="small">录用</el-button>
               </router-link>
               <el-row class="block-col-2" style="float: right;">
                 <el-col :span="8">
                   <el-dropdown trigger="click">
                 <span class="el-dropdown-link">
-                  <el-button type="text" size="small">更多<i class="iconfont" style="font-size: 10px">&#xe772;</i></el-button>
+                  <el-button type="text" size="small">更多<i class="iconfont"
+                                                           style="font-size: 10px">&#xe772;</i></el-button>
                 </span>
                     <template #dropdown>
                       <el-dropdown-menu>
-                        <el-dropdown-item @click="remarks=true,elremarksId=tableData[scope.$index].resumeId">备注</el-dropdown-item>
-                        <el-dropdown-item @click="candidateFrom=[],update_1(tableData[scope.$index].resumeId)">更改职位</el-dropdown-item>
+                        <el-dropdown-item @click="remarks=true,elremarksId=tableData[scope.$index].resumeId">备注
+                        </el-dropdown-item>
+                        <el-dropdown-item @click="candidateFrom=[],update_1(tableData[scope.$index].resumeId)">更改职位
+                        </el-dropdown-item>
                         <el-dropdown-item @click="zeliminate(scope.row.resumeId)">转入储备人才</el-dropdown-item>
                       </el-dropdown-menu>
                     </template>
@@ -211,8 +212,8 @@
              label-width="130px"
     >
       <el-form-item label="需求部门：" prop="hdept">
-        <el-select v-model="candidateFrom.hdept" clearable ref="vueSelect"  size="small" style="width: 300px"
-                   @click="onclicks()"  @clear="ondept()">
+        <el-select v-model="candidateFrom.hdept" clearable ref="vueSelect" size="small" style="width: 300px"
+                   @click="onclicks()" @clear="ondept()">
           <el-option hidden></el-option>
           <el-tree
               :data="deptlist"
@@ -227,8 +228,8 @@
         </el-select>
       </el-form-item>
       <el-form-item label="招聘职位：" prop="hpost">
-        <el-select  placeholder="请选择" size="small" style="width: 300px"
-                    disabled v-if=" candidateFrom.hdept==null">
+        <el-select placeholder="请选择" size="small" style="width: 300px"
+                   disabled v-if=" candidateFrom.hdept==null">
         </el-select>
 
         <el-select v-model="candidateFrom.hpost" placeholder="请选择" size="small" style="width: 300px"
@@ -294,13 +295,13 @@ export default {
       defaultProps,
       //路由地址
       details: '/recruitment/resume/details',
-      addenroll:'/recruitment/enroll',
+      addenroll: '/recruitment/enroll',
 
       //候选人设置的对话框显示隐藏事件
       Dogcandidate: false,
       candidateFrom: {
         //部门Id
-        hdeptid:'',
+        hdeptid: '',
         //部门名称
         hdept: '',
         //职位id
@@ -371,13 +372,13 @@ export default {
         ]
       },
       //面试评论对话框
-      plDog:false,
-      mianspl:'',     //存放评论内容
+      plDog: false,
+      mianspl: '',     //存放评论内容
 
-      plresumeId:'', //存放简历id
+      plresumeId: '', //存放简历id
 
       //获取当前时间
-      gettime:'',
+      gettime: '',
     }
   },
   created() {
@@ -386,7 +387,7 @@ export default {
   },
   methods: {
     //分页查询全部简历信息
-    beckselectAllhxr(){
+    beckselectAllhxr() {
       this.axios({
         url: "http://localhost:8007/provider/interadopt",
         method: "post",
@@ -443,9 +444,9 @@ export default {
         this.$refs.vueSelect.blur();
       })
     },
-    Formall(){
-      for (var i=0 ; i<this.deptlist.length;i++){
-        if(this.pageInfo.deptIdss==this.deptlist[i].deptId){
+    Formall() {
+      for (var i = 0; i < this.deptlist.length; i++) {
+        if (this.pageInfo.deptIdss == this.deptlist[i].deptId) {
           this.pageInfo.deptMane = this.deptlist[i].deptName
         }
       }
@@ -457,12 +458,12 @@ export default {
       this.pageInfo.postName = '';
       this.pageInfo.resumeEducation = '';
       this.pageInfo.deptIdss = '';
-      this.pageInfo.deptMane='';
+      this.pageInfo.deptMane = '';
       this.beckselectAllhxr();
     },
     //取全选数据
-    deleteresumeall(val){
-      this.resumeb =val
+    deleteresumeall(val) {
+      this.resumeb = val
     },
     //全选删除方法
     deletesume() {
@@ -470,12 +471,12 @@ export default {
       for (let i = 0; i < this.resumeb.length; i++) {
         this.id.push(this.resumeb[i].resumeId);
       }
-      if (this.id.length==0){
+      if (this.id.length == 0) {
         ElMessage({
           message: "请选择简历信息",
           type: "warning",
         });
-      }else {
+      } else {
         //删除事件
         this.axios({
           url: " http://localhost:8007/provider/recruitment/deleteByidResumes",
@@ -576,12 +577,12 @@ export default {
     },
     //个人简历：备注信息修改
     addremarks(index) {
-      if (this.elremarks==''){
+      if (this.elremarks == '') {
         ElMessage({
           message: '请填写备注',
           type: 'warning',
         })
-      }else{
+      } else {
         this.axios.post(
             "http://localhost:8007/provider/resume/updatebz", {
               resumeId: this.elremarksId,
@@ -604,15 +605,15 @@ export default {
     /**
      * 查询所有部门信息
      */
-    selectAlldept(){
+    selectAlldept() {
       this.axios({
-        url:"http://localhost:8007/provider/dept/dept/selectAlldept",
-        method:"post",
+        url: "http://localhost:8007/provider/dept/dept/selectAlldept",
+        method: "post",
         responseType: 'json',
         responseEncoding: 'utf-8',
       }).then((response) => {
         console.log(response);
-        this.deptlist =response.data.data
+        this.deptlist = response.data.data
       }).catch(function (error) {
         console.log('获取列表失败')
         console.log(error);
@@ -620,34 +621,34 @@ export default {
     },
 
     //部门
-    ondept(){
-      this.deptpostlist='';
-      this.planslist='';
-      this.candidateFrom.hzplan='';
-      this.candidateFrom.hpost='';
+    ondept() {
+      this.deptpostlist = '';
+      this.planslist = '';
+      this.candidateFrom.hzplan = '';
+      this.candidateFrom.hpost = '';
     },
     /**
      * 根据部门 id 查询所属部门的所有职位名称
      */
-    selectAlldeptpost(){
+    selectAlldeptpost() {
       this.axios({
-        url:"http://localhost:8007/provider/deptpost/yyxdeptpost",
-        method:"post",
-        data:{
-          deptId:this.pageInfo.deptIdss
+        url: "http://localhost:8007/provider/deptpost/yyxdeptpost",
+        method: "post",
+        data: {
+          deptId: this.pageInfo.deptIdss
         },
         responseType: 'json',
         responseEncoding: 'utf-8',
       }).then((response) => {
         console.log(response);
-        this.deptpostlist =response.data.data
+        this.deptpostlist = response.data.data
       }).catch(function (error) {
         console.log('获取列表失败')
         console.log(error);
       })
     },
-    setuppost(){
-      this.pageInfo.postName =''
+    setuppost() {
+      this.pageInfo.postName = ''
       this.selectAlldeptpost();
     },
 
@@ -698,8 +699,8 @@ export default {
      */
     update_1(row) {
       //重置表单
-      this. candidateFrom={
-        hdeptid:'',
+      this.candidateFrom = {
+        hdeptid: '',
         hdept: '',
         hpost: '',
         hzplan: '',
@@ -740,32 +741,32 @@ export default {
     /**
      * operation候选人设置：取消按钮
      */
-    ResetForm(resetForm){
+    ResetForm(resetForm) {
       this.$refs[resetForm].resetFields();
       this.Dogcandidate = false
     },
     //面试评论添加方法
-    invitedsignin(row){
-      this.plDog=true;
+    invitedsignin(row) {
+      this.plDog = true;
       this.plresumeId = row;
     },
-    addmianspl_1(){
+    addmianspl_1() {
       //获取当前时间
       var _this = this;
       let yy = new Date().getFullYear();
-      let mm = new Date().getMonth()+1;
+      let mm = new Date().getMonth() + 1;
       let dd = new Date().getDate();
       let hh = new Date().getHours();
-      let mf = new Date().getMinutes()<10 ? '0'+new Date().getMinutes() : new Date().getMinutes();
-      let ss = new Date().getSeconds()<10 ? '0'+new Date().getSeconds() : new Date().getSeconds();
-      _this.gettime = yy+'-'+mm+'-'+dd+' '+hh+':'+mf+':'+ss;
+      let mf = new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes();
+      let ss = new Date().getSeconds() < 10 ? '0' + new Date().getSeconds() : new Date().getSeconds();
+      _this.gettime = yy + '-' + mm + '-' + dd + ' ' + hh + ':' + mf + ':' + ss;
 
-      if (this.mianspl==''){
+      if (this.mianspl == '') {
         ElMessage({
           message: '请填写面试评价',
           type: 'warning',
         })
-      }else{
+      } else {
         this.axios({
           url: "http://localhost:8007/provider/Interview/addmianspl",
           method: "post",
@@ -785,7 +786,7 @@ export default {
               type: "success",
             });
           }
-          this.plDog=false;
+          this.plDog = false;
           this.querymiansz();
         }).catch(function (error) {
           console.log('获取列表失败')
@@ -801,6 +802,7 @@ export default {
 </script>
 <style type="text/css" scoped>
 @import url("../../css/zpdaohang.css");
+
 .demo-pagination-block {
   margin-left: 15px;
   margin-top: 10px;
@@ -815,6 +817,7 @@ export default {
   margin-top: 10px;
   padding: 16px;
 }
+
 .mainContent .sub-Content__primary {
   padding: 5px 24px;
   background: #fff;
