@@ -49,16 +49,13 @@ export default {
         responseType:'json',
         responseEncoding:'utf-8',
       }).then(response=>{
+        console.log(response)
         if(response.data.data !== null){
           ElMessage({
             type:'success',
             message:'登录成功'
           })
-
-          //this.staffName===response.data.data.staffName
-
-
-
+          this.$store.state.userall = response.data.data
           this.$router.push({path:'/home'})
         }else{
           ElMessage.error("手机号或密码错误！！")

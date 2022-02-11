@@ -169,7 +169,6 @@ export default {
       gettime:'',
       //当前星期
       week:'',
-
       menulist: this.$store.state.memuList,
       //是否折叠
       isCollapse: false,

@@ -272,7 +272,7 @@
       <!--      </div>-->
 
     </div>
-
+{{states}}
 
   </div>
 
@@ -285,6 +285,7 @@ import {ref} from 'vue'
 export default {
   data() {
     return {
+      states: this.$store.state.userall,
       value: new Date(),
       tableData: [
         {

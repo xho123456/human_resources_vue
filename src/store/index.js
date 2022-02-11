@@ -794,6 +794,11 @@ const store = createStore({
         activate_router: '',
         //默认激活的二级菜单
         default_route: '',
+
+        //当前登录用户所有消息
+        userall:'',
+
+
     },
     getters: {
         //获取更多之外的菜单列表
