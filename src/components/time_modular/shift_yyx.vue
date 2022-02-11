@@ -61,7 +61,9 @@
                  </el-table-column>
                  <el-table-column label="操作" width="200px">
                    <template #default="scope">
-                     <el-button type="text" size="mini">编辑</el-button>
+                     <router-link :to="{path:this.updateclass,query:{path:this.$route.query.path,id:scope.row.classesId}}">
+                        <el-button type="text" size="mini" style="font-size: 11px;padding-right: 10px">编辑</el-button>
+                     </router-link>
                      <el-popconfirm title="是否确定删除?" @confirm="isdeleted(scope.row.classesId)"
                                     @cancel="isdeletedbiz()">
                        <template #reference>
@@ -89,11 +91,10 @@
              </div>
            </div>
         </div>
-        {{tableData}}
       </div>
     </div>
   </div>
-
+  {{tableData}}
 </template>
 
 <script>
@@ -103,6 +104,7 @@ export default {
   data(){
     return{
       addclass:'/yyx/dacard',
+      updateclass:'/yyx/repaircard',
       //分页、模糊查询数据
       pageInfo: {
         currenPage: 1,
@@ -139,7 +141,6 @@ export default {
     },
     //删除班次
     isdeleted(row) {
-      alert(row)
       this.axios({
         url: "http://localhost:8007/provider/Classes/isdeleteds",
         method: "post",
@@ -170,6 +171,9 @@ export default {
 </script>
 
 <style type="text/css" scoped>
+a{
+  color: #008df7;
+}
 @font-face {
   font-family: 'iconfont';  /* Project id 3164770 */
   src: url('//at.alicdn.com/t/font_3164770_te5p4157fzj.woff2?t=1644419209354') format('woff2'),
