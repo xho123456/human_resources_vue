@@ -665,7 +665,6 @@
                                 </el-col>
                               </el-row>
                             </el-form>
-
                             <template #footer>
                                 <span class="dialog-footer">
                                   <el-button type="primary" @click="submitForm_a5('fromschools')">确定</el-button>

@@ -1,284 +1,248 @@
-<!-- 补打卡查询 -->
+<!-- 班次编辑 -->
 <template>
   <div class="saas-main-content">
     <div class="j-card j-card-bordered mainContent">
       <div class="j-card-body ">
 
-
-        <div class="mt-20 ml-20 mr-20">
-          <el-row :gutter="20">
-            <el-col :span="7">
-              <!--选择开始日期和结束日期-->
-              <el-date-picker
-                  v-model="value1"
-                  type="daterange"
-                  unlink-panels
-                  range-separator="到"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
-                  wdaWD
-                  aW
-                  :shortcuts="shortcuts"
-              >
-              </el-date-picker>
-            </el-col>
-            <el-col :span="3.5">
-              <!--    全部部门-->
-              <el-select v-model="value" clearable placeholder="全部部门">
-                <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                >
-                </el-option>
-              </el-select>
-            </el-col>
-
-
-            <el-col :span="7">
-              <el-input
-                  v-model="input3"
-                  placeholder="Please input"
-                  class="input-with-select"
-              >
-                <template #append>
-                  <el-button>搜索</el-button>
-                </template>
-              </el-input>
-            </el-col>
-            <el-col :span="2">
-              <el-button type="primary" plain @click="">
-                <el-icon style="font-size: 13px">
-                  <i-upload/>
-                </el-icon>
-                导入
-              </el-button>
-            </el-col>
-            <el-col :span="2">
-              <el-button type="primary" plain  @click="derive()">
-                <el-icon style="font-size: 13px">
-                  <i-folder-opened/>
-                </el-icon>
-                导出
-              </el-button>
-            </el-col>
-
-          </el-row>
-        </div>
-        <!--
-           新增班次对话框
-        -->
-        <el-dialog
-            v-model="dialogVisible"
-            title="添加班次"
-            width="50%"
-        >
-          <!-- 内容主体区域-->
-          <span>
-            <el-form
-                ref="ruleForm"
-                :model="ruleForm"
-                :rules="rules"
-                label-width="120px"
-                class="demo-ruleForm"
-            >
-              <el-form-item label="班次名称" prop="name">
-                <el-col :span="30">
-                   <el-input v-model="ruleForm.name"></el-input>
-                </el-col>
-              </el-form-item>
-
-              <el-form-item label="工作时间范围" required>
-                <el-col :span="11">
-                  <el-form-item prop="date2">
-                    <el-time-picker
-                        v-model="ruleForm.date1"
-                        placeholder="Pick a time"
-                        style="width: 100%"
-                    ></el-time-picker>
-                  </el-form-item>
-                </el-col>
-                <el-col class="line" :span="2">到</el-col>
-                <el-col :span="11">
-                  <el-form-item prop="date2">
-                    <el-time-picker
-                        v-model="ruleForm.date2"
-                        placeholder="Pick a time"
-                        style="width: 100%"
-                    ></el-time-picker>
-                  </el-form-item>
-                </el-col>
-              </el-form-item>
-            </el-form>
-          </span>
-
-          <!-- 底部按钮区域-->
-          <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="dialogVisible = false">确定</el-button>
-              <el-button type="primary" @click="dialogVisible = false"
-              >取消</el-button
-              >
-            </span>
-          </template>
-        </el-dialog>
-
-
-        <!-- 表格内容部分 -->
-        <div class="sub-Content__primary">
-          <el-table border :data="tableData">
-            <el-table-column type="index" label="序号"/>
-            <el-table-column prop="applyfor" label="申请名称"/>
-            <el-table-column prop="type" label="补打卡类型"/>
-            <el-table-column prop="hour" label="补打卡时间"/>
-            <el-table-column prop="remark" label="备注"/>
-            <el-table-column label="操作" width="160px">
-              <template #default>
-                <el-button size="mini" type="success">编辑</el-button>
-                <el-button size="mini" type="danger">删除</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-
+        <div class="my-cead">
+          <div style="padding-left: 20px;display: flex;align-items: center;">
+            <div class="my-span1" style="display: flex;">
+              <i class="iconfont" style="font-size: 20px">&#xe7d9;</i>
+            </div>
+            <div class="my-span2">班次编辑</div>
+          </div>
         </div>
 
-      </div>
-      <div class="demo-pagination-block">
-        <!-- <span class="demonstration">All combined</span> -->
-        <el-pagination
-            v-model:currentPage="pageInfo.currenPage"
-            :page-sizes="[3, 5, 10, 50]"
-            v-model:page-size="pageInfo.pagesize"
-            :default-page-size="pageInfo.pagesize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="pageInfo.total"
-            :pager-count="5"
-            background
-            @size-change="selectrecruitmentplan"
-            @current-change="selectrecruitmentplan"
-            prev-text="上一页"
-            next-text="下一页"
-        >
-        </el-pagination>
+        <div style="width: 100%;">
+          <div style="padding: 10px 20px;min-height: 570px;">
+            <div style="margin-top: 10px">
+              <el-form
+                  ref="ruleFormup"
+                  :model="ruleForm"
+                  :rules="Fromupdate"
+              >
+                <el-form-item label="班次名称："  size="small" prop="classesNames" style="display: block;width: 240px;">
+                  <el-input v-model="ruleForm.classesNames" placeholder="例如：日常班"></el-input>
+                </el-form-item>
+                <hr style="border: 0;border-top: 1px solid #e1e3e4;margin: 28px auto;">
+                <h4>第一段上下班时间段：</h4>
+                <div style="display: flex;">
+                  <el-form-item label="上班时间:"  size="small" prop="classesTimeones" style="width: 240px;margin-top: 20px">
+                    <el-time-picker v-model="ruleForm.classesTimeones" value-format="YYYY-MM-DD HH:mm:ss"  format="HH:mm"/>
+                  </el-form-item>
+
+                  <el-form-item label="下班时间:"  size="small" prop="classesTimeonex" style="width: 240px;margin-top: 20px;margin-left: 80px">
+                    <el-time-picker v-model="ruleForm.classesTimeonex" value-format="YYYY-MM-DD HH:mm:ss"  format="HH:mm"/>
+                  </el-form-item>
+                </div>
+                <div style="display: flex;">
+                  <el-form-item label="休息时长:"  size="small" prop="classesXxtimeState" style="width: 240px;">
+                    <el-time-picker v-model="ruleForm.classesXxtimeState" value-format="YYYY-MM-DD HH:mm:ss"  format="HH:mm"/>
+                  </el-form-item>
+
+                  <el-form-item label="到"  size="small" prop="classesXxtimeEnd" style="width: 240px;margin-left: 60px">
+                    <el-time-picker v-model="ruleForm.classesXxtimeEnd" value-format="YYYY-MM-DD HH:mm:ss"  format="HH:mm"/>
+                  </el-form-item>
+                </div>
+                <hr style="border: 0;border-top: 1px solid #e1e3e4;margin: 28px auto;">
+                <h4>第二段上下班时间段：</h4>
+                <div style="display: flex;">
+                  <el-form-item label="上班时间:"  size="small" prop="classesTimetwos" style="width: 240px;margin-top: 20px">
+                    <el-time-picker v-model="ruleForm.classesTimetwos" value-format="YYYY-MM-DD HH:mm:ss"  format="HH:mm"/>
+                  </el-form-item>
+
+                  <el-form-item label="下班时间:"  size="small" prop="classesTimetwox" style="width: 240px;margin-top: 20px;margin-left: 80px">
+                    <el-time-picker v-model="ruleForm.classesTimetwox" value-format="YYYY-MM-DD HH:mm:ss"  format="HH:mm"/>
+                  </el-form-item>
+                </div>
+                <div style="display: flex;">
+                  <el-form-item label="打卡时间范围:"  size="small" prop="dkState" style="width: 240px;">
+                    <el-time-picker v-model="ruleForm.dkState" value-format="YYYY-MM-DD HH:mm:ss"  format="HH:mm"/>
+                  </el-form-item>
+
+                  <el-form-item label="到"  size="small" prop="dkEnd" style="width: 240px;margin-left: 60px">
+                    <el-time-picker v-model="ruleForm.dkEnd" value-format="YYYY-MM-DD HH:mm:ss"  format="HH:mm"/>
+                  </el-form-item>
+                </div>
+
+                <div style="padding-top: 50px;padding-left: 40%;">
+                  <el-form-item>
+                    <el-button size="small"  @click="goshows()">
+                      <el-icon style="font-size: 10px"><i-circle-close /></el-icon>
+                      取消
+                    </el-button>
+                    <el-button size="small" type="primary" plain @click="updateClasess('ruleFormup')">
+                      <el-icon style="font-size: 10px"><i-copy-document /></el-icon>
+                      保存
+                    </el-button>
+                  </el-form-item>
+                </div>
+
+              </el-form>
+
+
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-
   </div>
+{{aa}}
 </template>
 
 <script>
-import {ElMessage, ElMessageBox} from 'element-plus'
-import {export_json_to_excel} from "../../excal/Export2Excel";
+import {ElMessage} from "element-plus";
+import { reactive, ref } from 'vue'
 export default {
-  data() {
-    return {
-      //控制添加班次对话框的显示与隐藏
-      dialogVisible: false,
-      //分页
-      pageInfo: {
-        currenPage: 1,
-        /* 当前的页 */
-        pagesize: 3,
-        total: 0,
+  data(){
+    return{
+      banid:this.$route.query.id,
+      ruleForm:{
+        classesNames:'',
+        classesTimeones:'',
+        classesTimeonex:'',
+        classesXxtimeState:'',
+        classesXxtimeEnd:'',
+        classesTimetwos:'',
+        classesTimetwox:'',
+        dkState:'',
+        dkEnd:''
       },
-      ruleForm: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: '',
-      },
-      tableData: [
-        {
-          applyfor: '七七',
-          type: '车祸',
-          place: '厦门',
-          hour: '8:10',
-          remark: '啊啊啊',
-
-        },
-        {
-          applyfor: '蛇颖欣',
-          type: '生日',
-          place: '厦门',
-          hour: '8:20',
-          remark: '哦吼吼',
-
-        },
-
-      ]
+      aa:'',
+      Fromadd: {
+        classesNames: [
+          {
+            required: true,
+            message: '输入信息不能为空',
+            trigger: 'change',
+          },
+        ],
+      }
     }
   },
-  methods: {
-    // 点击导出操作
-    derive() {
-      ElMessageBox.confirm(
-          '此操作将导出excel文件, 是否继续?',
-          '提示',
-          {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-          }
-      ).then(() => {
-        this.deriveExcel();
-      }).catch(() => {
-        ElMessage({
-          type: 'info',
-          message: '取消成功',
-        })
-      })
+  created() {
+    this.queryid();
+  },
+  methods:{
+    goshows(){
+      this.$router.go(-1);
     },
-    // 导出方法
-    deriveExcel() {
-      var _this = this;
-      let tHeader = ["员工名称", "部门名称", "早上打卡时间", "下午打卡时间", "记录时间"]; // 导出的表头名
-      let filterVal = ["staff", "department", "morning", "afternoon", "record"];//导出其prop属性
-      ElMessageBox.prompt('请输入文件名', '提示', {
-        confirmButtonText: '生成',
-        cancelButtonText: '取消',
-      }).then(({value}) => {
-        let data = _this.formatJson(filterVal, _this.tableData);
-        export_json_to_excel(tHeader, data, value);
-        ElMessage({
-          type: 'success',
-          message: `生成成功`,
-        })
-      })
-          .catch(() => {
-            ElMessage({
-              type: 'info',
-              message: '取消成功',
-            })
+    //通过班次编号查询班次消息
+    queryid(){
+      this.axios
+          .get("http://localhost:8007/provider/Classes/isquerybyid?id="+this.banid, {
+          }).then((response) => {
+           console.log(response)
+          //班次修改赋值
+          this.ruleForm.classesNames = response.data.data.classesName
+          this.ruleForm.classesTimeones = response.data.data.classesTimeones
+          this.ruleForm.classesTimeonex = response.data.data.classesTimeonex
+          this.ruleForm.classesXxtimeState = response.data.data.classesXxtimeState
+          this.ruleForm.classesXxtimeEnd = response.data.data.classesXxtimeEnd
+          this.ruleForm.classesTimetwos = response.data.data.classesTimetwos
+          this.ruleForm.classesTimetwox = response.data.data.classesTimetwox
+          this.ruleForm.dkState = response.data.data.dkState
+          this.ruleForm.dkEnd = response.data.data.dkEnd
+          }).catch(function (error) {
+            console.log("失败")
+            console.log(error);
+          });
+    },
+    //修改班次消息
+    updateClasess(name){
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          this.axios({
+            url: "http://localhost:8007/provider/Classes/isupdatebyentity",
+            method: "post",
+            data: {
+              classesId:this.banid,
+              classesName:this.ruleForm.classesNames,
+              classesTimeones:this.ruleForm.classesTimeones,
+              classesTimeonex:this.ruleForm.classesTimeonex,
+              classesXxtimeState:this.ruleForm.classesXxtimeState,
+              classesXxtimeEnd:this.ruleForm.classesXxtimeEnd,
+              classesTimetwos:this.ruleForm.classesTimetwos,
+              classesTimetwox:this.ruleForm.classesTimetwox,
+              dkState:this.ruleForm.dkState,
+              dkEnd:this.ruleForm.dkEnd,
+            },
+            responseType: 'json',
+            responseEncoding: 'utf-8',
+          }).then((response) => {
+            console.log(response);
+            if (response.data.data === "成功") {
+              ElMessage({
+                message: "操作成功！！！",
+                type: "success",
+              });
+              this.$router.go(-1);
+            }
+          }).catch(function(error) {
+            console.log('获取列表失败')
+            console.log(error);
           })
-    },
-    formatJson(filterVal, jsonData) {
-      return jsonData.map((v) => filterVal.map((j) => v[j]));
-    },
-
-
+        } else {
+          return false
+        }
+      })
+    }
   }
 }
-
 </script>
 
-
 <style type="text/css" scoped>
+@font-face {
+  font-family: 'iconfont';  /* Project id 3164770 */
+  src: url('//at.alicdn.com/t/font_3164770_te5p4157fzj.woff2?t=1644419209354') format('woff2'),
+  url('//at.alicdn.com/t/font_3164770_te5p4157fzj.woff?t=1644419209354') format('woff'),
+  url('//at.alicdn.com/t/font_3164770_te5p4157fzj.ttf?t=1644419209354') format('truetype');
+}
 
-@import url("../../css/zpdaohang.css");
-
+.iconfont {
+  font-family: "iconfont" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+  margin: auto;
+  color: white;
+}
+/deep/.el-table td.el-table__cell div {
+  box-sizing: border-box;
+  text-align: center;
+}
 .demo-pagination-block {
-  margin-left: 65%;
-  margin-top: 20px;
+  margin-left: 15px;
+  margin-top: 10px;
   margin-bottom: 30px;
 }
 
+
+.my-cead {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  background-color: #f9f9f9;
+  border-bottom:1px solid #eaeaea;
+}
+
+.my-span1 {
+  width: 35px;
+  height: 35px;
+  border-radius: 20px;
+  background-color: rgb(87, 153, 229) !important;
+}
+
+.my-span2 {
+  margin-left: 10px;
+  font-size: 18px;
+  color: black;
+}
+
+
+
 .saas-main-content {
-  padding-top: 12px;
   min-height: 500px;
 }
 
@@ -293,7 +257,6 @@ export default {
   position: relative;
   overflow: hidden;
   transition: all 0.3s;
-  margin-top: 8px;
   min-height: 100%;
 }
 
@@ -310,52 +273,16 @@ export default {
   border-left-color: rgb(233, 233, 233);
 }
 
-.j-card {
-  background: #fff;
-  border-radius: 4px;
-  font-size: 14px;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s;
-  margin-top: 8px;
-  min-height: 100%;
+/deep/.el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell {
+  background-color: #e9f7ff;
 }
-
-.mr-20 {
-  margin-right: 20px;
-}
-
-.ml-20 {
-  margin-left: 20px;
-}
-
-.mt-20 {
-  margin-top: 20px;
-}
-
-
-.el-table {
-  font-size: 13px;
-}
-
-/deep/ .el-table th.el-table__cell > .cell {
-  display: inline-block;
+/deep/.el-table .el-table__cell {
+  padding: 10px 0;
+  min-width: 0;
   box-sizing: border-box;
-  position: relative;
+  text-overflow: ellipsis;
   vertical-align: middle;
-  width: 100%;
-  font-weight: initial;
-  color: black;
+  position: relative;
+  text-align: left;
 }
-.mainContent .sub-Content__primary {
-  padding: 15px 24px;
-  background: #fff;
-  border-radius: 4px;
-}
-
-
-/**
-修改样式
- */
-
 </style>

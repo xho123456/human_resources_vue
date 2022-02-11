@@ -182,6 +182,10 @@ const routes = [{
 										path: '/yyx/dacard',
 										component: modules[`${'../components/time_modular/dacard_yyx.vue'}`],
 									},
+									{//班次编辑
+										path: '/yyx/repaircard',
+										component: modules[`${'../components/time_modular/repaircard_yyx.vue'}`],
+									},
 		                        ]
 		                    },
 		                    {//考勤记录
@@ -192,10 +196,7 @@ const routes = [{
 										path: '/my/attendance',
 										component: modules[`${'../components/time_modular/my_attendance.vue'}`],
 									},
-		                            {//补打卡记录
-		                                path: '/yyx/repaircard',
-		                                component: modules[`${'../components/time_modular/repaircard_yyx.vue'}`],
-		                            },
+
 		                        ]
 		                    },
 		                    {// 考勤记录、考勤月报表、历史归档

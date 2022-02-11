@@ -1,4 +1,4 @@
-<!-- 班次设置 -->
+<!-- 班次新增 -->
 <template>
   <div class="saas-main-content">
     <div class="j-card j-card-bordered mainContent">
@@ -19,20 +19,73 @@
               <el-form
                   ref="ruleFormRef"
                   :model="ruleForm"
-                  >
-                <el-form-item label="班次名称："  size="small" prop="name" style="display: block;width: 240px;">
-                  <el-input v-model="ruleForm.name" placeholder="例如：日常班"></el-input>
+                  :rules="Fromadd"
+              >
+                <el-form-item label="班次名称："  size="small" prop="classesNames" style="display: block;width: 240px;">
+                  <el-input v-model="ruleForm.classesNames" placeholder="例如：日常班"></el-input>
                 </el-form-item>
                 <hr style="border: 0;border-top: 1px solid #e1e3e4;margin: 28px auto;">
                 <h4>第一段上下班时间段：</h4>
+                <div style="display: flex;">
+                  <el-form-item label="上班时间:"  size="small" prop="classesTimeones" style="width: 240px;margin-top: 20px">
+                    <el-time-picker v-model="ruleForm.classesTimeones" value-format="YYYY-MM-DD HH:mm:ss"  format="HH:mm"/>
+                  </el-form-item>
+
+                  <el-form-item label="下班时间:"  size="small" prop="classesTimeonex" style="width: 240px;margin-top: 20px;margin-left: 80px">
+                    <el-time-picker v-model="ruleForm.classesTimeonex" value-format="YYYY-MM-DD HH:mm:ss"  format="HH:mm"/>
+                  </el-form-item>
+                </div>
+                <div style="display: flex;">
+                  <el-form-item label="休息时长:"  size="small" prop="classesXxtimeState" style="width: 240px;">
+                    <el-time-picker v-model="ruleForm.classesXxtimeState" value-format="YYYY-MM-DD HH:mm:ss"  format="HH:mm"/>
+                  </el-form-item>
+
+                  <el-form-item label="到"  size="small" prop="classesXxtimeEnd" style="width: 240px;margin-left: 60px">
+                    <el-time-picker v-model="ruleForm.classesXxtimeEnd" value-format="YYYY-MM-DD HH:mm:ss"  format="HH:mm"/>
+                  </el-form-item>
+                </div>
+                <hr style="border: 0;border-top: 1px solid #e1e3e4;margin: 28px auto;">
+                <h4>第二段上下班时间段：</h4>
+                <div style="display: flex;">
+                  <el-form-item label="上班时间:"  size="small" prop="classesTimetwos" style="width: 240px;margin-top: 20px">
+                    <el-time-picker v-model="ruleForm.classesTimetwos" value-format="YYYY-MM-DD HH:mm:ss"  format="HH:mm"/>
+                  </el-form-item>
+
+                  <el-form-item label="下班时间:"  size="small" prop="classesTimetwox" style="width: 240px;margin-top: 20px;margin-left: 80px">
+                    <el-time-picker v-model="ruleForm.classesTimetwox" value-format="YYYY-MM-DD HH:mm:ss"  format="HH:mm"/>
+                  </el-form-item>
+                </div>
+                <div style="display: flex;">
+                  <el-form-item label="打卡时间范围:"  size="small" prop="dkState" style="width: 240px;">
+                    <el-time-picker v-model="ruleForm.dkState" value-format="YYYY-MM-DD HH:mm:ss"  format="HH:mm"/>
+                  </el-form-item>
+
+                  <el-form-item label="到"  size="small" prop="dkEnd" style="width: 240px;margin-left: 60px">
+                    <el-time-picker v-model="ruleForm.dkEnd" value-format="YYYY-MM-DD HH:mm:ss"  format="HH:mm"/>
+                  </el-form-item>
+                </div>
+                <div style="padding-top: 50px;padding-left: 40%;">
+                  <el-form-item>
+                    <el-button size="small"  @click="goshows()">
+                      <el-icon style="font-size: 10px"><i-circle-close /></el-icon>
+                      取消
+                    </el-button>
+                    <el-button size="small" type="primary" plain @click="addClasses('ruleFormRef')">
+                      <el-icon style="font-size: 10px"><i-copy-document /></el-icon>
+                      保存
+                    </el-button>
+                  </el-form-item>
+                </div>
+
               </el-form>
+
+
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -42,8 +95,70 @@ export default {
   data(){
     return{
       ruleForm:{
-        name:'',
+        classesNames:'',
+        classesSd:'分段打卡',
+        classesTimeones:'2022-02-10 09:00:00',
+        classesTimeonex:'2022-02-10 23:00:00',
+        classesXxtimeState:'2022-02-10 12:00:00',
+        classesXxtimeEnd:'2022-02-10 13:30:00',
+        classesTimetwos:'2022-02-10 09:00:00',
+        classesTimetwox:'2022-02-10 23:00:00',
+        dkState:'2022-02-10 06:00:00',
+        dkEnd:'2022-02-10 23:00:00'
       },
+      Fromadd: {
+        classesNames: [
+          {
+            required: true,
+            message: '输入信息不能为空',
+            trigger: 'change',
+          },
+        ],
+      }
+
+    }
+  },
+  methods:{
+    goshows(){
+      this.$router.go(-1);
+    },
+    addClasses(name){
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          this.axios({
+            url: "http://localhost:8007/provider/Classes/isaddclass",
+            method: "post",
+            data: {
+              classesName:this.ruleForm.classesNames,
+              classesSd:this.ruleForm.classesSd,
+              classesTimeones:this.ruleForm.classesTimeones,
+              classesTimeonex:this.ruleForm.classesTimeonex,
+              classesXxtimeState:this.ruleForm.classesXxtimeState,
+              classesXxtimeEnd:this.ruleForm.classesXxtimeEnd,
+              classesTimetwos:this.ruleForm.classesTimetwos,
+              classesTimetwox:this.ruleForm.classesTimetwox,
+              dkState:this.ruleForm.dkState,
+              dkEnd:this.ruleForm.dkEnd
+            },
+            responseType: 'json',
+            responseEncoding: 'utf-8',
+          }).then((response) => {
+            console.log(response)
+            if (response.data.data === "成功") {
+              ElMessage({
+                message: "操作成功！！！",
+                type: "success",
+              });
+              this.$router.go(-1);
+            }
+          }).catch(function (error) {
+            console.log('获取列表失败')
+            console.log(error);
+          })
+        } else {
+          return false
+        }
+      })
     }
   }
 }
