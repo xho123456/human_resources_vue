@@ -3,9 +3,14 @@
   <div class="saas-main-content">
     <div class="j-card j-card-bordered mainContent">
       <!--标题-->
-      <div class="j-card-head">
-        <div class="j-card-head-title">
-          <span>录用信息</span>
+      <div class="my-cead">
+        <div style="width:97%;padding-left: 20px;display: flex;align-items: center;justify-content: space-between;">
+          <div style="display: flex;align-items: center;">
+            <div class="my-span1" style="display: flex;">
+              <i class="iconfont" style="font-size: 20px">&#xe7d9;</i>
+            </div>
+            <div class="my-span2">面试管理</div>
+          </div>
         </div>
       </div>
       <!--内容-->
@@ -25,10 +30,8 @@
                     </div>
                     <!-- 内容区域 -->
                     <div class="ant-card-body">
-
-
                       <el-form-item label="姓名:" prop="name">
-                        <el-input v-model="ruleForm.lname" size="small" style="width: 320px;"></el-input>
+                        <el-input v-model="ruleForm.lname" disabled size="small" style="width: 320px;"></el-input>
                       </el-form-item>
 
                       <el-form-item label="手机号:" prop="name">
@@ -125,6 +128,7 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -138,6 +142,7 @@ export default {
       luDates:'',
       //招聘计划编号：路由传入
       id: this.$route.query.id,
+      employmentIds:'',
       ruleForm: {
         lname:'',
         lphone: '',
@@ -205,12 +210,16 @@ export default {
         responseType: 'json',
         responseEncoding: 'utf-8',
       }).then((response) => {
+        console.log(1)
+        console.log(response)
+        console.log(1)
         this.ruleForm.lname = response.data.data.resumeName;
         this.ruleForm.lphone = response.data.data.resumePhone;
         this.ruleForm.lemlie = response.data.data.resumeMailbox;
         this.ruleForm.ldept = response.data.data.deptName;
         this.ruleForm.lpost = response.data.data.postName;
         this.ruleForm.lresumename = response.data.data.recruitmentPlanName;
+        this.employmentIds = response.data.data.employmentId;
       }).catch(function (error) {
         console.log('获取列表失败')
         console.log(error);
@@ -263,10 +272,34 @@ export default {
           }
         })
       }else {
-       this.updateEmolpyzt();
-        this.$router.go(-1); //返回上级
+        this.$refs[name].validate((valid) => {
+          if (valid) {
+            this.axios({
+              url: "http://localhost:8007/provider/employment/updatelvy",
+              method: "post",
+              data: {
+                employmentId:this.employmentIds,
+                hiredate:this.ruleForm.rztime,
+                probation:this.ruleForm.stime,
+                probationary:this.ruleForm.ssalsy,
+                positiveMonthly:this.ruleForm.zsalsy,
+                positiveRemarks:this.ruleForm.xbersz
+              },
+              responseType: 'json',
+              responseEncoding: 'utf-8',
+            }).then((response) => {
+              console.log(response)
+              this.updateEmolpyzt(); //新增录用人才后更改其简历状态
+              this.$router.go(-1); //返回上级
+            }).catch(function (error) {
+              console.log('获取列表失败')
+              console.log(error);
+            })
+          } else {
+            return false
+          }
+        })
       }
-
     },
     //新增录用人才后更改其简历状态
     updateEmolpyzt() {
@@ -541,23 +574,11 @@ export default {
 }
 
 .saas-main-content {
-  padding-top: 12px;
   min-height: 500px;
 }
 
 .j-card-bordered {
   border: 1px solid #e9e9e9;
-}
-
-.j-card {
-  background: #fff;
-  border-radius: 4px;
-  font-size: 14px;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s;
-  margin-top: 8px;
-  min-height: 100%;
 }
 
 .j-card:hover {
@@ -580,7 +601,50 @@ export default {
   position: relative;
   overflow: hidden;
   transition: all 0.3s;
-  margin-top: 8px;
   min-height: 100%;
 }
+@font-face {
+  font-family: 'iconfont';  /* Project id 3164770 */
+  src: url('//at.alicdn.com/t/font_3164770_te5p4157fzj.woff2?t=1644419209354') format('woff2'),
+  url('//at.alicdn.com/t/font_3164770_te5p4157fzj.woff?t=1644419209354') format('woff'),
+  url('//at.alicdn.com/t/font_3164770_te5p4157fzj.ttf?t=1644419209354') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+  margin: auto;
+  color: white;
+}
+.demo-pagination-block {
+  margin-left: 15px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+
+.my-cead {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  background-color: #f9f9f9;
+  border-bottom:1px solid #eaeaea;
+}
+
+.my-span1 {
+  width: 35px;
+  height: 35px;
+  border-radius: 20px;
+  background-color: rgb(87, 153, 229) !important;
+}
+
+.my-span2 {
+  margin-left: 10px;
+  font-size: 18px;
+  color: black;
+}
+
 </style>

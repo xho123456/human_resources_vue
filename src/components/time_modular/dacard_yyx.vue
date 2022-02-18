@@ -138,7 +138,8 @@ export default {
               classesTimetwos:this.ruleForm.classesTimetwos,
               classesTimetwox:this.ruleForm.classesTimetwox,
               dkState:this.ruleForm.dkState,
-              dkEnd:this.ruleForm.dkEnd
+              dkEnd:this.ruleForm.dkEnd,
+              classesstate:0
             },
             responseType: 'json',
             responseEncoding: 'utf-8',

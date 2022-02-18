@@ -67,18 +67,18 @@
           <i class="iconfont" style="font-size: 19px">&#xe62b;</i>
           <span style="font-size: 12px" @click="divDogs=!divDogs">考勤</span>
         </div>
-        <img src="./assets/syx.jpg" width="30" height="30" alt="">
+        <img :src="useralls.staffPicture" width="30" height="30" alt="">
         <span>
 					 <el-dropdown trigger="click">
 					        <span style="color: #fff; cursor: pointer;">
-					           蛇颖欣
+					           {{useralls.staffName}}
 					        </span>
 					        <template #dropdown>
 					          <el-dropdown-menu>
-					            <el-dropdown-item>Action one</el-dropdown-item>
-					            <el-dropdown-item>Action two</el-dropdown-item>
-					            <el-dropdown-item>Action three</el-dropdown-item>
-					            <el-dropdown-item>Action froms</el-dropdown-item>
+                      <router-link :to="{path:this.userxx,query:{path:this.$route.query.path}}">
+                        <el-dropdown-item>账号消息</el-dropdown-item>
+                      </router-link>
+					            <el-dropdown-item>退出</el-dropdown-item>
 					          </el-dropdown-menu>
 					        </template>
 					      </el-dropdown>
@@ -95,7 +95,7 @@
 
         <el-menu active-text-color="#409EFF" background-color="#333744" text-color="#fff" :unique-opened="true"
                  :collapse="isCollapse" :collapse-transition="false" :router="true"
-                 :default-active="activePath">
+                 :default-active=this.$route.path>
           <!--一级菜单-->
 
           <template v-for="(item,i) in menulist">
@@ -163,6 +163,10 @@
 export default {
   data() {
     return {
+      //账号中心
+      userxx:'/workbench/changes',
+      //当前登录用户消息
+      useralls:this.$store.state.userall,
       //考勤打卡
       divDogs:false,
       //当前时间

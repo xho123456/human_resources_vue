@@ -19,8 +19,6 @@
               <el-button @click="basereceived()">搜索</el-button>
             </template>
           </el-input>
-
-
         </div>
       </div>
       <!--
@@ -315,7 +313,7 @@ export default {
       }
 
     },
-    //分页查询待接受录用的所有简历信息
+    //分页查询待录用的所有简历信息
     basereceived(){
       this.axios({
         url: "http://localhost:8007/provider/employment/selectdjs",

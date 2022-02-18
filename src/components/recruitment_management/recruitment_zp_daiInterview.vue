@@ -131,8 +131,6 @@
         <el-table-column prop="toujTime" label="投简日期" width="140"/>
         <el-table-column prop="resumePoliticalOutlook" label="政治面貌" width="140"/>
         <el-table-column prop="interviewTime" label="面试日期" width="140"/>
-        <el-table-column prop="interviewEvaluate" label="面试评价" width="140"/>
-        <el-table-column prop="staffName" label="面试官" width="140"/>
         <el-table-column fixed="right" label="操作" width="150">
           <template #default="scope">
             <div style="width: 100px">

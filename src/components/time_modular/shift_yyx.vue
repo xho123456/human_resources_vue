@@ -59,11 +59,35 @@
                      {{scope.row.dkState}} - {{scope.row.dkEnd}}
                    </template>
                  </el-table-column>
+
+                 <el-table-column label="状态" width="70">
+                   <template #default="scope">
+                     <el-switch
+                         v-model="ants1"
+                         class="ml-2"
+                         active-color="#13ce66"
+                         inactive-color="#ff4949"
+                         :disabled="true"
+                         v-if="scope.row.classesstate==1"
+                     />
+                     <el-switch
+                         v-model="ants2"
+                         class="ml-2"
+                         active-color="#13ce66"
+                         inactive-color="#ff4949"
+                         :disabled="true"
+                         v-if="scope.row.classesstate==0"
+                     />
+                   </template>
+                 </el-table-column>
+
                  <el-table-column label="操作" width="200px">
                    <template #default="scope">
                      <router-link :to="{path:this.updateclass,query:{path:this.$route.query.path,id:scope.row.classesId}}">
                         <el-button type="text" size="mini" style="font-size: 11px;padding-right: 10px">编辑</el-button>
                      </router-link>
+                     <el-button type="text" size="mini" style="font-size: 11px;">启用</el-button>
+
                      <el-popconfirm title="是否确定删除?" @confirm="isdeleted(scope.row.classesId)"
                                     @cancel="isdeletedbiz()">
                        <template #reference>
@@ -112,7 +136,10 @@ export default {
         total: 0,
         classesName:''
       },
-      tableData:[]
+      tableData:[],
+      //状态按钮
+      ants1:true,
+      ants2:false,
     }
   },
   created() {

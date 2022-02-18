@@ -1,21 +1,26 @@
 <!-- 新增简历-->
-
 <template>
   <div class="saas-main-content">
     <div class="j-card j-card-bordered mainContent">
       <!--标题-->
-      <div class="j-card-head">
-        <div class="j-card-head-title">
-          <span>新增简历</span>
+      <div class="my-cead">
+        <div style="width:97%;padding-left: 20px;display: flex;align-items: center;justify-content: space-between;">
+          <div style="display: flex;align-items: center;">
+            <div class="my-span1" style="display: flex;">
+              <i class="iconfont" style="font-size: 20px">&#xe7d9;</i>
+            </div>
+            <div class="my-span2">人才库</div>
+          </div>
         </div>
       </div>
       <!--内容-->
-      <div class="j-card-body ">
+      <div class="j-card-body" style="height: 590px">
         <div class="sub-Content__primary">
           <div class="ant-card ant-card-bordered">
             <div class="ant-card-head">
               <div class="ant-card-head-wrapper">
                 <div class="ant-card-head-title">
+                  新增简历
                 </div>
               </div>
             </div>
@@ -471,7 +476,7 @@ export default {
 }
 
 .mainContent .ant-card-body {
-  padding: 25px 25px;
+  padding: 40px 25px;
 }
 
 
@@ -504,23 +509,11 @@ export default {
 }
 
 .saas-main-content {
-  padding-top: 12px;
   min-height: 500px;
 }
 
 .j-card-bordered {
   border: 1px solid #e9e9e9;
-}
-
-.j-card {
-  background: #fff;
-  border-radius: 4px;
-  font-size: 14px;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s;
-  margin-top: 8px;
-  min-height: 100%;
 }
 
 .j-card:hover {
@@ -543,7 +536,57 @@ export default {
   position: relative;
   overflow: hidden;
   transition: all 0.3s;
-  margin-top: 8px;
   min-height: 100%;
 }
+a{
+  color: #008df7;
+}
+@font-face {
+  font-family: 'iconfont';  /* Project id 3164770 */
+  src: url('//at.alicdn.com/t/font_3164770_te5p4157fzj.woff2?t=1644419209354') format('woff2'),
+  url('//at.alicdn.com/t/font_3164770_te5p4157fzj.woff?t=1644419209354') format('woff'),
+  url('//at.alicdn.com/t/font_3164770_te5p4157fzj.ttf?t=1644419209354') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+  margin: auto;
+  color: white;
+}
+/deep/.el-table td.el-table__cell div {
+  box-sizing: border-box;
+  text-align: center;
+}
+.demo-pagination-block {
+  margin-left: 15px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+
+.my-cead {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  background-color: #f9f9f9;
+  border-bottom:1px solid #eaeaea;
+}
+
+.my-span1 {
+  width: 35px;
+  height: 35px;
+  border-radius: 20px;
+  background-color: rgb(87, 153, 229) !important;
+}
+
+.my-span2 {
+  margin-left: 10px;
+  font-size: 18px;
+  color: black;
+}
+
 </style>

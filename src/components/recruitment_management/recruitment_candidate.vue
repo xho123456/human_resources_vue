@@ -136,7 +136,7 @@
             <div style="width: 150px">
               <el-button type="text" size="small" @click="update_1(tableData[scope.$index].resumeId)">更改职位</el-button>
               &nbsp;
-              <router-link :to="{path:this.yyms,query:{path:this.$route.query.path}}">
+              <router-link :to="{path:this.yyms,query:{path:this.$route.query.path,sid:scope.row.resumeId}}">
                   <el-button type="text" size="small" @click="">邀约面试</el-button>
               </router-link>
 

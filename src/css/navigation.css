@@ -122,13 +122,6 @@ img {
 }
 
 
-/** {*/
-/*    margin: 0;*/
-/*    margin-right: 0px;*/
-/*    margin-left: 0px;*/
-/*    padding: 0;*/
-/*}*/
-
 .header_row_s .header_2_s {
     color: #fff;
 }
@@ -179,7 +172,6 @@ img {
 }
 
 .saas-main-content {
-    padding-top: 12px;
     min-height: 450px;
 }
 
@@ -551,7 +543,6 @@ img {
     position: relative;
     overflow: hidden;
     transition: all 0.3s;
-    margin-top: 8px;
     min-height: 100%;
 }
 

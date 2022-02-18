@@ -8,7 +8,7 @@
           <!-- 返回列表按钮 -->
           <div class="ant-row-flex ant-row-flex-space-between" style="margin-bottom: 16px;">
             <div class="ant-col">
-              <el-button plain size="mini" @click="goback()">+ 返回列表</el-button>
+              <el-button plain size="mini" @click="goback()">返回列表</el-button>
             </div>
           </div>
           <!-- 个人消息列 -->
@@ -36,9 +36,6 @@
                   |&nbsp;
                   <span class="ant-tag"><a href="">{{ this.$route.query.posta }}</a></span>
               </span>
-            </div>
-            <div class="ant-col">
-              <el-button plain size="small">推进下一阶段 ^</el-button>
             </div>
           </div>
 
@@ -682,7 +679,7 @@
 
               </el-tab-pane>
 
-              <el-tab-pane name="two">
+              <el-tab-pane name="two" v-if="tableData.interviewId !=null">
                 <template #label>
                   <div style="width: 120px;text-align: center">面试评价</div>
                 </template>

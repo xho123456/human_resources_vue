@@ -66,7 +66,6 @@
             </el-select>
           </el-col>
 
-
           <el-col :span="3.5">
             <el-select v-model="pageInfo.resumeEducation" placeholder="学历" size="small">
               <el-option label="初中" value="初中"></el-option>
@@ -78,7 +77,6 @@
               <el-option label="其他" value="其他"></el-option>
             </el-select>
           </el-col>
-
 
           <el-col :span="1.8">
             <el-button type="primary" @click="basereceived()" size="mini">确定</el-button>
@@ -103,8 +101,9 @@
             <router-link :to="{path:this.details,query:{path:this.$route.query.path,name:scope.row.resumeId,posta:scope.row.postName}}">{{scope.row.resumeName}}</router-link>
           </template>
         </el-table-column>
-        <el-table-column fixed="left" prop="deptName" label="部门" width="120"/>
+        <el-table-column fixed="left" prop="waiveReason" label="放弃原因" width="140"/>
         <el-table-column fixed="left" prop="postName" label="投递职位" width="140"/>
+        <el-table-column prop="deptName" label="部门" width="120"/>
         <el-table-column prop="resumeAge" label="年龄" width="140"/>
         <el-table-column prop="resumeEducation" label="学历" width="140"/>
         <el-table-column prop="resumePhone" label="手机号" width="140"/>

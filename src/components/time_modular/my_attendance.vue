@@ -92,12 +92,12 @@
                     </div>
                   </div>
                   <div class="my-caerdq">
-                    <div class="my-ant">
+                    <div class="my-ant"  @click="querycdAll()">
                       <div class="my-ant-show" style="background-color: rgb(79, 140, 255);">
                         <i class="iconfont" style="font-size: 29px">&#xe62b;</i>
                       </div>
                       <div class="show-dv1">
-                        <div class="show-dv2">9</div>
+                        <div class="show-dv2">{{numbers.numberqj}}</div>
                         <div class="show-dv3" title="请假(天)">请假(天)</div>
                       </div>
                     </div>
@@ -120,32 +120,25 @@
           <div class="an-card">
             <el-table :data="tableData" style="width: 100%; font-size: 12px;"
                       :header-cell-style="{textAlign: 'center',color:'#5a5a5a'}">
-              <el-table-column prop="date" label="姓名" width="150"/>
-              <el-table-column prop="name" label="部门" width="120"/>
-              <el-table-column prop="date" label="日期" width="150"/>
-              <el-table-column prop="name" label="班次" width="120"/>
-              <el-table-column label="上班一">
-                <el-table-column prop="state" label="打卡时间" width="120"/>
-                <el-table-column prop="city" label="打卡结果" width="120"/>
+              <el-table-column type="index" label="序号"  width="50"/>
+              <el-table-column prop="date" label="日期" width="140"/>
+              <el-table-column prop="name" label="班次" width="130"/>
+              <el-table-column label="上班一" class="aa">
+                <el-table-column prop="state" label="打卡时间" width="130"/>
+                <el-table-column prop="city" label="打卡结果" width="100"/>
               </el-table-column>
               <el-table-column label="下班一">
-                <el-table-column prop="state" label="打卡时间" width="120"/>
-                <el-table-column prop="city" label="打卡结果" width="120"/>
+                <el-table-column prop="state" label="打卡时间" width="130"/>
+                <el-table-column prop="city" label="打卡结果" width="100"/>
               </el-table-column>
               <el-table-column label="上班二">
-                <el-table-column prop="state" label="打卡时间" width="120"/>
-                <el-table-column prop="city" label="打卡结果" width="120"/>
+                <el-table-column prop="state" label="打卡时间" width="130"/>
+                <el-table-column prop="city" label="打卡结果" width="100"/>
               </el-table-column>
               <el-table-column label="下班二">
-                <el-table-column prop="state" label="打卡时间" width="120"/>
-                <el-table-column prop="city" label="打卡结果" width="120"/>
+                <el-table-column prop="state" label="打卡时间" width="130"/>
+                <el-table-column prop="city" label="打卡结果" width="100"/>
               </el-table-column>
-              <el-table-column prop="name" label="漏签(次)" width="120"/>
-              <el-table-column prop="name" label="迟到(次)" width="120"/>
-              <el-table-column prop="name" label="早退(次)" width="120"/>
-              <el-table-column prop="name" label="旷工(次)" width="120"/>
-              <el-table-column prop="name" label="补打卡次数(次)" width="120"/>
-              <el-table-column prop="name" label="总状态" width="120"/>
             </el-table>
           </div>
 
@@ -154,6 +147,54 @@
       </div>
     </div>
   </div>
+
+  <!-- 迟到对话框 -->
+  <el-dialog v-model="dialogTableVisible" title="请假明细" destroy-on-close width="60%">
+    <div style="height: 350px">
+      <el-table :data="tableDatas" style="cursor: pointer" size="mini"
+                :header-cell-style="{color:'#606266',background:'rgb(234, 237, 241)'}" :stripe=true>
+        <el-table-column align="center" prop="staffName1" label="姓名"/>
+        <el-table-column align="center" prop="deptName" label="部门"/>
+        <el-table-column align="center" prop="leaveSDate" label="开始时间" width="130px"/>
+        <el-table-column align="center" prop="leaveEDate" label="结束时间" width="130px"/>
+        <el-table-column align="center" prop="leaveType" label="请假类型"/>
+        <el-table-column align="center" prop="leaveMatter" label="请假事由"/>
+        <el-table-column align="center" prop="auditflowStaff" label="审批状态">
+          <template #default="scope">
+            <span v-if="scope.row.auditflowStaff==0">待审</span>
+            <span v-if="scope.row.auditflowStaff==1">通过</span>
+            <span v-if="scope.row.auditflowStaff==2">驳回</span>
+            <span v-if="scope.row.auditflowStaff==3">撤销</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" prop="leaveTotalDate" label="请假总时长"/>
+      </el-table>
+    </div>
+    <template #footer>
+                  <span class="dialog-footer">
+                    <el-button size="mini" type="primary" @click="dialogTableVisible=false">取消</el-button>
+                  </span>
+    </template>
+    <div class="demo-pagination-block">
+      <el-pagination
+          v-model:currentPage="pageInfo.currenPage"
+          :page-sizes="[5, 10, 30, 50]"
+          v-model:page-size="pageInfo.pagesize"
+          :default-page-size="pageInfo.pagesize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="pageInfo.total"
+          :pager-count="5"
+          background
+          @size-change="querycdAll()"
+          @current-change="querycdAll()"
+      >
+      </el-pagination>
+    </div>
+  </el-dialog>
+
+
+
+
 </template>
 
 <script>
@@ -163,6 +204,12 @@ import {ref} from 'vue'
 export default {
   data() {
     return {
+      //当前登录用户消息
+      useralls:this.$store.state.userall,
+      //数据次数统计
+      numbers:{
+        numberqj:'',
+      },
       tableData: [
         {
           date: '2016-05-03',
@@ -172,8 +219,55 @@ export default {
           address: 'No. 189, Grove St, Los Angeles',
           zip: 'CA 90036',
         },
-      ]
+        {
+          date: '2016-05-03',
+          name: 'Tom',
+          state: 'California',
+          city: 'Los Angeles',
+          address: 'No. 189, Grove St, Los Angeles',
+          zip: 'CA 90036',
+        },
+        {
+          date: '2016-05-03',
+          name: 'Tom',
+          state: 'California',
+          city: 'Los Angeles',
+          address: 'No. 189, Grove St, Los Angeles',
+          zip: 'CA 90036',
+        },
+        {
+          date: '2016-05-03',
+          name: 'Tom',
+          state: 'California',
+          city: 'Los Angeles',
+          address: 'No. 189, Grove St, Los Angeles',
+          zip: 'CA 90036',
+        },
+        {
+          date: '2016-05-03',
+          name: 'Tom',
+          state: 'California',
+          city: 'Los Angeles',
+          address: 'No. 189, Grove St, Los Angeles',
+          zip: 'CA 90036',
+        },
+      ],
+      //分页
+      pageInfo: {
+        currenPage: 1,
+        /* 当前的页 */
+        pagesize: 5,
+        total: 0,
+      },
+      //请假对话框
+      dialogTableVisible:false,
+      //请假数据
+      tableDatas:[],
+
     }
+  },
+  created() {
+    this.querynumber();
   },
   methods: {
     two(mains) {
@@ -210,6 +304,46 @@ export default {
         ]
       });
     },
+    //当前登录用户考勤迟到记录查询
+    querycdAll(){
+      this.dialogTableVisible = true
+      this.axios({
+        url: "http://localhost:8007/provider/leave/queryallqjs",
+        method: "post",
+        data: {
+          currenPage: this.pageInfo.currenPage,
+          pagesize:this.pageInfo.pagesize,
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.tableDatas = response.data.data.records
+        this.pageInfo.total = response.data.data.total
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    //请假次数统计
+    querynumber() {
+      this.axios({
+        url: "http://localhost:8007/provider/leave/leavenumbers",
+        method: "post",
+        data: {
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.numbers.numberqj = response.data.data
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+
+
+
+
   },
   mounted() {
     this.$nextTick(function () {

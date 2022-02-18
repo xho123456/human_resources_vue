@@ -706,6 +706,7 @@ export default {
        * select：通过职位id和部门id查询所有招聘计划名称
        */
       findPlanAll() {
+        console.log(1)
         this.axios({
           url: "http://localhost:8007/provider/recruitment/findByidplan",
           method: "post",
@@ -716,6 +717,7 @@ export default {
           responseType: 'json',
           responseEncoding: 'utf-8',
         }).then((response) => {
+          console.log(response)
           this.planslist = response.data.data
         }).catch(function (error) {
           console.log('获取列表失败')

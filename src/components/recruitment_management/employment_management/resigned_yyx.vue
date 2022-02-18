@@ -214,7 +214,7 @@ export default {
       }
 
     },
-    //分页查询待接受录用的所有简历信息
+    //分页查询待录用的所有简历信息
     basereceived(){
       this.axios({
         url: "http://localhost:8007/provider/employment/selectdjs",

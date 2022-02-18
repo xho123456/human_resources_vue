@@ -22,9 +22,7 @@
 
         </div>
       </div>
-      <!--
-         筛选框
-       -->
+      <!--筛选框-->
       <div class="icon-s" v-show="icons">
         <el-row :gutter="10">
           <el-col :span="6.2">
@@ -42,7 +40,7 @@
           </el-col>
 
           <el-col :span="3.5">
-            <el-select v-model="pageInfo.deptMane" clearable ref="vueSelect"  size="small"
+            <el-select v-model="pageInfo.deptMane" clearable ref="vueSelect" size="small"
                        @click="onclicks()">
               <el-option hidden></el-option>
               <el-tree
@@ -109,7 +107,10 @@
         <el-table-column fixed="left" align="center" prop="resumeId" type="selection" width="80"/>
         <el-table-column fixed="left" label="姓名" width="100">
           <template #default="scope">
-            <router-link :to="{path:this.details,query:{path:this.$route.query.path,name:scope.row.resumeId,posta:scope.row.postName}}">{{scope.row.resumeName}}</router-link>
+            <router-link
+                :to="{path:this.details,query:{path:this.$route.query.path,name:scope.row.resumeId,posta:scope.row.postName}}">
+              {{ scope.row.resumeName }}
+            </router-link>
           </template>
         </el-table-column>
         <el-table-column fixed="left" prop="postName" label="投递职位" width="140"/>
@@ -136,17 +137,21 @@
         <el-table-column fixed="right" label="操作" width="150">
           <template #default="scope">
             <div style="width: 100px">
-              <el-button type="text" size="small" @click="invitedsignin(tableData[scope.$index].resumeId)">面试签到</el-button>
+              <el-button type="text" size="small" @click="invitedsignin(tableData[scope.$index].resumeId)">面试签到
+              </el-button>
               <el-row class="block-col-2" style="float: right;">
                 <el-col :span="8">
                   <el-dropdown trigger="click">
                 <span class="el-dropdown-link">
-                  <el-button type="text" size="small">更多<i class="iconfont" style="font-size: 10px">&#xe772;</i></el-button>
+                  <el-button type="text" size="small">更多<i class="iconfont"
+                                                           style="font-size: 10px">&#xe772;</i></el-button>
                 </span>
                     <template #dropdown>
                       <el-dropdown-menu>
-                        <el-dropdown-item @click="remarks=true,elremarksId=tableData[scope.$index].resumeId">备注</el-dropdown-item>
-                        <el-dropdown-item @click="candidateFrom=[],update_1(tableData[scope.$index].resumeId)">更改职位</el-dropdown-item>
+                        <el-dropdown-item @click="remarks=true,elremarksId=tableData[scope.$index].resumeId">备注
+                        </el-dropdown-item>
+                        <el-dropdown-item @click="candidateFrom=[],update_1(tableData[scope.$index].resumeId)">更改职位
+                        </el-dropdown-item>
                         <el-dropdown-item @click="zeliminate(scope.row.resumeId)">转入储备人才</el-dropdown-item>
                       </el-dropdown-menu>
                     </template>
@@ -208,8 +213,8 @@
              label-width="130px"
     >
       <el-form-item label="需求部门：" prop="hdept">
-        <el-select v-model="candidateFrom.hdept" clearable ref="vueSelect"  size="small" style="width: 300px"
-                   @click="onclicks()"  @clear="ondept()">
+        <el-select v-model="candidateFrom.hdept" clearable ref="vueSelect" size="small" style="width: 300px"
+                   @click="onclicks()" @clear="ondept()">
           <el-option hidden></el-option>
           <el-tree
               :data="deptlist"
@@ -224,8 +229,8 @@
         </el-select>
       </el-form-item>
       <el-form-item label="招聘职位：" prop="hpost">
-        <el-select  placeholder="请选择" size="small" style="width: 300px"
-                    disabled v-if=" candidateFrom.hdept==null">
+        <el-select placeholder="请选择" size="small" style="width: 300px"
+                   disabled v-if=" candidateFrom.hdept==null">
         </el-select>
 
         <el-select v-model="candidateFrom.hpost" placeholder="请选择" size="small" style="width: 300px"
@@ -272,7 +277,7 @@ export default {
     return {
       defaultProps,
       //路由地址
-      yyms:'/recruitment/Invitems',
+      yyms: '/recruitment/Invitems',
       addresume: '/recruitment/recruit/addresume',
       details: '/recruitment/resume/details',
 
@@ -280,7 +285,7 @@ export default {
       Dogcandidate: false,
       candidateFrom: {
         //部门Id
-        hdeptid:'',
+        hdeptid: '',
         //部门名称
         hdept: '',
         //职位id
@@ -389,16 +394,16 @@ export default {
         this.$refs.vueSelect.blur();
       })
     },
-    Formall(){
-      for (var i=0 ; i<this.deptlist.length;i++){
-        if(this.pageInfo.deptIdss==this.deptlist[i].deptId){
+    Formall() {
+      for (var i = 0; i < this.deptlist.length; i++) {
+        if (this.pageInfo.deptIdss == this.deptlist[i].deptId) {
           this.pageInfo.deptMane = this.deptlist[i].deptName
         }
       }
 
     },
     //分页查询全部简历信息
-    beckselectAllhxr(){
+    beckselectAllhxr() {
       this.axios({
         url: "  http://localhost:8007/provider/resume/findselectAllyy",
         method: "post",
@@ -429,7 +434,7 @@ export default {
       this.pageInfo.postName = '';
       this.pageInfo.resumeEducation = '';
       this.pageInfo.deptIdss = '';
-      this.pageInfo.deptMane='';
+      this.pageInfo.deptMane = '';
       this.beckselectAllhxr();
     },
     //删除按钮消息提示框 事件
@@ -514,7 +519,7 @@ export default {
           })
     },
     //面试签到
-    invitedsignin(row){
+    invitedsignin(row) {
       ElMessageBox.confirm(
           '是否确认当前面试人员到场?',
           {
@@ -557,12 +562,12 @@ export default {
     },
     //个人简历：备注信息修改
     addremarks(index) {
-      if (this.elremarks==''){
+      if (this.elremarks == '') {
         ElMessage({
           message: '请填写备注',
           type: 'warning',
         })
-      }else{
+      } else {
         this.axios.post(
             "http://localhost:8007/provider/resume/updatebz", {
               resumeId: this.elremarksId,
@@ -587,15 +592,15 @@ export default {
     /**
      * 查询所有部门信息
      */
-    selectAlldept(){
+    selectAlldept() {
       this.axios({
-        url:"http://localhost:8007/provider/dept/dept/selectAlldept",
-        method:"post",
+        url: "http://localhost:8007/provider/dept/dept/selectAlldept",
+        method: "post",
         responseType: 'json',
         responseEncoding: 'utf-8',
       }).then((response) => {
         console.log(response);
-        this.deptlist =response.data.data
+        this.deptlist = response.data.data
       }).catch(function (error) {
         console.log('获取列表失败')
         console.log(error);
@@ -603,34 +608,34 @@ export default {
     },
 
     //部门
-    ondept(){
-      this.deptpostlist='';
-      this.planslist='';
-      this.candidateFrom.hzplan='';
-      this.candidateFrom.hpost='';
+    ondept() {
+      this.deptpostlist = '';
+      this.planslist = '';
+      this.candidateFrom.hzplan = '';
+      this.candidateFrom.hpost = '';
     },
     /**
      * 根据部门 id 查询所属部门的所有职位名称
      */
-    selectAlldeptpost(){
+    selectAlldeptpost() {
       this.axios({
-        url:"http://localhost:8007/provider/deptpost/yyxdeptpost",
-        method:"post",
-        data:{
-          deptId:this.pageInfo.deptIdss
+        url: "http://localhost:8007/provider/deptpost/yyxdeptpost",
+        method: "post",
+        data: {
+          deptId: this.pageInfo.deptIdss
         },
         responseType: 'json',
         responseEncoding: 'utf-8',
       }).then((response) => {
         console.log(response);
-        this.deptpostlist =response.data.data
+        this.deptpostlist = response.data.data
       }).catch(function (error) {
         console.log('获取列表失败')
         console.log(error);
       })
     },
-    setuppost(){
-      this.pageInfo.postName =''
+    setuppost() {
+      this.pageInfo.postName = ''
       this.selectAlldeptpost();
     },
 
@@ -681,8 +686,8 @@ export default {
      */
     update_1(row) {
       //重置表单
-      this. candidateFrom={
-        hdeptid:'',
+      this.candidateFrom = {
+        hdeptid: '',
         hdept: '',
         hpost: '',
         hzplan: '',
@@ -723,7 +728,7 @@ export default {
     /**
      * operation候选人设置：取消按钮
      */
-    ResetForm(resetForm){
+    ResetForm(resetForm) {
       this.$refs[resetForm].resetFields();
       this.Dogcandidate = false
     },
@@ -734,6 +739,7 @@ export default {
 </script>
 <style type="text/css" scoped>
 @import url("../../css/zpdaohang.css");
+
 .demo-pagination-block {
   margin-left: 15px;
   margin-top: 10px;
@@ -748,6 +754,7 @@ export default {
   margin-top: 10px;
   padding: 16px;
 }
+
 .mainContent .sub-Content__primary {
   padding: 5px 24px;
   background: #fff;

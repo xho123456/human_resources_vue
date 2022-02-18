@@ -2,6 +2,18 @@
 <template>
 	<div class="saas-main-content">
 		<div class="j-card j-card-bordered mainContent">
+      <!--标题-->
+      <div class="my-cead">
+        <div style="width:97%;padding-left: 20px;display: flex;align-items: center;justify-content: space-between;">
+          <div style="display: flex;align-items: center;">
+            <div class="my-span1" style="display: flex;">
+              <i class="iconfont" style="font-size: 20px">&#xe7d9;</i>
+            </div>
+            <div class="my-span2">招聘计划</div>
+          </div>
+        </div>
+      </div>
+      <!--内容-->
 			<div class="j-card-body ">
 
 				<!-- 表格按钮部分 -->
@@ -9,6 +21,7 @@
 
 							<el-button type="primary" size="small" plain @click="addplands()">
 								+ 新增</el-button>
+
 
 
 							<el-button type="primary" plain size="small" @click="">
@@ -40,11 +53,6 @@
 								</template>
 							</el-input>
 						</div>
-
-
-
-							
-
 
 					<!--
             查看招聘计划对话框
@@ -259,7 +267,6 @@
 		</div>
 	</div>
 
-
 	<!--
      新增招聘计划对话框
   -->
@@ -368,6 +375,10 @@
 				defaultProps,
 				//路由
 				plandetails: '/recruitment/plan/details',
+        addplans:'/recruitment/plan/addplans',
+        //当前登录用户消息
+        useralls:this.$store.state.userall,
+
 				//查看招聘计划对话框显示隐藏
 				dialogVisible: false,
 				//编辑招聘计划对话框
@@ -497,6 +508,7 @@
 			this.selectAlldept();
 		},
 		methods: {
+
 			//添加招聘计划按钮事件
 			addplands() {
 				this.addDialong = true
@@ -684,7 +696,7 @@
 								recruitmentPlanStartTime: this.addForm.plantime[0],
 								recruitmentPlanEndTime: this.addForm.plantime[1],
 								recruitmentPlanSalary: this.addForm.plansalary,
-								staffId: 1,
+								staffId: this.useralls.staffId,
 								createdTime: new Date(),
 								updatedTime: new Date()
 							},
@@ -817,23 +829,11 @@
 	}
 
 	.saas-main-content {
-		padding-top: 12px;
 		min-height: 500px;
 	}
 
 	.j-card-bordered {
 		border: 1px solid #e9e9e9;
-	}
-
-	.j-card {
-		background: #fff;
-		border-radius: 4px;
-		font-size: 14px;
-		position: relative;
-		overflow: hidden;
-		transition: all 0.3s;
-		margin-top: 8px;
-		min-height: 100%;
 	}
 
 	.j-card:hover {
@@ -856,7 +856,7 @@
 		position: relative;
 		overflow: hidden;
 		transition: all 0.3s;
-		margin-top: 8px;
+		margin-top: 0px;
 		min-height: 100%;
 	}
 
@@ -891,4 +891,48 @@
 		font-weight: initial;
 		color: black;
 	}
+
+  @font-face {
+    font-family: 'iconfont';  /* Project id 3164770 */
+    src: url('//at.alicdn.com/t/font_3164770_te5p4157fzj.woff2?t=1644419209354') format('woff2'),
+    url('//at.alicdn.com/t/font_3164770_te5p4157fzj.woff?t=1644419209354') format('woff'),
+    url('//at.alicdn.com/t/font_3164770_te5p4157fzj.ttf?t=1644419209354') format('truetype');
+  }
+
+  .iconfont {
+    font-family: "iconfont" !important;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+    margin: auto;
+    color: white;
+  }
+  .demo-pagination-block {
+    margin-left: 15px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+  }
+
+
+  .my-cead {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    background-color: #f9f9f9;
+    border-bottom:1px solid #eaeaea;
+  }
+
+  .my-span1 {
+    width: 35px;
+    height: 35px;
+    border-radius: 20px;
+    background-color: rgb(87, 153, 229) !important;
+  }
+
+  .my-span2 {
+    margin-left: 10px;
+    font-size: 18px;
+    color: black;
+  }
 </style>

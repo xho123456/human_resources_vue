@@ -4,10 +4,7 @@
     <div class="ant-spin-nested-loading">
       <div class="ant-spin-container">
         <div class="mt-20 ml-20 mr-20">
-
-
           <el-button size="small" type="primary" plain @click="icons =! icons">筛选</el-button>
-
           <el-input
               v-model="pageInfo.resumeName"
               placeholder="请输入应聘者姓名"
@@ -187,10 +184,6 @@
                   </span>
     </template>
   </el-dialog>
-
-
-
-
 </template>
 
 <script>
