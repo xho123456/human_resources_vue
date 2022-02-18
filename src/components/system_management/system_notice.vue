@@ -100,20 +100,13 @@
                         default-first-option
                         size="small"
                     >
-<!--                      <el-option
-                          v-for="item in deptName"
-                          :key="item"
-                          :label="item.deptName"
-                          :value="item.deptName"
-                      >
-                      </el-option>-->
                       <el-option hidden></el-option>
                       <el-tree
                           accordion
                           ref="tree"
                           :data="affiche.deptlist"
-                           show-checkbox
-                            node-key="deptId"
+                          show-checkbox
+                          node-key="deptId"
                           :props="defaultProps"
                           @check-change="handleCheckChange()"
                       />
@@ -136,7 +129,8 @@
                 </el-form-item>
 
 
-<!--                <h1>dasjfashfkjasdfk{{$store.state.staffName}}</h1>-->
+
+                <!--                <h1>dasjfashfkjasdfk{{$store.state.staffName}}</h1>-->
 
 
                 <el-form-item >
@@ -147,7 +141,7 @@
                       </el-button>
                       <!--										&lt;!&ndash; 修改按钮 &ndash;&gt;"innerVisible = true"-->
 
-                      <el-button size="mini" style="width: 65px;" type="primary" @click="judges(),updata()">
+                      <el-button size="mini" style="width: 65px;" type="primary" @click="judges()">
                         {{judge}}
                       </el-button>
                     </div>
@@ -219,7 +213,7 @@
 
         <!-- 查看抽屉 -->
         <el-drawer v-model="drawer"  :with-header="false">
-            <P class="headline"> 查看公告</P>
+          <P class="headline"> 查看公告</P>
           <!--公告标题-->
           <div class="biaoti">公告标题：
             <span>{{examine.noticeTitle}}</span>
@@ -266,9 +260,9 @@
           </div>
 
 
-            <el-button size="default " style="width: 165px;margin-left: 24px;" @click="abrogatel()" >
-              取  消
-            </el-button>
+          <el-button size="default " style="width: 165px;margin-left: 24px;" @click="abrogatel()" >
+            取  消
+          </el-button>
 
 
         </el-drawer>
@@ -292,11 +286,13 @@
           >
           </el-pagination>
         </div>
-<!--        {{examine}}-->
-<!--        <br>-->
-<!--        {{deptName}}-->
+        <!--        {{examine}}-->
+        <!--        <br>-->
+        <!--        {{deptName}}-->
         {{affiche.deptName}}
-<!--        {{affiche.deptlist}}-->
+        {{staffsName}}
+        {{a}}
+        <!--        {{affiche.deptlist}}-->
       </div>
 
     </div>
@@ -342,6 +338,11 @@ export default {
 
     //表格批量删除
     return {
+      a:this.$store.state.userall,
+      staffsId:this.$store.state.userall.staffId,
+      staffsName:this.$store.state.userall.staffName,
+      postName:this.$store.state.userall.postName,
+
       defaultProps,
 
       //查看集合
@@ -387,7 +388,6 @@ export default {
         //部门名称
         deptName:[],
 
-
         deptlist:''
       },
 
@@ -418,13 +418,45 @@ export default {
       //存放全选id
       id:[],
       deptName:[],
-aa:''
+      aa:''
     }
   },
   created() {
     this.pagingQuery();
   },
   methods:{
+    /**
+     * 新增公告
+     */
+    insert(){
+      this.axios({
+        method:'post',
+        url:"http://localhost:8007/provider/notices/insert",
+        data:{
+          staffId:this.staffsId,
+          noticePeople:this.staffsName,
+          noticePost:this.postName,
+          noticeTitle:this.affiche.noticeTitle,
+          noticeType:this.affiche.noticeType,
+          noticeState:this.affiche.noticeState,
+          noticeMatter:this.affiche.noticeMatter,
+          deptName:this.affiche.deptName
+        },
+        responseType:'json',
+        responseEncoding:'utf-8',
+      }).then(request=>{
+        console.log(request);
+        if(request.data.data=='新增成功'){
+          ElMessage({
+            type:'success',
+            message:'新增成功'
+          })
+        }else{
+          ElMessage.error("新增失败")
+        }
+
+      })
+    },
     /**
      *查询已看公告员
      */
@@ -449,19 +481,19 @@ aa:''
      * 查询未看公告员
      */
     selectNoticeState(){
-        this.axios({
-          method:'post',
-          url:"http://localhost:8007/provider/notice/selectNoticeID",
-          data:this.examine,
-          responseType:'json',
-          responseEncoding:'utf-8',
-        }).then(request=>{
-          this.staffName=[]
-          console.log(request.data.data.staffName+"asdkjfhjkasdf")
-          for(var i=0; i<request.data.data.length;i++){
-            this.staffName.push(request.data.data[i].staffName)
-          }
-        })
+      this.axios({
+        method:'post',
+        url:"http://localhost:8007/provider/notice/selectNoticeID",
+        data:this.examine,
+        responseType:'json',
+        responseEncoding:'utf-8',
+      }).then(request=>{
+        this.staffName=[]
+        console.log(request.data.data.staffName+"asdkjfhjkasdf")
+        for(var i=0; i<request.data.data.length;i++){
+          this.staffName.push(request.data.data[i].staffName)
+        }
+      })
     },
 
     //查看取消按钮
@@ -529,7 +561,7 @@ aa:''
     deleteList(){
       this.id=[];
       for (let i=0 ; i<this.table.length ; i++){
-          this.id.push(this.table[i].noticeId)
+        this.id.push(this.table[i].noticeId)
       }
       this.axios({
         method:'delete',
@@ -559,9 +591,9 @@ aa:''
       }).then(response=>{
         if(response.data.data ==='删除成功'){
           ElMessage({
-                    type:"success",
-                    message:"删除成功"
-                  });
+            type:"success",
+            message:"删除成功"
+          });
         }else {
           ElMessage.error("删除失败")
         }
@@ -629,15 +661,12 @@ aa:''
      */
     deptsName(){
       this.deptName=[];
-      let _this=this
       this.axios({
         method:'get',
         url:"http://localhost:8007/provider/depts/selectDepts",
         responseType:'json',
         responseEncoding:'utf-8',
       }).then(response=>{
-        console.log(1)
-        console.log(response)
         this.affiche.deptlist=response.data.data
         // response.data.data.forEach(e=> {
         //   this.deptName.push(e)
@@ -675,6 +704,7 @@ aa:''
       this.affiche.noticeTitle=row.noticeTitle;
       this.noticeName(row);
     },
+
     //点击修改赋值部门名称
     noticeName(row){
       this.axios({
@@ -774,11 +804,8 @@ aa:''
           type: 'error',
         })
       }else{
-        ElMessage({
-          type: 'success',
-          message: '添加成功！！',
+        this.insert()
 
-        })
         this.affiche={
           //公告编号
           noticeId:'',
@@ -830,13 +857,13 @@ aa:''
           type: 'error',
         })
       }else{
-
+        this.updata()
         this.outerVisible=false
       }
     },
     //新增或修改方法判断方法
     judges(){
-      if(this.judge==="新增"){
+      if(this.judge=="新增"){
         this.new();
       }else{
         this.amend()
@@ -865,7 +892,6 @@ aa:''
       this.pageInfo.noticeTitle='',
           this.pageInfo.noticeType='',
           this.pageInfo.noticePeople=''
-
     }
   }
 }

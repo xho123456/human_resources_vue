@@ -119,27 +119,51 @@
           <!--表格数据区域-->
           <div class="an-card">
             <el-table :data="tableData" style="width: 100%; font-size: 12px;"
-                      :header-cell-style="{textAlign: 'center',color:'#5a5a5a'}">
-              <el-table-column type="index" label="序号"  width="50"/>
-              <el-table-column prop="date" label="日期" width="140"/>
-              <el-table-column prop="name" label="班次" width="130"/>
-              <el-table-column label="上班一" class="aa">
-                <el-table-column prop="state" label="打卡时间" width="130"/>
-                <el-table-column prop="city" label="打卡结果" width="100"/>
+                      :header-cell-style="{background:'#eef1f6',color:'#606266',textAlign: 'center'}" >
+              <el-table-column  type="index" label="序号"  width="50"/>
+              <el-table-column prop="dayDate" label="日期" width="140"/>
+              <el-table-column prop="name" label="班次" width="130" :show-overflow-tooltip="true">
+                <template #default="scope">
+                   一般工作时间(
+                  {{scope.row.classesTimeones}}-{{scope.row.classesTimeonex}}
+                  &nbsp;
+                  {{scope.row.classesTimetwos}}-{{scope.row.classesTimetwox}}
+                  )
+                </template>
+              </el-table-column>
+              <el-table-column label="上班一">
+                <el-table-column prop="smornClock" label="打卡时间" />
+                <el-table-column prop="smornResult" label="打卡结果" width="100"/>
               </el-table-column>
               <el-table-column label="下班一">
-                <el-table-column prop="state" label="打卡时间" width="130"/>
-                <el-table-column prop="city" label="打卡结果" width="100"/>
+                <el-table-column prop="safternoonClock" label="打卡时间"/>
+                <el-table-column prop="safternoonResult" label="打卡结果" width="100"/>
               </el-table-column>
               <el-table-column label="上班二">
-                <el-table-column prop="state" label="打卡时间" width="130"/>
-                <el-table-column prop="city" label="打卡结果" width="100"/>
+                <el-table-column prop="xmornClock" label="打卡时间"/>
+                <el-table-column prop="xmornResult" label="打卡结果" width="100"/>
               </el-table-column>
               <el-table-column label="下班二">
-                <el-table-column prop="state" label="打卡时间" width="130"/>
-                <el-table-column prop="city" label="打卡结果" width="100"/>
+                <el-table-column prop="xafternoonClock" label="打卡时间" />
+                <el-table-column prop="xafternoonResult" label="打卡结果" width="100"/>
               </el-table-column>
             </el-table>
+            <div class="demo-pagination-block" style="margin-top: 10px">
+              <el-pagination
+                  v-model:currentPage="pageInfo.currenPage"
+                  :page-sizes="[5, 10, 30, 50]"
+                  v-model:page-size="pageInfo.pagesize"
+                  :default-page-size="pageInfo.pagesize"
+                  layout="total, sizes, prev, pager, next, jumper"
+                  :total="pageInfo.total"
+                  :pager-count="5"
+                  background
+                  @size-change="querycdAll()"
+                  @current-change="querycdAll()"
+              >
+              </el-pagination>
+            </div>
+
           </div>
 
 
@@ -148,7 +172,7 @@
     </div>
   </div>
 
-  <!-- 迟到对话框 -->
+  <!-- 请假对话框 -->
   <el-dialog v-model="dialogTableVisible" title="请假明细" destroy-on-close width="60%">
     <div style="height: 350px">
       <el-table :data="tableDatas" style="cursor: pointer" size="mini"
@@ -192,9 +216,6 @@
     </div>
   </el-dialog>
 
-
-
-
 </template>
 
 <script>
@@ -210,48 +231,7 @@ export default {
       numbers:{
         numberqj:'',
       },
-      tableData: [
-        {
-          date: '2016-05-03',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-        },
-        {
-          date: '2016-05-03',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-        },
-        {
-          date: '2016-05-03',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-        },
-        {
-          date: '2016-05-03',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-        },
-        {
-          date: '2016-05-03',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-        },
-      ],
+      tableData: [],
       //分页
       pageInfo: {
         currenPage: 1,
@@ -268,6 +248,7 @@ export default {
   },
   created() {
     this.querynumber();
+    this.querycdAlldk();
   },
   methods: {
     two(mains) {
@@ -340,7 +321,25 @@ export default {
         console.log(error);
       })
     },
-
+    //当前登录用户考勤打卡记录查询（按照月份查询）
+    querycdAlldk(){
+      this.axios({
+        url: "http://localhost:8007/provider/leave/queryalldk",
+        method: "post",
+        data: {
+          currenPage: this.pageInfo.currenPage,
+          pagesize:this.pageInfo.pagesize,
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.tableData = response.data.data.records
+        this.pageInfo.total = response.data.data.total
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
 
 
 
@@ -355,6 +354,10 @@ export default {
 </script>
 
 <style type="text/css" scoped>
+/deep/.el-table td.el-table__cell div {
+  box-sizing: border-box;
+  text-align: center;
+}
 @font-face {
   font-family: 'iconfont';  /* Project id 3164770 */
   src: url('//at.alicdn.com/t/font_3164770_li6io3l86zn.woff2?t=1644300384172') format('woff2'),
