@@ -118,7 +118,6 @@
       </div>
     </div>
   </div>
-  {{tableData}}
 </template>
 
 <script>
