@@ -25,45 +25,43 @@
     <div style="border-right: 1px #000000 dashed; width: 50%;height: 480px;border-left: 1px #000000 dashed;">
 
       <!-- 固定工资分布 -->
-      <div id="mainy1" style="width: 630px;height:405px; float: left;"></div>
+      <div id="main" style="width: 630px;height:405px; float: left;"></div>
     </div>
     <div style="  width: 50%;height: 480px; position: absolute;top: 0px;right: 2px; ">
       <!-- 薪酬结构分布 -->
-      <div id="mainy2" style="width: 630px;height:405px; float: right;"></div>
+      <div id="main1" style="width: 630px;height:405px; float: right;"></div>
     </div>
   </div>
 
   <div style="position: relative; display: block; width: 100%;border-top: 1px #000000 dashed;">
     <!-- 	部门Top9人力成本 -->
+    <div id="main2" style="width: 1050px;height:460px;"></div>
+    <div style="width: 16%;height: 320px; float: right; margin-top: -390px;">
+
+      <span class="ziti">当前部门发放工资最多:</span>
+      <br>
+      <span class="ziti">{{zdbm}}</span>
+      <br>
+
+      <span class="ziti">工资为：</span><br>
+      <span class="ziti">{{zdbmrs}}元</span>
+    </div>
+  </div>
+  <div style="position: relative; display: block; width: 100%;border-top: 1px #000000 dashed;">
+    <!-- 	部门平均工资 -->
     <div id="main4" style="width: 1050px;height:460px;"></div>
     <div style="width: 16%;height: 320px; float: right; margin-top: -390px;">
 
-      <span class="ziti">当前最多人力成本部门:</span>
+      <span class="ziti">当前部门发放工资最多:</span>
       <br>
-      <span class="ziti">牛逼部</span>
+      <span class="ziti">{{zdbm1}}</span>
       <br>
 
-      <span class="ziti">人力成本：</span><br>
-      <span class="ziti">111</span>
+      <span class="ziti">工资为：</span><br>
+      <span class="ziti">{{zdbmrs1}}元</span>
     </div>
   </div>
 
-  <div style="position: relative; display: block; width: 100%;border-top: 1px #000000 dashed;">
-    <!-- 	部门Top9平均工资 -->
-    <div id="main5" style="width:1050px;height:460px;"></div>
-    <div style="width: 16%;height: 320px; float: right; margin-top: -390px;">
-
-      <span class="ziti">当前部门最多平均工资：</span>
-      <br>
-      <span class="ziti">giao部</span>
-      <br>
-      <span class="ziti">平均工资：</span>
-      <br>
-      <span class="ziti">1234</span>
-      <br>
-
-    </div>
-  </div>
 </template>
 
 
@@ -76,8 +74,7 @@ import {
 import * as echarts from 'echarts'
 import 'echarts-gl';
 //多次使用图表方法
-export default defineComponent({
-
+export default ({
   setup() {
     const state = reactive({
       shortcuts: [{
@@ -144,9 +141,55 @@ export default defineComponent({
 
   data() {
     return {
+      qjrs:[],
+      qjrs1:[],
+      qjrs2:[],
+      qjrs3:[],
+      qjrs4:[],
+      qjrs5:[],
+      monthly:[],
+      monthly1:[],
+      monthly2:[],
+      monthly3:[],
+      deptname1:[],
+      deptname2:[],
+      rs1:[],
+      data1 : [
+      ],
+      data2 : [
+      ],
+      data11 : [
+      ],
+      value1:{
 
-
-
+      },
+      ccrs:[],
+      monthlycc:[],
+      dyqjrs:'',
+      dyccrs:'',
+      dyccrs1:'',
+      rmb:'',
+      rmb1:'',
+      rmb2:'',
+      rmb3:'',
+      rmb4:'',
+      rmb5:'',
+      rmb6:'',
+      zdbm:'',
+      zdbmrs:'',
+      zdbm1:'',
+      zdbmrs1:'',
+      xj1:[],
+      xj:[],
+      xjpj:[],
+      xjpjxj:[],
+      xjpjxj1:[],
+      xjpjxj2:[],
+      rs:'',
+      rs2:[],
+      rjtime:[],
+      bypjjbtime:'',
+      qian:[],
     }
   },
   computed: {
@@ -154,292 +197,651 @@ export default defineComponent({
   },
 
   mounted() {
-    //准备实例
-    /*  员工性别分布 */
-    var chartDomy1 = document.getElementById('mainy1');
-    var myCharty1 = echarts.init(chartDomy1);
-    var optiony1;
-    /*   员工婚姻分布 */
-    var chartDomy2 = document.getElementById('mainy2');
-    var myCharty2 = echarts.init(chartDomy2);
-    var optiony2;
-    /*  当前最多人数部门 */
-    var chartDom4 = document.getElementById('main4');
-    var myChart4 = echarts.init(chartDom4);
-    var option4;
-    /*   当前最多岗位人数： */
-    var chartDom5 = document.getElementById('main5');
-    var myChart5 = echarts.init(chartDom5);
-    var option5;
 
 
 
+    this.drawLine1();
 
 
-    /*    固定工资分布 */
-    optiony1 = {
-      tooltip: {
-        trigger: 'item'
-      },
-      title: {
-        text: '固定工资分布'
-      },
-      toolbox: {
-        feature: {
-          dataView:{
-            show:true,
-            readOnly:false,
-            title:"数据视图"
-          },
-          saveAsImage: {
-            show: true,
-            title:"保存"
-          },
 
-        }
-      },
-      legend: {
-        top: '5%',
-        left: 'center',
-        formatter: function(name) {
-          var data = optiony1.series[0].data;
-          var total = 0;
-          var tarValue;
-          for (var i = 0, l = data.length; i < l; i++) {
-            total += data[i].value;
-            if (data[i].name == name) {
-              tarValue = data[i].value;
-            }
-          }
-          var p = (tarValue / total * 100).toFixed(2);
-          return name + ' ' + ' ' + '(' + p + '%)';
-        },
-      },
-      series: [{
-        name: '薪酬结构',
-        type: 'pie',
-        radius: ['40%', '70%'],
-        avoidLabelOverlap: false,
-        label: {
-          show: false,
-          position: 'center'
-        },
-        emphasis: {
-          label: {
-            show: true,
-            fontSize: '40',
-            fontWeight: 'bold'
-          }
-        },
-        labelLine: {
-          show: false
-        },
-        data: [{
-          value: 48,
-          name: '固定工资'
-        },
-          {
-            value: 735,
-            name: '加班工资'
-          }
-
-        ]
-      }]
-    };
-    /* 薪酬结构分布*/
-    optiony2 = {
-      tooltip: {
-        trigger: 'item'
-      },
-      toolbox: {
-        feature: {
-           dataView:{
-             show:true,
-             readOnly:false,
-             title:"数据视图"
-           },
-          saveAsImage: {
-            show: true,
-            title:"保存"
-          }
-        }
-      },
-      legend: {
-        top: '5%',
-        left: 'center',
-        //获取占比为多少
-        formatter: function(name) {
-          var data = optiony2.series[0].data;
-          var total = 0;
-          var tarValue;
-          for (var i = 0, l = data.length; i < l; i++) {
-            total += data[i].value;
-            if (data[i].name == name) {
-              tarValue = data[i].value;
-            }
-          }
-          var p = (tarValue / total * 100).toFixed(2);
-          return name + ' ' + ' ' + '(' + p + '%)';
-        },
-      },
-      title: {
-        text: '薪酬结构分布'
-      },
-      series: [{
-        name: '固定工资',
-        type: 'pie',
-        radius: ['40%', '70%'],
-        avoidLabelOverlap: false,
-        label: {
-          show: false,
-          position: 'center'
-        },
-        emphasis: {
-          label: {
-            show: true,
-            fontSize: '30',
-            fontWeight: 'bold'
-          }
-        },
-        labelLine: {
-          show: false
-        },
-        data: [{
-          value: 1048,
-          name: '5k以下'
-        },
-          {
-            value: 735,
-            name: '5-10k'
-          },
-          {
-            value: 580,
-            name: '10-15k'
-          },
-          {
-            value: 580,
-            name: '30k以上'
-          },
-
-        ]
-      }]
-    };
-
-    /*  部门Top9人力成本 */
-    var option4 = {
-      title: {
-        text: '部门Top9人力成本'
-      },
-      tooltip: {
-
-      },
-      toolbox: {
-        feature: {
-          dataView: {
-            show: true,
-            readOnly: false,
-            title:"数据视图"
-          },
-          magicType: {
-            show: true,
-            type: ['line', 'bar'],
-            title:{
-              line:"折线图",
-              bar:"柱状图",
-            }
-          },
-          restore: {
-            show: true,
-            title:"还原"
-          },
-          saveAsImage: {
-            show: true,
-            title:"保存"
-          }
-        }
-      },
-      legend: {
-        data: ['人力成本']
-      },
-      xAxis: {
-        data: ['人力资源部', '生产管理部', '市场营销部', '总经办', '人力资源中心', '林业部']
-      },
-      yAxis: {
-        type: 'value',
-
-        min: 0,
-        max: 25,
-        interval: 5,
-        formatter: '{value} 人'
-      },
-      series: [{
-        name: '人力成本',
-        type: 'bar',
-        data: [5, 20, 25, 10, 10, 20],
-        barWidth:'25%',
-      }, ]
-    };
-
-    /*   部门Top9平均工资 */
-    var option5 = {
-      title: {
-        text: '部门Top9平均工资'
-      },
-      tooltip: {},
-      toolbox: {
-        feature: {
-          dataView: {
-            show: true,
-            readOnly: false,
-            title:"数据视图"
-          },
-          magicType: {
-            show: true,
-            type: ['line', 'bar'],
-            title:{
-              line:"折线图",
-              bar:"柱状图",
-            }
-          },
-          restore: {
-            show: true,
-            title:"还原"
-          },
-          saveAsImage: {
-            show: true,
-            title:"保存"
-          }
-        }
-      },
-      legend: {
-        data: ['平均工资']
-      },
-      xAxis: {
-        data: ['生成主管', '培训经理', '劳动关系专员', '销售经理', '总经理助理', '人事经理']
-      },
-      yAxis: {
-        type: 'value',
-        min: 0,
-        max: 25,
-        interval: 5,
-        formatter: '{value} 人'
-      },
-      series: [{
-        name: '平均工资',
-        type: 'bar',
-        data: [5, 20, 25, 10, 10, 20],
-        barWidth:'25%',
-      }, ]
-    };
-    //3d地球
-
-    optiony1 && myCharty1.setOption(optiony1);
-    optiony2 && myCharty2.setOption(optiony2);
-    option4 && myChart4.setOption(option4);
-    option5 && myChart5.setOption(option5);
 
   },
+  methods: {
+    //新进律
+    drawLine() {
 
+      var chartDom = document.getElementById('main');
+      var myChart = echarts.init(chartDom);
+      var option;
+
+      option = {
+        tooltip: {
+          trigger: 'item'
+        },
+        title: {
+          text: '本月固定工资分布'
+        },
+        toolbox: {
+          feature: {
+            dataView:{
+              show:true,
+              readOnly:false,
+              title:"数据视图"
+            },
+            saveAsImage: {
+              show: true,
+              title:"保存"
+            },
+
+          }
+        },
+        legend: {
+          top: '5%',
+          left: 'center',
+          formatter: function(name) {
+            var data = option.series[0].data;
+            var total = 0;
+            var tarValue;
+            for (var i = 0, l = data.length; i < l; i++) {
+              total += data[i].value;
+              if (data[i].name == name) {
+                tarValue = data[i].value;
+              }
+            }
+            var p = (tarValue / total * 100).toFixed(2);
+            return name + ' ' + ' ' + '(' + p + '%)';
+          },
+        },
+        series: [{
+          name: '薪酬结构',
+          type: 'pie',
+          radius: ['40%', '70%'],
+          avoidLabelOverlap: false,
+          label: {
+            show: false,
+            position: 'center'
+          },
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: '40',
+              fontWeight: 'bold'
+            }
+          },
+          labelLine: {
+            show: false
+          },
+          data: [{
+            value: this.rmb,
+            name: '试用基本工资'
+          },
+            {
+              value: this.rmb1,
+              name: '正式基本工资'
+            }
+
+          ]
+        }]
+      };
+      myChart.setOption(option);
+    },
+
+    drawLine1() {
+
+      var chartDom1 = document.getElementById('main1');
+      var myChart1 = echarts.init(chartDom1);
+      var option1;
+
+      option1 = {
+        tooltip: {
+          trigger: 'item'
+        },
+        title: {
+          text: '本月薪资分布'
+        },
+        toolbox: {
+          feature: {
+            dataView:{
+              show:true,
+              readOnly:false,
+              title:"数据视图"
+            },
+            saveAsImage: {
+              show: true,
+              title:"保存"
+            },
+
+          }
+        },
+        legend: {
+          top: '5%',
+          left: 'center',
+          formatter: function(name) {
+            var data = option1.series[0].data;
+            var total = 0;
+            var tarValue;
+            for (var i = 0, l = data.length; i < l; i++) {
+              total += data[i].value;
+              if (data[i].name == name) {
+                tarValue = data[i].value;
+              }
+            }
+            var p = (tarValue / total * 100).toFixed(2);
+            return name + ' ' + ' ' + '(' + p + '%)';
+          },
+        },
+        series: [{
+          name: '薪酬结构',
+          type: 'pie',
+          radius: ['40%', '70%'],
+          avoidLabelOverlap: false,
+          label: {
+            show: false,
+            position: 'center'
+          },
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: '40',
+              fontWeight: 'bold'
+            }
+          },
+          labelLine: {
+            show: false
+          },
+          data: [{
+            value: this.rmb2,
+            name: '基本工资'
+          },
+            {
+              value: this.rmb3,
+              name: '个人缴公积金'
+            },{
+              value: this.rmb4,
+              name: '个人缴社保'
+            },{
+              value: this.rmb5,
+              name: '公司缴社保'
+            },{
+              value: this.rmb6,
+              name: '公司缴公积金'
+            }
+
+          ]
+        }]
+      };
+      myChart1.setOption(option1);
+    },
+    drawLine2() {
+
+      var chartDom = document.getElementById('main2');
+      var myChart = echarts.init(chartDom);
+      var option;
+
+      option = {
+        title: {
+          text: '部门工资top'
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            crossStyle: {
+              color: '#999'
+            }
+          }
+        },
+        toolbox: {
+          feature: {
+            dataView: {
+              show: true,
+              readOnly: false,
+              title:"数据视图"
+            },
+            magicType: {
+              show: true,
+              type: ['line', 'bar'],
+              title:{
+                line:"折线图",
+                bar:"柱状图",
+              }
+            },
+            restore: {
+              show: true,
+              title:"还原"
+            },
+            saveAsImage: {
+              show: true,
+              title:"保存"
+            }
+          }
+        },
+        legend: {
+          data: ['元', '增长率']
+        },
+        xAxis: [{
+          type: 'category',
+          data: this.deptname1,
+          axisPointer: {
+            type: 'shadow'
+          }
+        }],
+        yAxis: [{
+          type: 'value',
+
+          min: 0,
+          max: 500000,
+          interval: 50000,
+          axisLabel: {
+            formatter: '{value} 元'
+          }
+        },
+          {
+            type: 'value',
+            name: '增长律（%）',
+            min: 0,
+            max: 100,
+            interval: 10,
+            axisLabel: {
+              formatter: '{value} %'
+            }
+          },
+
+        ],
+        series: [{
+          name: '元',
+          type: 'bar',
+          data: this.qjrs4,
+          barWidth:'25%',
+        },
+        ]
+      };
+      myChart.setOption(option);
+    },
+
+    drawLine4() {
+
+      var chartDom = document.getElementById('main4');
+      var myChart = echarts.init(chartDom);
+      var option;
+
+      option = {
+        title: {
+          text: '部门工资top'
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            crossStyle: {
+              color: '#999'
+            }
+          }
+        },
+        toolbox: {
+          feature: {
+            dataView: {
+              show: true,
+              readOnly: false,
+              title:"数据视图"
+            },
+            magicType: {
+              show: true,
+              type: ['line', 'bar'],
+              title:{
+                line:"折线图",
+                bar:"柱状图",
+              }
+            },
+            restore: {
+              show: true,
+              title:"还原"
+            },
+            saveAsImage: {
+              show: true,
+              title:"保存"
+            }
+          }
+        },
+        legend: {
+          data: ['元', '增长率']
+        },
+        xAxis: [{
+          type: 'category',
+          data: this.deptname2,
+          axisPointer: {
+            type: 'shadow'
+          }
+        }],
+        yAxis: [{
+          type: 'value',
+
+          min: 0,
+          max: 500000,
+          interval: 50000,
+          axisLabel: {
+            formatter: '{value} 元'
+          }
+        },
+          {
+            type: 'value',
+            name: '增长律（%）',
+            min: 0,
+            max: 100,
+            interval: 10,
+            axisLabel: {
+              formatter: '{value} %'
+            }
+          },
+
+        ],
+        series: [{
+          name: '元',
+          type: 'bar',
+          data: this.qian,
+          barWidth:'25%',
+        },
+        ]
+      };
+      myChart.setOption(option);
+    },
+
+
+
+
+    //每月公司社保金额
+    selectgssbje() {
+      this.axios
+          .get("http://localhost:8007/provider/chagssbje", {
+            params:this.qjrs3,
+          })
+          .then((response) => {
+
+            for (var i = 0; i < response.data.length; i++) {
+              this.qjrs3.push(response.data[i].rmb)
+              this.monthly3.push(response.data[i].time)
+
+            }
+
+
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+
+    //每月部门工资top
+    selectbmgztop() {
+      this.axios
+          .get("http://localhost:8007/provider/chabmgztop", {
+            params:this.qjrs4,
+          })
+          .then((response) => {
+
+            for (var i = 0; i < response.data.length; i++) {
+              this.qjrs4.push(response.data[i].rmb)
+              this.deptname1.push(response.data[i].deptName)
+              if (this.deptname1.length>6){
+                break
+
+              }
+              this.zdbm=response.data[0].deptName
+              this.zdbmrs=response.data[0].rmb
+            }
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+    //每月部门工资平均榜
+    selectbmgzpj() {
+      this.axios
+          .get("http://localhost:8007/provider/chabmgzpj", {
+            params:this.qjrs5,
+          })
+          .then((response) => {
+
+            for (var i = 0; i < response.data.length; i++) {
+              this.qjrs5.push(response.data[i].rmb)
+              this.deptname2.push(response.data[i].deptName)
+              this.rs2.push(response.data[i].rs)
+
+              this.qian.push(response.data[i].rmb/response.data[i].rs)
+
+              if (this.deptname2.length>6){
+                break
+
+              }
+              this.zdbm1=response.data[0].deptName
+              this.zdbmrs1=this.qian[0]
+            }
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+    //查询本月试用基本工资
+    selectbysyjbgz() {
+      this.axios
+          .get("http://localhost:8007/provider/chabysyjbgz", {
+            params:this.rmb,
+          })
+          .then((response) => {
+            if (response.data.length<1) {
+              this.rmb=0
+            }else {
+              for (var i = 0; i < response.data.length; i++) {
+
+                this.rmb = response.data[0].rmb
+
+              }
+            }
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+    //查询本月正式基本工资
+    selectbyzsjbgz() {
+      this.axios
+          .get("http://localhost:8007/provider/chabyzsjbgz", {
+            params:this.rmb1,
+          })
+          .then((response) => {
+            if (response.data.length<1) {
+              this.rmb1=0
+            }else {
+              for (var i = 0; i < response.data.length; i++) {
+
+                this.rmb1 = response.data[0].rmb
+
+              }
+            }
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+
+    //查询本月基本工资2
+    selectbyzsjbgzz() {
+      this.axios
+          .get("http://localhost:8007/provider/chabyzsjbgzz", {
+            params:this.rmb2,
+          })
+          .then((response) => {
+            if (response.data.length<1) {
+              this.rmb2=0
+            }else {
+              for (var i = 0; i < response.data.length; i++) {
+
+                this.rmb2 = response.data[0].rmb
+
+              }
+            }
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+    //查询本月个人缴公积金3
+    selectbygrgjj() {
+      this.axios
+          .get("http://localhost:8007/provider/chabygrgjj", {
+            params:this.rmb3,
+          })
+          .then((response) => {
+            if (response.data.length<1) {
+              this.rmb3=0
+            }else {
+              for (var i = 0; i < response.data.length; i++) {
+
+                this.rmb3 = response.data[0].rmb
+
+              }
+            }
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+    //查询本月个人缴社保4
+    selectbygrsb() {
+      this.axios
+          .get("http://localhost:8007/provider/chabygrsb", {
+            params:this.rmb4,
+          })
+          .then((response) => {
+            if (response.data.length<1) {
+              this.rmb4=0
+            }else {
+              for (var i = 0; i < response.data.length; i++) {
+
+                this.rmb4 = response.data[0].rmb
+
+              }
+            }
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+    //查询本月公司缴社保5
+    selectbygssb() {
+      this.axios
+          .get("http://localhost:8007/provider/chabygssb", {
+            params:this.rmb5,
+          })
+          .then((response) => {
+            if (response.data.length<1) {
+              this.rmb5=0
+            }else {
+              for (var i = 0; i < response.data.length; i++) {
+
+                this.rmb5 = response.data[0].rmb
+
+              }
+            }
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+    //查询本月公司缴公积金6
+    selectbygsgjj() {
+      this.axios
+          .get("http://localhost:8007/provider/chabygsgjj", {
+            params:this.rmb6,
+          })
+          .then((response) => {
+            if (response.data.length<1) {
+              this.rmb6=0
+            }else {
+              for (var i = 0; i < response.data.length; i++) {
+
+                this.rmb6 = response.data[0].rmb
+
+              }
+            }
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+
+  },created() {
+
+    this.selectbyzsjbgz();
+    this.selectbysyjbgz();
+    this.selectgssbje();
+    this.selectbmgztop();
+    this.selectbyzsjbgzz();
+    this.selectbygrgjj();
+    this.selectbygrsb();
+    this.selectbygssb();
+    this.selectbygsgjj();
+    this.selectbmgzpj();
+  }, watch: {
+    qjrs3: {
+      //对于深层对象的属性，watch不可达，因此对数组监控需要将数组先清空，再添加数据
+      handler: function () {
+
+        this.drawLine();
+
+
+
+      },
+      deep: true,
+    },
+    qjrs4: {
+      //对于深层对象的属性，watch不可达，因此对数组监控需要将数组先清空，再添加数据
+      handler: function () {
+
+        this.drawLine2();
+
+      },
+      deep: true,
+    },
+    qjrs5: {
+      //对于深层对象的属性，watch不可达，因此对数组监控需要将数组先清空，再添加数据
+      handler: function () {
+
+        this.drawLine4();
+
+      },
+      deep: true,
+    },
+    rmb6: {
+      //对于深层对象的属性，watch不可达，因此对数组监控需要将数组先清空，再添加数据
+      handler: function () {
+        this.drawLine1();
+
+
+      }
+      ,
+      deep: true,
+    },
+  },
 })
 </script>
 

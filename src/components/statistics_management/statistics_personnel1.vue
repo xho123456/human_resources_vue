@@ -427,7 +427,113 @@ export default {
       myCharty2.setOption(optiony2);
     },
     //员工转正
-          //部门top榜
+    drawLine2() {
+      // 1、基于准备好的dom，初始化echarts实例
+      var chartDomy5 = document.getElementById('mainy5');
+      var myCharty5 = echarts.init(chartDomy5);
+      var optiony5;
+      //2、构造图表数据
+
+      optiony5 = {
+        title: {
+          text: '每月员工转正'
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            crossStyle: {
+              color: '#999'
+            }
+          }
+        },
+        toolbox: {
+          feature: {
+            dataView: {
+              show: true,
+              readOnly: false,
+              title:'数据视图'
+            },
+            magicType: {
+              show: true,
+              type: ['line', 'bar'],
+              title:{
+                line:"折线图",
+                bar:"柱状图",
+              }
+            },
+            restore: {
+              show: true,
+              title:'还原'
+            },
+            saveAsImage: {
+              show: true,
+              title:"保存"
+            }
+          }
+        },
+        legend: {
+          data: ['离职人数', '增长率']
+        },
+        xAxis: [{
+          type: 'category',
+          data: this.data6,
+          axisPointer: {
+            type: 'shadow'
+          }
+        }],
+        yAxis: [{
+          type: 'value',
+          name: '人',
+          min: 0,
+          max: 50,
+          interval: 10,
+          axisLabel: {
+            formatter: '{value} 人'
+          }
+        },
+          {
+            type: 'value',
+            name: '增长律（%）',
+            min: -200,
+            max: 200,
+            interval: 40,
+            axisLabel: {
+              formatter: '{value} %'
+            }
+          },
+
+        ],
+        series: [{
+          name: '离职人数',
+          type: 'bar',
+          data: this.data5,
+
+          barWidth:'25%',
+        },
+
+          {
+            name: '增长率',
+            type: 'line',
+            yAxisIndex: 1,
+            data: this.data55,
+            itemStyle: {
+              normal: {
+                color: "#FFFF66", //折线点的颜色
+                lineStyle: {
+                  color: "#FFFF66" //折线的颜色
+                }
+              }
+            },
+
+          }
+        ]
+      };
+      // 3、绘制图表
+      myCharty5.setOption(optiony5);
+    },
+
+    //部门top榜
     drawLine3() {
       // 1、基于准备好的dom，初始化echarts实例
       var chartDomy3 = document.getElementById('mainy6');
@@ -545,15 +651,15 @@ export default {
             params:this.lz,
           })
           .then((response) => {
-           if (response.data.length<1) {
-             this.dyrz=0
-           }else {
-             for (var i = 0; i < response.data.length; i++) {
+            if (response.data.length<1) {
+              this.dyrz=0
+            }else {
+              for (var i = 0; i < response.data.length; i++) {
 
-               this.dyrz = response.data[0].rs
+                this.dyrz = response.data[0].rs
 
-             }
-           }
+              }
+            }
           })
           .catch(function (error) {
             console.log("失败")
@@ -657,11 +763,10 @@ export default {
             params:this.sylz,
           })
           .then((response) => {
-             if(response.data.length<1){
-               this.value2=0
+            if(response.data.length<1){
+              this.value2=0
+            }
 
-
-             }
             for (var i = 0; i < response.data.length; i++) {
 
               this.value2=response.data[0].rs
@@ -674,8 +779,17 @@ export default {
                   }*/
             }
             //获取本月对比上月离职人数有多少
-              this.value2pj= (this.value1-this.value2) /this.value1*100
 
+            if(this.value1==0){
+              this.value2pj=0
+
+            }else if(this.value2==0){
+              this.value2pj=0
+
+            }else {
+              this.value2pj = (this.value1 - this.value2) / this.value1 * 100
+
+            }
           })
           .catch(function (error) {
             console.log("失败")
@@ -694,12 +808,14 @@ export default {
             this.data5.length = 0; //清空数组z
             var Growth=0
             this.data55.push(Growth)
+
             for (var i = 0; i < response.data.length; i++) {
 
               this.data5.push(response.data[i].rs);
               this.data6.push(response.data[i].year);
-              console.log(this.data6+"nima")
-              console.log(this.data5+"nima")
+              console.log(this.data6+"nima111")
+              console.log(this.data5+"nima111")
+
               if(i>=1) {
                 var Growth1 = (response.data[i].rs - response.data[i - 1].rs) / response.data[i].rs * 100
                 this.data55.push(Growth1)
@@ -707,6 +823,7 @@ export default {
 
               }
             }
+
           })
           .catch(function (error) {
             console.log("失败")
@@ -777,7 +894,7 @@ export default {
                 this.data8.push(response.data[i].deptName);
               }
               /*   console.log(response.data[i])*/
-                this.zdbm=response.data[0].deptName
+              this.zdbm=response.data[0].deptName
               this.zdbmrs=response.data[0].rs
             }
           })
@@ -805,6 +922,15 @@ export default {
 
         this.drawLine();
         this.drawLine1();
+
+      },
+      deep: true,
+    },
+    data3: {
+      //对于深层对象的属性，watch不可达，因此对数组监控需要将数组先清空，再添加数据x
+      handler: function () {
+
+        this.drawLine();
 
       },
       deep: true,
