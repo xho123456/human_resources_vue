@@ -52,29 +52,41 @@
               </div>
             </div>
             <div style="margin-top: 10px">
-              <el-table :data="tableData" :border="true" style="width: 100%; font-size: 12px;"
-                        :header-cell-style="{background:'#eef1f6',color:'#606266',textAlign: 'center'}">
-                <el-table-column type="index" label="序号"  width="50"/>
-                <el-table-column prop="date" label="日期" width="140"/>
-                <el-table-column prop="name" label="班次" width="140"/>
-                <el-table-column label="上班一" class="aa">
-                  <el-table-column prop="state" label="打卡时间"/>
-                  <el-table-column prop="city" label="打卡结果"/>
+              <el-table :data="tableData" style="width: 100%; font-size: 12px;"
+                        :header-cell-style="{background:'#eef1f6',color:'#606266',textAlign: 'center'}" >
+                <el-table-column fixed="left" type="index" label="序号"  width="50"/>
+                <el-table-column fixed="left" prop="staffName" label="姓名" width="140"/>
+                <el-table-column fixed="left" prop="deptName" label="部门名称" width="140"/>
+                <el-table-column fixed="left" prop="dayDate" label="日期" width="140"/>
+                <el-table-column label="班次" width="130" :show-overflow-tooltip="true">
+                  <template #default="scope">
+                    一般工作时间(
+                    {{scope.row.classesTimeones}}-{{scope.row.classesTimeonex}}
+                    &nbsp;
+                    {{scope.row.classesTimetwos}}-{{scope.row.classesTimetwox}}
+                    )
+                  </template>
+                </el-table-column>
+                <el-table-column label="上班一">
+                  <el-table-column prop="smornClock" label="打卡时间" />
+                  <el-table-column prop="smornResult" label="打卡结果" width="100" />
                 </el-table-column>
                 <el-table-column label="下班一">
-                  <el-table-column prop="state" label="打卡时间"/>
-                  <el-table-column prop="city" label="打卡结果"/>
+                  <el-table-column prop="xafternoonClock" label="打卡时间"/>
+                  <el-table-column prop="xafternoonResult" label="打卡结果" width="100" />
                 </el-table-column>
-                <el-table-column label="上班二">
-                  <el-table-column prop="state" label="打卡时间"/>
-                  <el-table-column prop="city" label="打卡结果"/>
-                </el-table-column>
-                <el-table-column label="下班二">
-                  <el-table-column prop="state" label="打卡时间"/>
-                  <el-table-column prop="city" label="打卡结果"/>
-                </el-table-column>
+                <el-table-column prop="atsShould" label="应出勤天数" width="140"/>
+                <el-table-column prop="atShould" label="实际出勤天数" width="140"/>
+                <el-table-column prop="cheLate" label="迟到（次数）" width="140"/>
+                <el-table-column prop="chesLate" label="迟到时长(小时)" width="140"/>
+                <el-table-column prop="zhaiLate" label="早退（次数）" width="140"/>
+                <el-table-column prop="zhaisLate" label="早退时长（小时）" width="140"/>
+                <el-table-column prop="kangLate" label="旷工（次数）" width="140"/>
+                <el-table-column prop="kangsLate" label="旷工时长（小时）" width="140"/>
+                <el-table-column prop="workYing" label="应工作时长" width="140"/>
+                <el-table-column prop="worksYing" label="实际工作时长" width="140"/>
               </el-table>
-              <div class="demo-pagination-block">
+              <div class="demo-pagination-block" style="margin-top: 10px">
                 <el-pagination
                     v-model:currentPage="pageInfo.currenPage"
                     :page-sizes="[5, 10, 30, 50]"
@@ -84,8 +96,8 @@
                     :total="pageInfo.total"
                     :pager-count="5"
                     background
-                    @size-change="queryAllPage()"
-                    @current-change="queryAllPage()"
+                    @size-change="querycdAll()"
+                    @current-change="querycdAll()"
                 >
                 </el-pagination>
               </div>
@@ -95,9 +107,6 @@
       </div>
     </div>
   </div>
-  {{value1}}
-  {{value3}}
-  {{value3 === value1}}
 </template>
 
 <script>
@@ -121,6 +130,7 @@ export default {
   },
   created() {
     this.getCurrentTime();
+    this.querycdAll();
   },
   methods: {
     getCurrentTime() {
@@ -156,13 +166,33 @@ export default {
       return y + "-" + m + "-" + d;
     },
     newday(){//今天
-      //获取当前时间并打印
       var _this = this;
       let yy = new Date().getFullYear();
       let mm = new Date().getMonth()+1 <10 ? '0'+new Date().getMonth() : new Date().getMonth();
       let dd = new Date().getDate() <10 ? '0'+new Date().getDate() : new Date().getDate();
       _this.value1 = yy+'-'+mm+'-'+dd;
-    }
+    },
+
+
+    //考勤all打卡记录查询（按照天数查询）
+    querycdAll(){
+      this.axios({
+        url: "http://localhost:8007/provider/leave/queryalls",
+        method: "post",
+        data: {
+          currenPage: this.pageInfo.currenPage,
+          pagesize:this.pageInfo.pagesize
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.tableData = response.data.data.records
+        this.pageInfo.total = response.data.data.total
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
   }
 
 }

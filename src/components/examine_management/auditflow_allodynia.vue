@@ -3,7 +3,7 @@
   <div class="body_1">
     <el-tabs type="border-card">
       <!-- 待办申请页面 -->
-      <el-tab-pane label="待办申请" @click="Move">
+      <el-tab-pane label="待办申请">
         <el-button @click="resetDateFilter1">重置日期过滤</el-button>
         &nbsp;
         <el-input
@@ -21,7 +21,7 @@
             style="width: 100%"
         >
           <el-table-column
-              prop="auditflowdetaidate"
+              prop="AUDITFLOWDETAIDATE"
               label="日期"
               sortable
               width="140"
@@ -34,13 +34,18 @@
             ]"
               :filter-method="filterHandler"
           />
-          <el-table-column prop="auditflowid" label="审批编号" width="100"/>
-          <el-table-column prop="transfertype" label="流程" width="100"/>
+          <el-table-column prop="AUDITFLOWID" label="审批编号" width="100"/>
+          <el-table-column prop="auditflowtype" label="流程" width="100"/>
           <el-table-column prop="staffname1" label="申请人" width="150"/>
-          <!-- <el-table-column prop="name" label="操作人" width="100" /> -->
-          <el-table-column prop="AUDITFLOW_STATE" label="状态" width="100"/>
+          <el-table-column prop="auditflowdetaistate" label="状态" width="100">
+            <template #default="scope">
+              <span v-if="scope.row.auditflowdetaistate==0">审批中</span>
+              <span v-if="scope.row.auditflowdetaistate==1">待我审批</span>
+              <span v-if="scope.row.auditflowdetaistate==2">已审批</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="staffname2" label="当前审批人" width="150"/>
-          <el-table-column prop="UPDATED_TIME" label="最近处理" width="150"/>
+          <el-table-column prop="createdtime" label="最近处理" width="150"/>
 
           <el-table-column label="操作">
             <template #default="scope">
@@ -94,7 +99,6 @@
               next-text="下一页"
               background
           >
-            <!--  @size-change="selectUsers" @current-change="selectUsers" -->
           </el-pagination>
         </div>
       </el-tab-pane>
@@ -103,7 +107,7 @@
         <span>Hi there!</span>
       </el-drawer>
       <!-- 已办申请页面 -->
-      <el-tab-pane label="已办申请" @click="Moved">
+      <el-tab-pane label="已办申请">
         <el-button @click="resetDateFilter">重置日期过滤</el-button>
         &nbsp;
         <el-input
@@ -116,8 +120,8 @@
 
         <el-table
             ref="filterTable"
-            row-key="date"
-            :data="tableData"
+            row-key="auditflowdetaidate"
+            :data="tableData1"
             style="width: 100%"
         >
           <el-table-column
@@ -134,13 +138,19 @@
             ]"
               :filter-method="filterHandler"
           />
-          <el-table-column prop="AUDITFLOW_ID" label="审批编号" width="100"/>
-          <el-table-column prop="AUDITFLOW_TYPE" label="流程" width="100"/>
-          <el-table-column prop="STAFF_ID" label="申请人" width="150"/>
-          <!-- <el-table-column prop="name" label="操作人" width="100" /> -->
-          <el-table-column prop="AUDITFLOW_STATE" label="状态" width="100"/>
-          <el-table-column prop="STAFF_NAME" label="历史审批人" width="150"/>
-          <el-table-column prop="UPDATED_TIME" label="最近处理" width="140"/>
+          <el-table-column prop="auditflowid" label="审批编号" width="100"/>
+          <el-table-column prop="auditflowtype" label="流程" width="100"/>
+          <el-table-column prop="staffname1" label="申请人" width="150"/>
+          <el-table-column prop="auditflowdetaistate" label="状态" width="100">
+            <template #default="scope">
+              <span v-if="scope.row.auditflowdetaistate==0">审批中</span>
+              <span v-if="scope.row.auditflowdetaistate==1">待我审批</span>
+              <span v-if="scope.row.auditflowdetaistate==2">已审批</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="staffname2" label="当前审批人" width="150"/>
+          <el-table-column prop="createdtime" label="最近处理" width="150"/>
+
           <el-table-column label="操作">
             <template #default="scope">
               <el-button
@@ -390,66 +400,6 @@ export default {
 
       // 待办转正审批列表
       tableData: [
-        {
-          date: "2016-05-02",
-          //审批编号
-          AUDITFLOW_ID: "0001",
-          //类型
-          AUDITFLOW_TYPE: "异动",
-          //申请人（员工名称）
-          STAFF_ID: "名字",
-          //审批状态
-          AUDITFLOW_STATE: "通过",
-          //审批人
-          STAFF_NAME: "管理员",
-          //最近处理
-          UPDATED_TIME: "2020-01-01",
-        },
-        {
-          date: "2016-05-03",
-          //审批编号
-          AUDITFLOW_ID: "0001",
-          //类型
-          AUDITFLOW_TYPE: "异动",
-          //申请人（员工名称）
-          STAFF_ID: "名字",
-          //审批状态
-          AUDITFLOW_STATE: "通过",
-          //审批人
-          STAFF_NAME: "管理员",
-          //最近处理
-          UPDATED_TIME: "2020-01-01",
-        },
-        {
-          date: "2016-05-04",
-          //审批编号
-          AUDITFLOW_ID: "0001",
-          //类型
-          AUDITFLOW_TYPE: "异动",
-          //申请人（员工名称）
-          STAFF_ID: "名字",
-          //审批状态
-          AUDITFLOW_STATE: "通过",
-          //审批人
-          STAFF_NAME: "管理员",
-          //最近处理
-          UPDATED_TIME: "2020-01-01",
-        },
-        {
-          date: "2016-05-05",
-          //审批编号
-          AUDITFLOW_ID: "0001",
-          //类型
-          AUDITFLOW_TYPE: "异动",
-          //申请人（员工名称）
-          STAFF_ID: "名字",
-          //审批状态
-          AUDITFLOW_STATE: "通过",
-          //审批人
-          STAFF_NAME: "管理员",
-          //最近处理
-          UPDATED_TIME: "2020-01-01",
-        },
       ],
       // 已办转正审批列表
       tableData1: [
@@ -525,7 +475,6 @@ export default {
   },
   created() {
     this.Move();
-    //this.positveed();
   },
   methods: {
     Move(){
@@ -549,7 +498,7 @@ export default {
             params:this.pageInfo,
           }).then((response)=>{
         console.log(response);
-        _this.tableData = response.data.data.records
+        _this.tableData1 = response.data.data.records
         _this.pageInfo.total=response.data.data.total
       }).catch(function (error){
         console.log('获取表单失败')
