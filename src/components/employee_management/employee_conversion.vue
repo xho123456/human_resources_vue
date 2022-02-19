@@ -39,10 +39,10 @@
             </el-table-column>
 
             <el-table-column fixed="right" label="操作">
-          <template #default>
-            <el-button type="text" size="small" @click="become = true">办理转正</el-button>
-          </template>
-          </el-table-column>
+              <template #default="scope">
+                <el-button type="text" size="small" @click="positive(scope.staffId)">办理转正</el-button>
+              </template>
+            </el-table-column>
           </el-table>
 
         </div>
@@ -69,76 +69,76 @@
       </div>
     </div>
   </div>
-<div>
-  <el-dialog
-      v-model="become"
-      title="转正"
-      width="50%"
-      :close-on-click-modal="false"
-  >
-    <el-form
-        ref="form_1"
-        :model="become_1"
-        label-width="120px"
-        :rules="rules"
-    >
-      <el-form-item label="员工名称 :" prop="name" style="">
-        <el-input v-model="become_1.name" disabled ></el-input>
-      </el-form-item>
-      <el-form-item label="部门名称 :" prop="dept">
-        <el-input v-model="become_1.dept" disabled></el-input>
-      </el-form-item>
-      <el-form-item label="职位 :">
-        <el-input v-model="become_1.post" disabled></el-input>
-      </el-form-item>
-      <el-form-item label="入职日期 :">
-        <el-input v-model="become_1.entrydate" disabled></el-input>
-      </el-form-item>
-      <el-form-item label="试用期限 :">
-        <el-input v-model="become_1.tryoutdate" disabled></el-input>
-      </el-form-item>
-      <el-form-item label="转正类型" prop="type" style="width:600px">
-        <el-select
-             v-model="become_1.type"
-            placeholder="请选择"
-        >
-          <el-option label="转正" value="zz" style="margin-left: 20px"></el-option>
-          <el-option label="提前转正" value="tqzz" style="margin-left: 20px"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="转正日期 :" prop="becomedate">
-        <el-date-picker
-            v-model="become_1.becomedate"
-            type="date"
-            placeholder="选择时间"
-        >
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="转正备注 :">
-        <el-input
-            v-model="become_1.remarks"
-            type="textarea"
-            maxlength="500"
-            show-word-limit
-            prop="remarks_1"
-        ></el-input>
-      </el-form-item>
+  <div>
+    <!--  <el-dialog-->
+    <!--      v-model="become"-->
+    <!--      title="转正"-->
+    <!--      width="50%"-->
+    <!--      :close-on-click-modal="false"-->
+    <!--  >-->
+    <!--    <el-form-->
+    <!--        ref="form_1"-->
+    <!--        :model="become_1"-->
+    <!--        label-width="120px"-->
+    <!--        :rules="rules"-->
+    <!--    >-->
+    <!--      <el-form-item label="员工名称 :" prop="name" style="">-->
+    <!--        <el-input v-model="become_1.name" disabled ></el-input>-->
+    <!--      </el-form-item>-->
+    <!--      <el-form-item label="部门名称 :" prop="dept">-->
+    <!--        <el-input v-model="become_1.dept" disabled></el-input>-->
+    <!--      </el-form-item>-->
+    <!--      <el-form-item label="职位 :">-->
+    <!--        <el-input v-model="become_1.post" disabled></el-input>-->
+    <!--      </el-form-item>-->
+    <!--      <el-form-item label="入职日期 :">-->
+    <!--        <el-input v-model="become_1.entrydate" disabled></el-input>-->
+    <!--      </el-form-item>-->
+    <!--      <el-form-item label="试用期限 :">-->
+    <!--        <el-input v-model="become_1.tryoutdate" disabled></el-input>-->
+    <!--      </el-form-item>-->
+    <!--      <el-form-item label="转正类型" prop="type" style="width:600px">-->
+    <!--        <el-select-->
+    <!--             v-model="become_1.type"-->
+    <!--            placeholder="请选择"-->
+    <!--        >-->
+    <!--          <el-option label="转正" value="zz" style="margin-left: 20px"></el-option>-->
+    <!--          <el-option label="提前转正" value="tqzz" style="margin-left: 20px"></el-option>-->
+    <!--        </el-select>-->
+    <!--      </el-form-item>-->
+    <!--      <el-form-item label="转正日期 :" prop="becomedate">-->
+    <!--        <el-date-picker-->
+    <!--            v-model="become_1.becomedate"-->
+    <!--            type="date"-->
+    <!--            placeholder="选择时间"-->
+    <!--        >-->
+    <!--        </el-date-picker>-->
+    <!--      </el-form-item>-->
+    <!--      <el-form-item label="转正备注 :">-->
+    <!--        <el-input-->
+    <!--            v-model="become_1.remarks"-->
+    <!--            type="textarea"-->
+    <!--            maxlength="500"-->
+    <!--            show-word-limit-->
+    <!--            prop="remarks_1"-->
+    <!--        ></el-input>-->
+    <!--      </el-form-item>-->
 
-    </el-form>
-    <template #footer>
-          <span class="dialog-footer">
-            <el-button style="width: 60px" type="primary" @click="submitForm('form_1')"
-            >确定</el-button
-            >
-            <el-button style="width: 60px" @click="become = false,RestForm()">取消</el-button>
-          </span>
-    </template>
-  </el-dialog>
-
-
+    <!--    </el-form>-->
+    <!--    <template #footer>-->
+    <!--          <span class="dialog-footer">-->
+    <!--            <el-button style="width: 60px" type="primary" @click="submitForm('form_1')"-->
+    <!--            >确定</el-button-->
+    <!--            >-->
+    <!--            <el-button style="width: 60px" @click="become = false,RestForm()">取消</el-button>-->
+    <!--          </span>-->
+    <!--    </template>-->
+    <!--  </el-dialog>-->
 
 
-</div>
+
+
+  </div>
 </template>
 
 <script lang="ts">
@@ -221,6 +221,28 @@ export default defineComponent({
 
   },
   methods:{
+    positive(id){
+      this.axios({
+        method:'post',
+        url:"http://localhost:8007/provider/staff/positive",
+        data:this.pageInfo,
+        responseType:'json',
+        responseEncoding:'utf-8',
+      }).then(response=>{
+        console.log(response)
+        if (response.data.data === "转正成功") {
+          ElMessage({
+            type: "success",
+            message: "转正成功",
+          });
+          this.selectontrial(null);
+        } else if(response.data.data === "转正失败"){
+          ElMessage.error("转正失败");
+          this.selectontrial(null);
+        }
+      });
+    },
+
     selectontrial(like){
       if(Object.prototype.toString.call(like)===Object.prototype.toString.call(null)){
         var _this = this;
@@ -284,13 +306,13 @@ export default defineComponent({
     RestForm(){
       this.become_1={
         name:'',
-            dept:'',
-            post:'',
-            entrydate:'',
-            tryoutdate:'',
-            type:'',
-            remarks:'',
-            becomedate:''
+        dept:'',
+        post:'',
+        entrydate:'',
+        tryoutdate:'',
+        type:'',
+        remarks:'',
+        becomedate:''
       }
     }
   }

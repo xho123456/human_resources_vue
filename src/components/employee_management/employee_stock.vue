@@ -13,12 +13,12 @@
 
     <br/>
     <el-table :data="tableData" stripe style="width: 100%">
-      <el-table-column fixed prop="resumeid" label="简历编号" width="180" />
-      <el-table-column fixed prop="employmentid" label="录用编号" width="180" />
       <el-table-column fixed prop="resumename" label="姓名" width="180" />
       <el-table-column prop="resumesex" label="姓别" width="180" />
       <el-table-column prop="deptName" label="部门" width="180" />
       <el-table-column prop="postname" label="职位" width="180" />
+      <el-table-column prop="probationary" label="试用工资" width="180" />
+      <el-table-column prop="positivemonthly" label="正式工资" width="180" />
       <el-table-column prop="resumephone" label="手机号" width="180" />
       <el-table-column prop="resumemailbox" label="邮箱" width="180" />
       <el-table-column prop="resumepoliticaloutlook" label="政治面貌" width="180" />
@@ -164,7 +164,7 @@ export default defineComponent({
 
     addInduction(row){
       this.axios({
-        method:'put',
+        method:'post',
         url:"http://localhost:8007/provider/staff/addStaff",
         data:this.tableData,
         responseType:'json',

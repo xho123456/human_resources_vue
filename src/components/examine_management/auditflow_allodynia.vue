@@ -3,7 +3,7 @@
   <div class="body_1">
     <el-tabs type="border-card">
       <!-- 待办申请页面 -->
-      <el-tab-pane label="待办申请">
+      <el-tab-pane label="待办申请" @click="Move">
         <el-button @click="resetDateFilter1">重置日期过滤</el-button>
         &nbsp;
         <el-input
@@ -21,7 +21,7 @@
             style="width: 100%"
         >
           <el-table-column
-              prop="date1"
+              prop="auditflowdetaidate"
               label="日期"
               sortable
               width="140"
@@ -34,12 +34,12 @@
             ]"
               :filter-method="filterHandler"
           />
-          <el-table-column prop="AUDITFLOW_ID" label="审批编号" width="100"/>
-          <el-table-column prop="AUDITFLOW_TYPE" label="流程" width="100"/>
-          <el-table-column prop="STAFF_ID" label="申请人" width="150"/>
+          <el-table-column prop="auditflowid" label="审批编号" width="100"/>
+          <el-table-column prop="transfertype" label="流程" width="100"/>
+          <el-table-column prop="staffname1" label="申请人" width="150"/>
           <!-- <el-table-column prop="name" label="操作人" width="100" /> -->
           <el-table-column prop="AUDITFLOW_STATE" label="状态" width="100"/>
-          <el-table-column prop="STAFF_NAME" label="当前审批人" width="150"/>
+          <el-table-column prop="staffname2" label="当前审批人" width="150"/>
           <el-table-column prop="UPDATED_TIME" label="最近处理" width="150"/>
 
           <el-table-column label="操作">
@@ -88,6 +88,10 @@
               layout="total, sizes, prev, pager, next, jumper"
               :total="pageInfo.total"
               :pager-count="5"
+              @size-change="Move"
+              @current-change="Move"
+              prev-text="上一页"
+              next-text="下一页"
               background
           >
             <!--  @size-change="selectUsers" @current-change="selectUsers" -->
@@ -99,7 +103,7 @@
         <span>Hi there!</span>
       </el-drawer>
       <!-- 已办申请页面 -->
-      <el-tab-pane label="已办申请">
+      <el-tab-pane label="已办申请" @click="Moved">
         <el-button @click="resetDateFilter">重置日期过滤</el-button>
         &nbsp;
         <el-input
@@ -159,6 +163,10 @@
               layout="total, sizes, prev, pager, next, jumper"
               :total="pageInfo.total"
               :pager-count="5"
+              @size-change="Moved()"
+              @current-change="Moved()"
+              prev-text="上一页"
+              next-text="下一页"
               background
           >
             <!--  @size-change="selectUsers"
@@ -368,17 +376,17 @@ export default {
         //部门二
         dept_1: "",
       },
-	  // 异动后查部门
-	  dept: ref([
-	    {
-	      value: '部门1',
-	      label: '部门1',
-	    },
-	    {
-	      value: '部门2',
-	      label: '部门2',
-	    }
-	  ]),
+      // 异动后查部门
+      dept: ref([
+        {
+          value: '部门1',
+          label: '部门1',
+        },
+        {
+          value: '部门2',
+          label: '部门2',
+        }
+      ]),
 
       // 待办转正审批列表
       tableData: [
@@ -515,7 +523,39 @@ export default {
       },
     };
   },
+  created() {
+    this.Move();
+    //this.positveed();
+  },
   methods: {
+    Move(){
+      var _this = this;
+      _this.axios.get(
+          "http://localhost:8007/provider/move", {
+            params:this.pageInfo,
+          }).then((response)=>{
+        console.log(response);
+        _this.tableData = response.data.data.records
+        _this.pageInfo.total=response.data.data.total
+      }).catch(function (error){
+        console.log('获取表单失败')
+        console.log(error)
+      })
+    },
+    Moved(){
+      var _this = this;
+      _this.axios.get(
+          "http://localhost:8007/provider/move/moveappered", {
+            params:this.pageInfo,
+          }).then((response)=>{
+        console.log(response);
+        _this.tableData = response.data.data.records
+        _this.pageInfo.total=response.data.data.total
+      }).catch(function (error){
+        console.log('获取表单失败')
+        console.log(error)
+      })
+    },
     // 提交异动
     submitForm_2() {
       if (this.Change_1.dept_1.length === 0) {
