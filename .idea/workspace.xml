@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7782e118-91e8-4d6c-900a-0a4856553f34" name="Changes" comment="message">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/recruitment_management/enroll_yyx.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recruitment_management/enroll_yyx.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/recruitment_management/recruitment_resume_details.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recruitment_management/recruitment_resume_details.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/recruitment_management/recruitment_zp_daiInterview.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recruitment_management/recruitment_zp_daiInterview.vue" afterDir="false" />
-    </list>
+    <list default="true" id="7782e118-91e8-4d6c-900a-0a4856553f34" name="Changes" comment="完善" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -48,6 +43,14 @@
       <updated>1645187290701</updated>
       <workItem from="1645187293451" duration="14344000" />
     </task>
+    <task id="LOCAL-00001" summary="完善">
+      <created>1645277258669</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1645277258669</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
