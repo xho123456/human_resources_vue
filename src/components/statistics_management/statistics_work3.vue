@@ -395,6 +395,7 @@ export default ({
           .then((response) => {
             if (response.data.length<1) {
               this.dyqjrs=0
+              this.bypjjbtime=0
             }else {
               for (var i = 0; i < response.data.length; i++)
               {
@@ -402,6 +403,7 @@ export default ({
               }
               if(response.data.length<1){
                 this.bypjjbtime=0
+
               }else {
                 this.bypjjbtime=this.dyqjrs/this.rs
 
@@ -439,7 +441,7 @@ export default ({
     },
   },created() {
     this.selectdyccrs();
-   // this. selectqjrs();
+    // this. selectqjrs();
     this.selectccrs();
     this.selectdyqjrs();
 
@@ -459,7 +461,7 @@ export default ({
 
 
       }
-,
+      ,
       deep: true,
     },
 

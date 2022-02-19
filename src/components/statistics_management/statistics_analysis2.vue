@@ -1,4 +1,5 @@
 <template>
+
   <div class="demo-date-picker" style="width: 100%;height: 49px;">
     <div class="" style="width: 850px;height: 49px; float: right;">
       <span class="demonstration" style="position: relative;top: -1px;">时间范围：</span>
@@ -21,64 +22,62 @@
     </div>
 
   </div>
-  <div style="position: relative; display: block; width: 100%;border-top: 1px #000000 dashed;">
-    <!--  每月参保人数 -->
-    <div id="mainy1" style="width: 1030px;height:460px; margin-top: 20px; "></div>
-    <div style="width: 16%;height: 320px; float: right; margin-top: -390px;">
-      <span class="ziti">当前月参保人数：</span>
-      <br>
-      <span class="ziti">3</span>
-      <br>
-      <span class="ziti">相比上月：</span>
-      <br>
-      <span class="ziti">???</span>
-    </div>
-  </div>
-  <div style="position: relative; display: block; width: 100%;border-top: 1px #000000 dashed;">
-    <!--  每月社保缴纳总额 -->
-    <div id="mainy2" style="width: 1030px;height:460px; margin-top: 20px; "></div>
-    <div style="width: 16%;height: 320px; float: right; margin-top: -390px;">
-      <span class="ziti">当前月公司社保总额：</span>
-      <br>
-      <span class="ziti">3</span>
-      <br>
-      <span class="ziti">当前月个人社保总额：</span>
-      <br>
-      <span class="ziti">123</span><br>
-      <span class="ziti">相比上月：</span><br>
-      <span class="ziti">1223</span>
-    </div>
-  </div>
-  <div style="position: relative; display: block; width: 100%;border-top: 1px #000000 dashed;">
-    <!--  每月公积金缴纳总额-->
-    <div id="mainy3" style="width: 1030px;height:460px; margin-top: 20px; "></div>
-    <div style="width: 16%;height: 320px; float: right; margin-top: -390px;">
-      <span class="ziti">当前月公司公积金总额：</span>
-      <br>
-      <span class="ziti">3</span>
-      <br>
-      <span class="ziti">当前月个人公积金总额：</span>
-      <br>
-      <span class="ziti">123</span><br>
-      <span class="ziti">相比上月：</span><br>
-      <span class="ziti">1223</span>
-    </div>
-  </div>
-  <div style="position: relative; display: block; width: 100%;border-top: 1px #000000 dashed;">
-    <!--  每月平均工资 -->
-    <div id="mainy4" style="width: 1030px;height:460px; margin-top: 20px; "></div>
-    <div style="width: 16%;height: 320px; float: right; margin-top: -390px;">
-      <span class="ziti">当前月人均工资：</span>
-      <br>
-      <span class="ziti">3</span>
-      <br>
-      <span class="ziti">相比上月：</span>
-      <br>
-      <span class="ziti">???</span>
-    </div>
-  </div>
-</template>
 
+  <div style="position: relative; display: block; width: 100%;border-top: 1px #000000 dashed;">
+
+    <div id="main" style="width: 952px;height:460px;"></div>
+    <div style="width: 17%;height: 320px; float: right; margin-top: -390px;">
+
+      <span class="ziti">本月参保人数</span>
+      <br>
+      <span class="ziti">{{dyccrs}}人</span>
+      <br>
+
+    </div>
+  </div>
+  <div style="position: relative; display: block; width: 100%;border-top: 1px #000000 dashed;">
+
+    <div id="main1" style="width: 952px;height:460px;"></div>
+    <div style="width: 17%;height: 320px; float: right; margin-top: -390px;">
+
+      <span class="ziti">本月人力成本</span>
+      <br>
+      <span class="ziti">{{dyccrs1}}元</span>
+      <br>
+
+
+    </div>
+  </div>
+
+  <div style="position: relative; display: block; width: 100%;border-top: 1px #000000 dashed;">
+
+    <div id="main2" style="width: 952px;height:460px;"></div>
+    <div style="width: 17%;height: 320px; float: right; margin-top: -390px;">
+
+      <span class="ziti">本月员工社保金额</span>
+      <br>
+      <span class="ziti">{{rmb}}元</span>
+      <br>
+
+
+    </div>
+  </div>
+
+  <div style="position: relative; display: block; width: 100%;border-top: 1px #000000 dashed;">
+
+    <div id="main3" style="width: 952px;height:460px;"></div>
+    <div style="width: 17%;height: 320px; float: right; margin-top: -390px;">
+
+      <span class="ziti">本月公司社保金额</span>
+      <br>
+      <span class="ziti">{{rmb1}}元</span>
+      <br>
+
+
+    </div>
+  </div>
+
+</template>
 
 <script>
 import {
@@ -88,7 +87,8 @@ import {
 } from 'vue'
 import * as echarts from 'echarts'
 import 'echarts-gl';
-export default {
+//多次使用图表方法
+export default ({
   setup() {
     const state = reactive({
       shortcuts: [{
@@ -149,514 +149,665 @@ export default {
       ]),
       valuee: ref(''),
 
-
     }
   },
+
 
   data() {
     return {
-      tableData: [{
-        date: '2016-05-03',
-        name: 'Tom',
-        state: 'California',
-        city: 'Los Angeles',
-        address: 'No. 189, Grove St, Los Angeles',
-        zip: 'CA 90036',
-      },
-        {
-          date: '2016-05-02',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-        },
-        {
-          date: '2016-05-04',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-        },
-        {
-          date: '2016-05-01',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-        },
-        {
-          date: '2016-05-08',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-        },
-        {
-          date: '2016-05-06',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-        },
-        {
-          date: '2016-05-07',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-        },
+      qjrs:[],
+      qjrs1:[],
+      qjrs2:[],
+      qjrs3:[],
+      monthly:[],
+      monthly1:[],
+      monthly2:[],
+      monthly3:[],
+      rs1:[],
+      data1 : [
       ],
+      data2 : [
+      ],
+      data11 : [
+      ],
+      value1:{
+
+      },
+      ccrs:[],
+      monthlycc:[],
+      dyqjrs:'',
+      dyccrs:'',
+      dyccrs1:'',
+      rmb:'',
+      rmb1:'',
+      xj1:[],
+      xj:[],
+      xjpj:[],
+      xjpjxj:[],
+      xjpjxj1:[],
+      xjpjxj2:[],
+      rs:'',
+      rjtime:[],
+      bypjjbtime:'',
     }
   },
+  computed: {
+
+  },
+
   mounted() {
-    //准备实例
-    /* 	<!--  每月参保人数--> */
-    var chartDomy1 = document.getElementById('mainy1');
-    var myCharty1 = echarts.init(chartDomy1);
-    /* 	每月缴纳保险总额 */
-    var chartDomy2 = document.getElementById('mainy2');
-    var myCharty2 = echarts.init(chartDomy2);
-    /* 每月社保缴纳总额 */
-    var chartDomy3 = document.getElementById('mainy3');
-    var myCharty3 = echarts.init(chartDomy3);
-    /* 每月公积金缴纳总额*/
-    var chartDomy4 = document.getElementById('mainy4');
-    var myCharty4 = echarts.init(chartDomy4);
 
-    var optiony4;
-    var optiony1;
-    var optiony2;
-    var optiony3;
+    this.drawLine();
 
-    /* <!-- 每月参保人数 --> */
+    this.drawLine1();
 
-    optiony1 = {
-      title: {
-        text: '每月参保人数'
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'cross',
-          crossStyle: {
-            color: '#999'
-          }
-        }
-      },
-      toolbox: {
-        feature: {
-          dataView: {
-            show: true,
-            readOnly: false,
-            title:"数据视图"
-          },
-          magicType: {
-            show: true,
-            type: ['line', 'bar'],
-            title:{
-              line:"折线图",
-              bar:"柱状图",
+
+
+
+  },
+  methods: {
+    //新进律
+    drawLine() {
+
+      var chartDom = document.getElementById('main');
+      var myChart = echarts.init(chartDom);
+      var option;
+
+      option = {
+        title: {
+          text: '每月参保人数'
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            crossStyle: {
+              color: '#999'
             }
-          },
-          restore: {
-            show: true,
-            title:"还原"
-          },
-          saveAsImage: {
-            show: true,
-            title:"保存"
-          }
-        }
-      },
-      legend: {
-        data: ['参保人数', '增长率']
-      },
-      xAxis: [{
-        type: 'category',
-        data: ['2021-11-29', '2021-11-30', '2021-11-29', '2021-11-30', '2021-12-01', '2021-12-02',
-          '2021-12-03'
-        ],
-        axisPointer: {
-          type: 'shadow'
-        }
-      }],
-      yAxis: [{
-        type: 'value',
-        name: '人数(人)',
-        min: 0,
-        max: 250,
-        interval: 50,
-        axisLabel: {
-          formatter: '{value} 人'
-        }
-      },
-        {
-          type: 'value',
-          name: '增长律（%）',
-          min: 0,
-          max: 100,
-          interval: 10,
-          axisLabel: {
-            formatter: '{value} %'
           }
         },
-
-      ],
-      series: [{
-        name: '参保人数',
-        type: 'bar',
-        data: [
-          2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3
-        ],barWidth:'25%',
-      },
-
-        {
-          name: '增长率',
-          type: 'line',
-          yAxisIndex: 1,
-          data: [10, 20, 30, 40, 50, 30, 40],
-          itemStyle: {
-            normal: {
-              color: "#FFFF66", //折线点的颜色
-              lineStyle: {
-                color: "#FFFF66" //折线的颜色
+        toolbox: {
+          feature: {
+            dataView: {
+              show: true,
+              readOnly: false,
+              title:"数据视图"
+            },
+            magicType: {
+              show: true,
+              type: ['line', 'bar'],
+              title:{
+                line:"折线图",
+                bar:"柱状图",
               }
+            },
+            restore: {
+              show: true,
+              title:"还原"
+            },
+            saveAsImage: {
+              show: true,
+              title:"保存"
             }
-          },
-        }
-      ]
-    };
-    /* 每月缴纳保险总额 */
-    optiony2 = {
-      title: {
-        text: '每月缴纳保险总额'
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'cross',
-          crossStyle: {
-            color: '#999'
           }
-        }
-      },
-      toolbox: {
-        feature: {
-          dataView: {
-            show: true,
-            readOnly: false,
-            title:"数据视图"
-          },
-          magicType: {
-            show: true,
-            type: ['line', 'bar'],
-            title:{
-              line:"折线图",
-              bar:"柱状图",
-            }
-          },
-          restore: {
-            show: true,
-            title:"还原"
-          },
-          saveAsImage: {
-            show: true,
-            title:"保存"
+        },
+        legend: {
+          data: ['人数', '增长率']
+        },
+        xAxis: [{
+          type: 'category',
+          data: this.monthly,
+          axisPointer: {
+            type: 'shadow'
           }
-        }
-      },
-      legend: {
-        data: ['保险总额', '增长率']
-      },
-      xAxis: [{
-        type: 'category',
-        data: ['2021-11-29', '2021-11-30', '2021-11-29', '2021-11-30', '2021-12-01', '2021-12-02',
-          '2021-12-03'
-        ],
-        axisPointer: {
-          type: 'shadow'
-        }
-      }],
-      yAxis: [{
-        type: 'value',
-        name: '元',
-        min: 0,
-        max: 250,
-        interval: 50,
-        axisLabel: {
-          formatter: '{value} 人'
-        }
-      },
-        {
+        }],
+        yAxis: [{
           type: 'value',
-          name: '增长律（%）',
+
           min: 0,
-          max: 100,
-          interval: 10,
+          max: 250,
+          interval: 50,
           axisLabel: {
-            formatter: '{value} %'
+            formatter: '{value} 小时'
           }
         },
-
-      ],
-      series: [{
-        name: '保险总额',
-        type: 'bar',
-        data: [
-          200, 149, 27.0, 23.2, 225.6, 276.7, 135.6
-        ],barWidth:'25%',
-      },
-
-        {
-          name: '增长率',
-          type: 'line',
-          yAxisIndex: 1,
-          data: [10, 20, 30, 40, 50, 30, 40],
-          itemStyle: {
-            normal: {
-              color: "#FFFF66", //折线点的颜色
-              lineStyle: {
-                color: "#FFFF66" //折线的颜色
-              }
+          {
+            type: 'value',
+            name: '增长律（%）',
+            min: 0,
+            max: 100,
+            interval: 10,
+            axisLabel: {
+              formatter: '{value} %'
             }
           },
-        }
-      ]
-    };
-    /* 每月社保缴纳总额 */
-    optiony3 = {
-      title: {
-        text: '每月社保缴纳总额'
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'cross',
-          crossStyle: {
-            color: '#999'
-          }
-        }
-      },
-      toolbox: {
-        feature: {
-          dataView: {
-            show: true,
-            readOnly: false,
-            title:"数据视图"
-          },
-          magicType: {
-            show: true,
-            type: ['line', 'bar'],
-            title:{
-              line:"折线图",
-              bar:"柱状图",
-            }
-          },
-          restore: {
-            show: true,
-            title:"还原"
-          },
-          saveAsImage: {
-            show: true,
-            title:"保存"
-          }
-        }
-      },
-      legend: {
-        data: ['公司社保总额', '个人社保总额', '增长率']
-      },
-      xAxis: [{
-        type: 'category',
-        data: ['2021-11-29', '2021-11-30', '2021-11-29', '2021-11-30', '2021-12-01', '2021-12-02',
-          '2021-12-03'
+
         ],
-        axisPointer: {
-          type: 'shadow'
-        }
-      }],
-      yAxis: [{
-        type: 'value',
-        name: '元',
-        min: 0,
-        max: 250,
-        interval: 50,
-        axisLabel: {
-          formatter: '{value} 元'
-        }
-      },
-        {
-          type: 'value',
-          name: '增长律（%）',
-          min: 0,
-          max: 100,
-          interval: 10,
-          axisLabel: {
-            formatter: '{value} %'
-          }
-        },
-
-      ],
-      series: [{
-        name: '公司社保总额',
-        type: 'bar',
-        data: [
-          2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3
-        ]
-      },
-
-        {
-          name: '增长率',
-          type: 'line',
-          yAxisIndex: 1,
-          data: [10, 20, 30, 40, 50, 30, 40],
-          itemStyle: {
-            normal: {
-              color: "#FFFF66", //折线点的颜色
-              lineStyle: {
-                color: "#FFFF66" //折线的颜色
-              }
-            }
-          },
-        },
-        {
-          name: '个人社保总额',
+        series: [{
+          name: '计薪人数',
           type: 'bar',
-          data: [
-            2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3
-          ]
+          data: this.qjrs,
+          barWidth:'25%',
         },
-      ]
-    };
-    /* 每月公积金缴纳总额 */
-    optiony4 = {
-      title: {
-        text: '每月公积金缴纳总额'
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'cross',
-          crossStyle: {
-            color: '#999'
+        ]
+      };
+      myChart.setOption(option);
+    },
+
+    drawLine1() {
+
+      var chartDom1 = document.getElementById('main1');
+      var myChart1 = echarts.init(chartDom1);
+      var option1;
+
+      option1 = {
+        title: {
+          text: '每月人力成本'
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            crossStyle: {
+              color: '#999'
+            }
           }
-        }
-      },
-      toolbox: {
-        feature: {
-          dataView: {
-            show: true,
-            readOnly: false,
-            title:"数据视图"
-          },
-          magicType: {
-            show: true,
-            type: ['line', 'bar'],
-            title:{
-              line:"折线图",
-              bar:"柱状图",
+        },
+        toolbox: {
+          feature: {
+            dataView: {
+              show: true,
+              readOnly: false,
+              title:"数据视图"
+            },
+            magicType: {
+              show: true,
+              type: ['line', 'bar'],
+              title:{
+                line:"折线图",
+                bar:"柱状图",
+              }
+            },
+            restore: {
+              show: true,
+              title:"还原"
+            },
+            saveAsImage: {
+              show: true,
+              title:"保存"
+            }
+          }
+        },
+        legend: {
+          data: ['元', '增长率']
+        },
+        xAxis: [{
+          type: 'category',
+          data: this.monthly1,
+          axisPointer: {
+            type: 'shadow'
+          }
+        }],
+        yAxis: [{
+          type: 'value',
+
+          min: 0,
+          max: 250,
+          interval: 50,
+          axisLabel: {
+            formatter: '{value} 元'
+          }
+        },
+          {
+            type: 'value',
+            name: '增长律（%）',
+            min: 0,
+            max: 100,
+            interval: 10,
+            axisLabel: {
+              formatter: '{value} %'
             }
           },
-          restore: {
-            show: true,
-            title:"还原"
-          },
-          saveAsImage: {
-            show: true,
-            title:"保存"
-          }
-        }
-      },
-      legend: {
-        data: ['企业公积金总额', '个人公积金总额', '增长率']
-      },
-      xAxis: [{
-        type: 'category',
-        data: ['2021-11-29', '2021-11-30', '2021-11-29', '2021-11-30', '2021-12-01', '2021-12-02',
-          '2021-12-03'
+
         ],
-        axisPointer: {
-          type: 'shadow'
-        }
-      }],
-      yAxis: [{
-        type: 'value',
-        name: '元',
-        min: 0,
-        max: 300,
-        interval: 50,
-        axisLabel: {
-          formatter: '{value} 元'
-        }
-      },
-        {
-          type: 'value',
-          name: '增长律（%）',
-          min: 0,
-          max: 100,
-          interval: 10,
-          axisLabel: {
-            formatter: '{value} %'
+        series: [{
+          name: '元',
+          type: 'bar',
+          data: this.qjrs1,
+          barWidth:'25%',
+        },
+        ]
+      };
+      myChart1.setOption(option1);
+    },
+    drawLine2() {
+
+      var chartDom = document.getElementById('main2');
+      var myChart = echarts.init(chartDom);
+      var option;
+
+      option = {
+        title: {
+          text: '每月员工社保金额'
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            crossStyle: {
+              color: '#999'
+            }
           }
         },
+        toolbox: {
+          feature: {
+            dataView: {
+              show: true,
+              readOnly: false,
+              title:"数据视图"
+            },
+            magicType: {
+              show: true,
+              type: ['line', 'bar'],
+              title:{
+                line:"折线图",
+                bar:"柱状图",
+              }
+            },
+            restore: {
+              show: true,
+              title:"还原"
+            },
+            saveAsImage: {
+              show: true,
+              title:"保存"
+            }
+          }
+        },
+        legend: {
+          data: ['元', '增长率']
+        },
+        xAxis: [{
+          type: 'category',
+          data: this.monthly2,
+          axisPointer: {
+            type: 'shadow'
+          }
+        }],
+        yAxis: [{
+          type: 'value',
 
-      ],
-      series: [{
-        name: '企业公积金总额',
-        type: 'bar',
-        data: [
-          2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3
+          min: 0,
+          max: 250,
+          interval: 50,
+          axisLabel: {
+            formatter: '{value} 元'
+          }
+        },
+          {
+            type: 'value',
+            name: '增长律（%）',
+            min: 0,
+            max: 100,
+            interval: 10,
+            axisLabel: {
+              formatter: '{value} %'
+            }
+          },
+
+        ],
+        series: [{
+          name: '元',
+          type: 'bar',
+          data: this.qjrs2,
+          barWidth:'25%',
+        },
         ]
-      },
+      };
+      myChart.setOption(option);
+    },
+    drawLine3() {
 
-        {
-          name: '增长率',
-          type: 'line',
-          yAxisIndex: 1,
-          data: [10, 20, 30, 40, 50, 30, 40],
-          itemStyle: {
-            normal: {
-              color: "#FFFF66", //折线点的颜色
-              lineStyle: {
-                color: "#FFFF66" //折线的颜色
+      var chartDom = document.getElementById('main3');
+      var myChart = echarts.init(chartDom);
+      var option;
+
+      option = {
+        title: {
+          text: '每月公司社保金额'
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            crossStyle: {
+              color: '#999'
+            }
+          }
+        },
+        toolbox: {
+          feature: {
+            dataView: {
+              show: true,
+              readOnly: false,
+              title:"数据视图"
+            },
+            magicType: {
+              show: true,
+              type: ['line', 'bar'],
+              title:{
+                line:"折线图",
+                bar:"柱状图",
+              }
+            },
+            restore: {
+              show: true,
+              title:"还原"
+            },
+            saveAsImage: {
+              show: true,
+              title:"保存"
+            }
+          }
+        },
+        legend: {
+          data: ['元', '增长率']
+        },
+        xAxis: [{
+          type: 'category',
+          data: this.monthly3,
+          axisPointer: {
+            type: 'shadow'
+          }
+        }],
+        yAxis: [{
+          type: 'value',
+
+          min: 0,
+          max: 30000,
+          interval: 5000,
+          axisLabel: {
+            formatter: '{value} 元'
+          }
+        },
+          {
+            type: 'value',
+            name: '增长律（%）',
+            min: 0,
+            max: 100,
+            interval: 10,
+            axisLabel: {
+              formatter: '{value} %'
+            }
+          },
+
+        ],
+        series: [{
+          name: '元',
+          type: 'bar',
+          data: this.qjrs3,
+          barWidth:'25%',
+        },
+        ]
+      };
+      myChart.setOption(option);
+    },
+    //员工数量
+    selectccrs() {
+      this.axios
+          .get("http://localhost:8007/provider/selectStaffrs", {
+            params:this.rs,
+          })
+          .then((response) => {
+
+            for (var i = 0; i < response.data.length; i++) {
+              this.rs=response.data[i].rs
+            }
+            console.log(response.data)
+
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+    //每月参保人数
+    selectcbrs() {
+      this.axios
+          .get("http://localhost:8007/provider/chabxrs", {
+            params:this.qjrs,
+          })
+          .then((response) => {
+
+            for (var i = 0; i < response.data.length; i++) {
+              this.qjrs.push(response.data[i].rs)
+              this.monthly.push(response.data[i].time)
+
+            }
+
+
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+
+    //每月人力成本
+    selectrlcb() {
+      this.axios
+          .get("http://localhost:8007/provider/charlcb", {
+            params:this.qjrs1,
+          })
+          .then((response) => {
+
+            for (var i = 0; i < response.data.length; i++) {
+              this.qjrs1.push(response.data[i].rs)
+              this.monthly1.push(response.data[i].time)
+
+            }
+
+
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+
+    //每月员工社保金额
+    selectygsbje() {
+      this.axios
+          .get("http://localhost:8007/provider/chaygsbje", {
+            params:this.qjrs2,
+          })
+          .then((response) => {
+
+            for (var i = 0; i < response.data.length; i++) {
+              this.qjrs2.push(response.data[i].rmb)
+              this.monthly2.push(response.data[i].time)
+
+            }
+
+
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+
+    //每月公司社保金额
+    selectgssbje() {
+      this.axios
+          .get("http://localhost:8007/provider/chagssbje", {
+            params:this.qjrs3,
+          })
+          .then((response) => {
+
+            for (var i = 0; i < response.data.length; i++) {
+              this.qjrs3.push(response.data[i].rmb)
+              this.monthly3.push(response.data[i].time)
+
+            }
+
+
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+    //查询本月员工社保金额
+    selectbyygsbje() {
+      this.axios
+          .get("http://localhost:8007/provider/chabyygsbje", {
+            params:this.rmb,
+          })
+          .then((response) => {
+            if (response.data.length<1) {
+              this.rmb=0
+            }else {
+              for (var i = 0; i < response.data.length; i++) {
+
+                this.rmb = response.data[0].rmb
+
               }
             }
-          },
-        },
-        {
-          name: '个人公积金总额',
-          type: 'bar',
-          data: [
-            200, 49, 70, 232, 256, 76.7, 135.6
-          ]
-        },
-      ]
-    };
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+    //查询本月公司社保金额
+    selectbygssbje() {
+      this.axios
+          .get("http://localhost:8007/provider/chabygssbje", {
+            params:this.rmb1,
+          })
+          .then((response) => {
+            if (response.data.length<1) {
+              this.rmb1=0
+            }else {
+              for (var i = 0; i < response.data.length; i++) {
+
+                this.rmb1 = response.data[0].rs
+
+              }
+            }
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+
+    //查询本月参保人数
+    selectbycbrs() {
+      this.axios
+          .get("http://localhost:8007/provider/chabybxrs", {
+            params:this.dyccrs,
+          })
+          .then((response) => {
+            if (response.data.length<1) {
+              this.dyccrs=0
+            }else {
+              for (var i = 0; i < response.data.length; i++) {
+
+                this.dyccrs = response.data[0].rs
+
+              }
+            }
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+
+    //查询本月人力成本
+    selectbyrlcb() {
+      this.axios
+          .get("http://localhost:8007/provider/chabyrlcb", {
+            params:this.dyccrs1,
+          })
+          .then((response) => {
+            if (response.data.length<1) {
+              this.dyccrs1=0
+            }else {
+              for (var i = 0; i < response.data.length; i++) {
+
+                this.dyccrs1 = response.data[0].time
+
+              }
+            }
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+  },created() {
+    this. selectbycbrs();
+    this.selectrlcb();
+    this.selectccrs();
+    this.selectbyrlcb();
+    this.selectygsbje();
+    this.selectbyygsbje();
+    this.selectgssbje();
+    this.selectbygssbje();
+  }, watch: {
+    qjrs: {
+      //对于深层对象的属性，watch不可达，因此对数组监控需要将数组先清空，再添加数据
+      handler: function () {
+
+        this.drawLine();
+        this.drawLine1();
+        this.drawLine2();
+        this.drawLine3();
+      },
+      deep: true,
+    },
+    ccrs: {
+      //对于深层对象的属性，watch不可达，因此对数组监控需要将数组先清空，再添加数据
+      handler: function () {
 
 
+      }
+      ,
+      deep: true,
+    },
+
+    rs:{
+      handler:function (){
+        this.selectcbrs();
 
 
-    optiony1 && myCharty1.setOption(optiony1);
-    optiony2 && myCharty2.setOption(optiony2);
-    optiony3 && myCharty3.setOption(optiony3);
-    optiony4 && myCharty4.setOption(optiony4);
+      },
+      deep:true,
+    },
+    rjtime:{
+      handler:function (){
 
-  }
-}
+      },
+      deep:true,
+    }
+
+  },
+})
 </script>
 
 
 <style scoped>
 @import url("../../css/Statistics.css");
-
-
- .el-menu[data-v-244d4530] {
-   height: 57px;
-   font-weight: bold;
- }
 </style>

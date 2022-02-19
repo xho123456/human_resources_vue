@@ -115,10 +115,10 @@ export default {
       data3 : [
 
       ],
-       data4 : [
+      data4 : [
 
       ],
-       data7 : [
+      data7 : [
 
       ],
       data5 : [
@@ -626,9 +626,9 @@ export default {
           .then((response) => {
 
             this.data2.length = 0; //清空数组z
-        /*    let op ={name:response.data[0].staffMarital,value:response.data[0].zonshu}
-            this.data2.push(op);
-            console.log(op)*/
+            /*    let op ={name:response.data[0].staffMarital,value:response.data[0].zonshu}
+                this.data2.push(op);
+                console.log(op)*/
             for (let i = 0; i < response.data.length; i++) {
               let op ={name:response.data[i].staffMarital,value:response.data[i].zonshu}
               this.data2.push(op);
@@ -652,11 +652,11 @@ export default {
           .then((response) => {
 
 
-                let op ={name:"小于1年",value:response.data[0].gl}
-                this.data3.push(op);
-                console.log(op)
+            let op ={name:"小于1年",value:response.data[0].gl}
+            this.data3.push(op);
+            console.log(op)
 
-                   console.log(response.data)
+            console.log(response.data)
 
           })
           .catch(function (error) {
@@ -790,7 +790,7 @@ export default {
             for (let i = 0; i < response.data.length; i++) {
               let op ={name:response.data[i].staffEducation,value:response.data[i].rs}
               this.data4.push(op);
-                console.log(response.data)
+              console.log(response.data)
             }
 
 
@@ -926,13 +926,78 @@ export default {
       handler: function () {
 
         this.drawLine();
+
+
+      },
+      deep: true,
+    },
+    data2: {
+      //对于深层对象的属性，watch不可达，因此对数组监控需要将数组先清空，再添加数据
+      handler: function () {
+
+
         this.drawLine1();
+
+      },
+      deep: true,
+    },
+    data3: {
+      //对于深层对象的属性，watch不可达，因此对数组监控需要将数组先清空，再添加数据
+      handler: function () {
+
+
         this.drawLine2();
+
+      },
+      deep: true,
+    },
+    data4: {
+      //对于深层对象的属性，watch不可达，因此对数组监控需要将数组先清空，再添加数据
+      handler: function () {
+
+
         this.drawLine3();
-        this.drawLine4();
+
+      },
+      deep: true,
+    },
+    data5: {
+      //对于深层对象的属性，watch不可达，因此对数组监控需要将数组先清空，再添加数据
+      handler: function () {
+
         this.drawLine5();
-        this.drawLine6();
-        this.drawLine7();
+
+
+      },
+      deep: true,
+    },
+    data6: {
+      //对于深层对象的属性，watch不可达，因此对数组监控需要将数组先清空，再添加数据
+      handler: function () {
+
+
+
+        this.drawLine7  ();
+      },
+      deep: true,
+    },
+    data7: {
+      //对于深层对象的属性，watch不可达，因此对数组监控需要将数组先清空，再添加数据
+      handler: function () {
+
+
+        this.drawLine4  ();
+
+      },
+      deep: true,
+    },
+    data8: {
+      //对于深层对象的属性，watch不可达，因此对数组监控需要将数组先清空，再添加数据
+      handler: function () {
+
+
+        this.drawLine6  ();
+
       },
       deep: true,
     },
