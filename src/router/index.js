@@ -39,10 +39,6 @@ const routes = [{
                 path: '/workbench',
                 component: modules[`${'../components/workbench_management/workbench_main.vue'}`],
             },
-            {
-                path: '/workbench/changes',
-                component: modules[`${'../components/workbench_management/workaccount.vue'}`],
-            },
             {//组织管理
                 path: '/organization',
                 component: modules[`${'../components/organization_management/organization_main.vue'}`],
