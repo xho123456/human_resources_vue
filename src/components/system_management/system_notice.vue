@@ -248,11 +248,11 @@
           </div>
           <!--已看人员-->
           <div class="zhuagtai">已看人员：
-            <span v-for="item in staffName">&nbsp;{{item}}</span>
+            <span v-for="item in unreadName">&nbsp;{{item}}</span>
           </div>
           <!--未看人员-->
           <div class="zhuagtai">未看人员：
-            <span v-for="item in unreadName">&nbsp;{{item}}</span>
+            <span v-for="item in staffName">&nbsp;{{item}}</span>
           </div>
           <!--发布时间-->
           <div class="zhuagtai">发布时间：
@@ -289,9 +289,9 @@
         <!--        {{examine}}-->
         <!--        <br>-->
         <!--        {{deptName}}-->
-        {{affiche.deptName}}
-        {{staffsName}}
-        {{a}}
+<!--        {{affiche.deptName}}-->
+<!--        {{staffsName}}-->
+<!--        {{a}}-->
         <!--        {{affiche.deptlist}}-->
       </div>
 

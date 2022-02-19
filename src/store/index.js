@@ -54,36 +54,7 @@ const store = createStore({
                     },
                     ]
                 },
-                    {
-                        MENU_ID: 2.2,//菜单编号
-                        MENU_NAME: '组织还原',//菜单名称
-                        PICTURE_ADDRESS: '&#xe64c;',//图片地址
-                        MENU_ROUTE: 'organization/message',//路由地址
-                        MENU_MODULE: '/components/organization_management/zz_evection',//组件地址
-                        MENU_STATE: 0,//是否启用 0启用 1禁用
-                        MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
-                        MENU_LEAF: 0,//是否有叶子 0有 1没有
-                        son: [{
-                            MENU_ID: 2.21,//菜单编号
-                            MENU_NAME: '部门详情',//菜单名称
-                            PICTURE_ADDRESS: '&#xe64c;',//图片地址
-                            MENU_ROUTE: '/organization/message/zz_evectino',//路由地址
-                            MENU_MODULE: '/components/organization_management/zz_evection',//组件地址
-                            MENU_STATE: 0,//是否启用 0启用 1禁用
-                            MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
-                            MENU_LEAF: 1,//是否有叶子 0有 1没有
-                        }, {
-                            MENU_ID: 2.22,//菜单编号
-                            MENU_NAME: '职位详情',//菜单名称
-                            PICTURE_ADDRESS: '&#xe64c;',//图片地址
-                            MENU_ROUTE: '/organization/message/zz_post',//路由地址
-                            MENU_MODULE: 'components/organization_management/zz_post',//组件地址
-                            MENU_STATE: 0,//是否启用 0启用 1禁用
-                            MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
-                            MENU_LEAF: 1,//是否有叶子 0有 1没有
-                        },
-                        ]
-                    }
+
 
                 ]
             },
@@ -319,7 +290,7 @@ const store = createStore({
                         MENU_STATE: 0,//是否启用 0启用 1禁用
                         MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
                         MENU_LEAF: 1,//是否有叶子 0有 1没有
-                    }, {
+                    },{
                         MENU_ID: 5.33,//菜单编号
                         MENU_NAME: '录用管理',//菜单名称
                         PICTURE_ADDRESS: '&#xe64c;',//图片地址
@@ -499,7 +470,7 @@ const store = createStore({
                         MENU_MODULE: 'social_management/ginseng_protect_plan',//组件地址
                         MENU_STATE: 0,//是否启用 0启用 1禁用
                         MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
-                        MENU_LEAF: 0,//是否有叶子 0有 1没有
+                        MENU_LEAF: 1,//是否有叶子 0有 1没有
                     }]
                 }, {
                     MENU_ID: 8.2,//菜单编号
@@ -616,29 +587,11 @@ const store = createStore({
                         MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
                         MENU_LEAF: 1,//是否有叶子 0有 1没有
                     }, {
-                        MENU_ID: 9.22,//菜单编号
-                        MENU_NAME: '工时分析',//菜单名称
-                        PICTURE_ADDRESS: '&#xe64c;',//图片地址
-                        MENU_ROUTE: '/statistics/attendance_analyze/statistics_work2',//路由地址
-                        MENU_MODULE: 'statistics_management/statistics_work2',//组件地址
-                        MENU_STATE: 0,//是否启用 0启用 1禁用
-                        MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
-                        MENU_LEAF: 1,//是否有叶子 0有 1没有
-                    }, {
                         MENU_ID: 9.23,//菜单编号
                         MENU_NAME: '加班分析',//菜单名称
                         PICTURE_ADDRESS: '&#xe64c;',//图片地址
                         MENU_ROUTE: '/statistics/attendance_analyze/statistics_work3',//路由地址
                         MENU_MODULE: 'statistics_management/statistics_work3',//组件地址
-                        MENU_STATE: 0,//是否启用 0启用 1禁用
-                        MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
-                        MENU_LEAF: 1,//是否有叶子 0有 1没有
-                    }, {
-                        MENU_ID: 9.24,//菜单编号
-                        MENU_NAME: '请假分析',//菜单名称
-                        PICTURE_ADDRESS: '&#xe64c;',//图片地址
-                        MENU_ROUTE: '/statistics/attendance_analyze/statistics_work4',//路由地址
-                        MENU_MODULE: 'statistics_management/statistics_work4',//组件地址
                         MENU_STATE: 0,//是否启用 0启用 1禁用
                         MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
                         MENU_LEAF: 1,//是否有叶子 0有 1没有
@@ -676,15 +629,6 @@ const store = createStore({
                         PICTURE_ADDRESS: '&#xe64c;',//图片地址
                         MENU_ROUTE: '/statistics/remuneration_analyze/statistics_analysis3',//路由地址
                         MENU_MODULE: 'statistics_management/statistics_analysis3',//组件地址
-                        MENU_STATE: 0,//是否启用 0启用 1禁用
-                        MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
-                        MENU_LEAF: 1,//是否有叶子 0有 1没有
-                    }, {
-                        MENU_ID: 9.34,//菜单编号
-                        MENU_NAME: '部门成本分析',//菜单名称
-                        PICTURE_ADDRESS: '&#xe64c;',//图片地址
-                        MENU_ROUTE: '/statistics/remuneration_analyze/statistics_analysis4',//路由地址
-                        MENU_MODULE: 'statistics_management/statistics_analysis4',//组件地址
                         MENU_STATE: 0,//是否启用 0启用 1禁用
                         MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
                         MENU_LEAF: 1,//是否有叶子 0有 1没有
@@ -745,35 +689,6 @@ const store = createStore({
                             PICTURE_ADDRESS: '&#xe64c;',//图片地址
                             MENU_ROUTE: '/system/announcement_management/announcement_set',//路由地址
                             MENU_MODULE: 'system_management/system_notice',//组件地址
-                            MENU_STATE: 0,//是否启用 0启用 1禁用
-                            MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
-                            MENU_LEAF: 1,//是否有叶子 0有 1没有
-                        }]
-                    },
-                    {
-                        MENU_ID: 10.3,//菜单编号
-                        MENU_NAME: '日志管理',//菜单名称
-                        PICTURE_ADDRESS: '&#xe64c;',//图片地址
-                        MENU_ROUTE: '/system/log_management',//路由地址
-                        MENU_MODULE: 'menu_skip',//组件地址
-                        MENU_STATE: 0,//是否启用 0启用 1禁用
-                        MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
-                        MENU_LEAF: 0,//是否有叶子 0有 1没有
-                        son: [{
-                            MENU_ID: 10.31,//菜单编号
-                            MENU_NAME: '登录日志',//菜单名称
-                            PICTURE_ADDRESS: '&#xe64c;',//图片地址
-                            MENU_ROUTE: '/system/log_management/register_log',//路由地址
-                            MENU_MODULE: 'system_management/system_login_log',//组件地址
-                            MENU_STATE: 0,//是否启用 0启用 1禁用
-                            MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
-                            MENU_LEAF: 1,//是否有叶子 0有 1没有
-                        }, {
-                            MENU_ID: 10.32,//菜单编号
-                            MENU_NAME: '操作日志',//菜单名称
-                            PICTURE_ADDRESS: '&#xe64c;',//图片地址
-                            MENU_ROUTE: '/system/log_management/operation_log',//路由地址
-                            MENU_MODULE: 'system_management/system_operate_log',//组件地址
                             MENU_STATE: 0,//是否启用 0启用 1禁用
                             MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
                             MENU_LEAF: 1,//是否有叶子 0有 1没有
