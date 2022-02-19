@@ -14,106 +14,110 @@
         </div>
 
         <div style="width: 100%;">
-           <div style="padding: 10px 20px;min-height: 570px;">
-             <div style="display: flex; justify-content: space-between;padding-left: 0;">
-               <router-link :to="{path:this.addclass,query:{path:this.$route.query.path}}">
-                 <el-button type="primary" size="small">
-                   <i class="iconfont" style="font-size: 12px">&#xe62d;</i>
-                   新增
-                 </el-button>
-               </router-link>
-               <el-input
-                   v-model="pageInfo.classesName"
-                   placeholder="搜索"
-                   class="input-with-select"
-                   size="small"
-                   style="width: 300px; float: right"
-               >
-                 <template #append>
-                   <el-button @click="queryAllPage()">搜索</el-button>
-                 </template>
-               </el-input>
-             </div>
-             <div style="margin-top: 10px">
-               <el-table :data="tableData" :border="true" style="width: 100%; font-size: 12px;"
-                         :header-cell-style="{background:'#eef1f6',color:'#606266',textAlign: 'center'}">
-                 <el-table-column prop="classesName" label="班次名称" width="150"/>
-                 <el-table-column prop="classesSd" label="班次时段" width="150"/>
-                 <el-table-column label="工作时间范围(早)">
-                   <template #default="scope">
-                     上班{{scope.row.classesTimeones}} - 下班{{scope.row.classesTimeonex}}
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="工作时间范围(午)">
-                   <template #default="scope">
-                     上班{{scope.row.classesTimetwos}} - 下班{{scope.row.classesTimetwox}}
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="休息时间范围" >
-                   <template #default="scope">
-                     {{scope.row.classesXxtimeState}} - {{scope.row.classesXxtimeEnd}}
-                   </template>
-                 </el-table-column>
-                 <el-table-column label="打卡时间范围" width="150">
-                   <template #default="scope">
-                     {{scope.row.dkState}} - {{scope.row.dkEnd}}
-                   </template>
-                 </el-table-column>
+          <div style="padding: 10px 20px;min-height: 570px;">
+            <div style="display: flex; justify-content: space-between;padding-left: 0;">
+              <router-link :to="{path:this.addclass,query:{path:this.$route.query.path}}">
+                <el-button type="primary" size="small">
+                  <i class="iconfont" style="font-size: 12px">&#xe62d;</i>
+                  新增
+                </el-button>
+              </router-link>
+              <el-input
+                  v-model="pageInfo.classesName"
+                  placeholder="搜索"
+                  class="input-with-select"
+                  size="small"
+                  style="width: 300px; float: right"
+              >
+                <template #append>
+                  <el-button @click="queryAllPage()">搜索</el-button>
+                </template>
+              </el-input>
+            </div>
+            <div style="margin-top: 10px">
+              <el-table :data="tableData" :border="true" style="width: 100%; font-size: 12px;"
+                        :header-cell-style="{background:'#eef1f6',color:'#606266',textAlign: 'center'}">
+                <el-table-column prop="classesName" label="班次名称" width="150"/>
+                <el-table-column prop="classesSd" label="班次时段" width="150"/>
+                <el-table-column label="工作时间范围(早)">
+                  <template #default="scope">
+                    上班{{ scope.row.classesTimeones }} - 下班{{ scope.row.classesTimeonex }}
+                  </template>
+                </el-table-column>
+                <el-table-column label="工作时间范围(午)">
+                  <template #default="scope">
+                    上班{{ scope.row.classesTimetwos }} - 下班{{ scope.row.classesTimetwox }}
+                  </template>
+                </el-table-column>
+                <el-table-column label="休息时间范围">
+                  <template #default="scope">
+                    {{ scope.row.classesXxtimeState }} - {{ scope.row.classesXxtimeEnd }}
+                  </template>
+                </el-table-column>
+                <el-table-column label="打卡时间范围" width="150">
+                  <template #default="scope">
+                    {{ scope.row.dkState }} - {{ scope.row.dkEnd }}
+                  </template>
+                </el-table-column>
 
-                 <el-table-column label="状态" width="70">
-                   <template #default="scope">
-                     <el-switch
-                         v-model="ants1"
-                         class="ml-2"
-                         active-color="#13ce66"
-                         inactive-color="#ff4949"
-                         :disabled="true"
-                         v-if="scope.row.classesstate==1"
-                     />
-                     <el-switch
-                         v-model="ants2"
-                         class="ml-2"
-                         active-color="#13ce66"
-                         inactive-color="#ff4949"
-                         :disabled="true"
-                         v-if="scope.row.classesstate==0"
-                     />
-                   </template>
-                 </el-table-column>
+                <el-table-column label="状态" width="70">
+                  <template #default="scope">
+                    <el-switch
+                        v-model="ants1"
+                        class="ml-2"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"
+                        :disabled="true"
+                        v-if="scope.row.classesstate==1"
+                    />
+                    <el-switch
+                        v-model="ants2"
+                        class="ml-2"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"
+                        :disabled="true"
+                        v-if="scope.row.classesstate==0"
+                    />
+                  </template>
+                </el-table-column>
 
-                 <el-table-column label="操作" width="200px">
-                   <template #default="scope">
-                     <router-link :to="{path:this.updateclass,query:{path:this.$route.query.path,id:scope.row.classesId}}">
-                        <el-button type="text" size="mini" style="font-size: 11px;padding-right: 10px">编辑</el-button>
-                     </router-link>
-                     <el-button type="text" size="mini" style="font-size: 11px;">启用</el-button>
+                <el-table-column label="操作" width="200px">
+                  <template #default="scope">
+                    <router-link
+                        :to="{path:this.updateclass,query:{path:this.$route.query.path,id:scope.row.classesId}}">
+                      <el-button type="text" size="mini" style="font-size: 11px;padding-right: 10px">编辑</el-button>
+                    </router-link>
 
-                     <el-popconfirm title="是否确定删除?" @confirm="isdeleted(scope.row.classesId)"
-                                    @cancel="isdeletedbiz()">
-                       <template #reference>
-                         <el-button type="text" size="small"><span style="color: #ff4949">删除</span></el-button>
-                       </template>
-                     </el-popconfirm>
-                   </template>
-                 </el-table-column>
-               </el-table>
-               <div class="demo-pagination-block">
-                 <el-pagination
-                     v-model:currentPage="pageInfo.currenPage"
-                     :page-sizes="[5, 10, 30, 50]"
-                     v-model:page-size="pageInfo.pagesize"
-                     :default-page-size="pageInfo.pagesize"
-                     layout="total, sizes, prev, pager, next, jumper"
-                     :total="pageInfo.total"
-                     :pager-count="5"
-                     background
-                     @size-change="queryAllPage()"
-                     @current-change="queryAllPage()"
-                 >
-                 </el-pagination>
-               </div>
-             </div>
-           </div>
+                    <el-button type="text" size="mini" style="font-size: 11px;" @click="opens(scope.row.classesId)" v-if="scope.row.classesstate==0">启用</el-button>
+                    <el-button type="text" size="mini" style="font-size: 11px;" @click="endopen(scope.row.classesstate)" v-if="scope.row.classesstate==1">关闭</el-button>
+
+
+                    <el-popconfirm title="是否确定删除?" @confirm="isdeleted(scope.row.classesId)"
+                                   @cancel="isdeletedbiz()">
+                      <template #reference>
+                        <el-button type="text" size="small"><span style="color: #ff4949">删除</span></el-button>
+                      </template>
+                    </el-popconfirm>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <div class="demo-pagination-block">
+                <el-pagination
+                    v-model:currentPage="pageInfo.currenPage"
+                    :page-sizes="[5, 10, 30, 50]"
+                    v-model:page-size="pageInfo.pagesize"
+                    :default-page-size="pageInfo.pagesize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="pageInfo.total"
+                    :pager-count="5"
+                    background
+                    @size-change="queryAllPage()"
+                    @current-change="queryAllPage()"
+                >
+                </el-pagination>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -121,31 +125,31 @@
 </template>
 
 <script>
-import {ElMessage} from "element-plus";
+import {ElMessageBox, ElMessage} from 'element-plus'
 
 export default {
-  data(){
-    return{
-      addclass:'/yyx/dacard',
-      updateclass:'/yyx/repaircard',
+  data() {
+    return {
+      addclass: '/yyx/dacard',
+      updateclass: '/yyx/repaircard',
       //分页、模糊查询数据
       pageInfo: {
         currenPage: 1,
         pagesize: 5,
         total: 0,
-        classesName:''
+        classesName: ''
       },
-      tableData:[],
+      tableData: [],
       //状态按钮
-      ants1:true,
-      ants2:false,
+      ants1: true,
+      ants2: false,
     }
   },
   created() {
     this.queryAllPage();
   },
-  methods:{
-    queryAllPage(){
+  methods: {
+    queryAllPage() {
       this.axios({
         url: "http://localhost:8007/provider/Classes/pageall",
         method: "post",
@@ -158,9 +162,9 @@ export default {
         responseEncoding: 'utf-8',
       }).then((response) => {
         console.log(response);
-         this.tableData = response.data.data.records
-         this.pageInfo.total = response.data.data.total
-      }).catch(function(error) {
+        this.tableData = response.data.data.records
+        this.pageInfo.total = response.data.data.total
+      }).catch(function (error) {
         console.log('获取列表失败')
         console.log(error);
       })
@@ -181,9 +185,70 @@ export default {
           });
         }
         this.queryAllPage();
-      }).catch(function(error) {
+      }).catch(function (error) {
         console.log(error);
       })
+    },
+    //禁用全部班次
+    opens(row) {
+
+      ElMessageBox.confirm(
+          '是否确定开启当前班次?',
+          {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+          }
+      ).then(() => {
+        this.axios({
+          url: "http://localhost:8007/provider/Classes/upclasesall",
+          method: "post",
+          data: {},
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          this.isupdated(row);
+        }).catch(function (error) {
+          console.log(error);
+        })
+      }).catch(() => {
+            ElMessage({
+              type: 'info',
+              message: 'Delete canceled',
+          })
+      })
+    },
+    //开启当前班次
+    isupdated(row) {
+      this.axios({
+        url: "http://localhost:8007/provider/Classes/isupdatebyentity",
+        method: "post",
+        data: {
+          classesId:row,
+          classesstate:1
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.log(response)
+        ElMessage({
+          message: '操作成功！',
+          type: 'success',
+        })
+        this.queryAllPage();
+      }).catch(function (error) {
+        console.log(error);
+      })
+    },
+
+    //班次关闭
+    endopen(row){
+      if (row==1){
+        ElMessage({
+          message: '须保留一个班次安排',
+          type: 'warning',
+        })
+      }
     },
     //消息提示框取消按钮事件
     isdeletedbiz() {
@@ -197,9 +262,10 @@ export default {
 </script>
 
 <style type="text/css" scoped>
-a{
+a {
   color: #008df7;
 }
+
 @font-face {
   font-family: 'iconfont';  /* Project id 3164770 */
   src: url('//at.alicdn.com/t/font_3164770_te5p4157fzj.woff2?t=1644419209354') format('woff2'),
@@ -216,10 +282,12 @@ a{
   margin: auto;
   color: white;
 }
-/deep/.el-table td.el-table__cell div {
+
+/deep/ .el-table td.el-table__cell div {
   box-sizing: border-box;
   text-align: center;
 }
+
 .demo-pagination-block {
   margin-left: 15px;
   margin-top: 10px;
@@ -232,7 +300,7 @@ a{
   width: 100%;
   display: flex;
   background-color: #f9f9f9;
-  border-bottom:1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
 }
 
 .my-span1 {
@@ -247,7 +315,6 @@ a{
   font-size: 18px;
   color: black;
 }
-
 
 
 .saas-main-content {
@@ -281,10 +348,11 @@ a{
   border-left-color: rgb(233, 233, 233);
 }
 
-/deep/.el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell {
+/deep/ .el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell {
   background-color: #e9f7ff;
 }
-/deep/.el-table .el-table__cell {
+
+/deep/ .el-table .el-table__cell {
   padding: 10px 0;
   min-width: 0;
   box-sizing: border-box;

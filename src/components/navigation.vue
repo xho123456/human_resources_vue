@@ -75,9 +75,9 @@
 					        </span>
 					        <template #dropdown>
 					          <el-dropdown-menu>
-                      <router-link :to="{path:this.userxx,query:{path:this.$route.query.path}}">
-                        <el-dropdown-item>账号消息</el-dropdown-item>
-                      </router-link>
+<!--                      <router-link :to="{path:this.userxx,query:{path:this.$route.query.path}}">-->
+<!--                        <el-dropdown-item>账号消息</el-dropdown-item>-->
+<!--                      </router-link>-->
 					            <el-dropdown-item>退出</el-dropdown-item>
 					          </el-dropdown-menu>
 					        </template>
