@@ -581,7 +581,27 @@ export default defineComponent({
     }
 
   },
+  // created() {
+  //   //this.basicStaff(row);
+  // },
   methods:{
+    basicStaff(row){
+      this.axios({
+        method:'post',
+        url:"http://localhost:8007/provider/staff/basic",
+        //data:this.pageInfo,
+        responseType:'json',
+        responseEncoding:'utf-8',
+      }).then((response)=>{
+        console.log(response);
+        this.tableHistoryData = response.data.data.records
+        this.pageInfo.total=response.data.data.total
+      }).catch(function (error){
+        console.log('获取表单失败')
+        console.log(error)
+      })
+    },
+
     judgedate1(){
       var now = new Date();
       if (this.aa.rzdate > now){
@@ -607,6 +627,8 @@ export default defineComponent({
         this.ruleForm.date2 = " ";
       }
     },
+
+
   }
 
 })
