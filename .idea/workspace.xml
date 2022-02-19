@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7782e118-91e8-4d6c-900a-0a4856553f34" name="Changes" comment="">
+    <list default="true" id="7782e118-91e8-4d6c-900a-0a4856553f34" name="Changes" comment="message">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/social_management/ginseng_protect_plan.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/ginseng_protect_plan.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/system_management/system_notice.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/system_management/system_notice.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/recruitment_management/enroll_yyx.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recruitment_management/enroll_yyx.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/recruitment_management/recruitment_resume_details.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recruitment_management/recruitment_resume_details.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/recruitment_management/recruitment_zp_daiInterview.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recruitment_management/recruitment_zp_daiInterview.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -312,6 +312,8 @@ export default {
       addresume: '/recruitment/recruit/addresume',
       details: '/recruitment/resume/details',
 
+      //当前登录用户信息
+      useralls:this.$store.state.userall,
       //面试评论对话框
       plDog:false,
       mianspl:'',     //存放评论内容
@@ -755,7 +757,7 @@ export default {
           data: {
             interviewId: this.plresumeId,
             evaluateTime: this.gettime,
-            staffId: 1,  //目前为默认，修改为当前登录用户Id
+            staffName: this.useralls.staffName,  //目前为默认，修改为当前登录用户
             interviewEvaluate: this.mianspl
           },
           responseType: 'json',
@@ -783,6 +785,46 @@ export default {
       this.plresumeId = id;
       this.miansDog = true; //开启确认对话框
     },
+
+    addmisnsgo(){//面试通过，填写面试评价，更改简历状态
+      //获取当前时间
+      var _this = this;
+      let yy = new Date().getFullYear();
+      let mm = new Date().getMonth()+1;
+      let dd = new Date().getDate();
+      let hh = new Date().getHours();
+      let mf = new Date().getMinutes()<10 ? '0'+new Date().getMinutes() : new Date().getMinutes();
+      let ss = new Date().getSeconds()<10 ? '0'+new Date().getSeconds() : new Date().getSeconds();
+      _this.gettime = yy+'-'+mm+'-'+dd+' '+hh+':'+mf+':'+ss;
+
+      if (this.mselremarks==''){
+        ElMessage({
+          message: '请填写面试评价',
+          type: 'warning',
+        })
+      }else{
+        this.axios({
+          url: "http://localhost:8007/provider/Interview/addmianspl",
+          method: "post",
+          data: {
+            interviewId: this.plresumeId,
+            evaluateTime: this.gettime,
+            staffName: this.useralls.staffName,  //目前为默认，修改为当前登录用户
+            interviewEvaluate: this.mselremarks  //评论内容
+          },
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(1)
+           console.log(response)
+          console.log(1)
+           this.updatemianzt();
+        }).catch(function (error) {
+          console.log('获取列表失败')
+          console.log(error);
+        })
+      }
+    },
     updatemianzt(){ //修改面试状态
       this.axios({
         url: "http://localhost:8007/provider/resume/zeliminate",
@@ -809,34 +851,6 @@ export default {
         console.log(error);
       })
     },
-    addmisnsgo(){//面试通过，填写面试评价，更改简历状态
-      if (this.mselremarks==''){
-        ElMessage({
-          message: '请填写面试评价',
-          type: 'warning',
-        })
-      }else{
-        this.axios({
-          url: "http://localhost:8007/provider/Interview/addmianspl",
-          method: "post",
-          data: {
-            interviewId: this.plresumeId, //简历id
-            evaluateTime: new Date(), //评论时间
-            staffName: "周娘们",  //目前为默认，修改为当前登录用户
-            interviewEvaluate: this.mselremarks  //评论内容
-          },
-          responseType: 'json',
-          responseEncoding: 'utf-8',
-        }).then((response) => {
-           console.log(response)
-           this.updatemianzt();
-        }).catch(function (error) {
-          console.log('获取列表失败')
-          console.log(error);
-        })
-      }
-    },
-
 
 
   }

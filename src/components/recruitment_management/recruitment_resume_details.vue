@@ -786,6 +786,8 @@ export default {
     })
 
     return {
+      //当前登录用户信息
+      useralls:this.$store.state.userall,
       //默认激活第一个导航
       activeName: 'one',
       //简历id：路由传入
@@ -1493,7 +1495,7 @@ export default {
           data: {
             interviewId: this.resumid, //简历id
             evaluateTime:this.gettime, //评论时间
-            staffName: "周娘们",  //目前为默认，修改为当前登录用户
+            staffName: this.useralls.staffName,  //目前为默认，修改为当前登录用户
             interviewEvaluate: this.mianspl  //评论内容
           },
           responseType: 'json',
