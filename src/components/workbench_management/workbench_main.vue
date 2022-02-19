@@ -5,6 +5,7 @@
       <div style="padding: 20px; display: flex;">
         <div style="width: 85px; height: 85px;">
           <img :src="useralls.staffPicture" width="85" height="85" alt="">
+<!--          <img src="../assets/syx.jpg" width="85" height="85" alt="">-->
         </div>
         <div style=" margin-left: 10px;">
           <div style="padding: 10px;">

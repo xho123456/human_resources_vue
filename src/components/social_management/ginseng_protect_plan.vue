@@ -56,10 +56,10 @@
                   </el-button>
                 </router-link>&nbsp;
 
-                <el-button type="text" size="small"> {{ scope.row.defInsuredState === '启用' ? '禁用 ' : '启用 ' }}</el-button>
+                <el-button type="text" size="small"> {{ scope.row.defInsuredState === 0 ? '禁用 ' : '启用 ' }}</el-button>
 
                 <!-- 删除行确认框 -->
-                <el-popconfirm v-if="scope.row.defInsuredState==='禁用'"
+                <el-popconfirm v-if="scope.row.defInsuredState===1"
                                @confirm="deleteRow(scope.$index, tableData)" title="删除此方案?">
                   <template #reference>
                     <el-button style="color:red" type="text" size="small">
@@ -179,7 +179,7 @@ export default {
 
 /* 分页的样式 */
 .demo-pagination-block {
-  float: right;
+  float: left;
   margin: 20px;
 }
 
