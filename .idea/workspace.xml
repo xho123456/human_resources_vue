@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="7782e118-91e8-4d6c-900a-0a4856553f34" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/components/begin/rest/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/begin/rest/Login.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/social_management/ginseng_protect_plan.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/ginseng_protect_plan.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/system_management/system_notice.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/system_management/system_notice.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/time_modular/my_attendance.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/time_modular/my_attendance.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/time_modular/shift_yyx.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/time_modular/shift_yyx.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/store/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +30,11 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -40,7 +45,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1645187290701</updated>
-      <workItem from="1645187293451" duration="222000" />
+      <workItem from="1645187293451" duration="14344000" />
     </task>
     <servers />
   </component>
@@ -57,5 +62,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="完善" />
+    <option name="LAST_COMMIT_MESSAGE" value="完善" />
   </component>
 </project>

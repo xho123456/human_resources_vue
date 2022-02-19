@@ -30,7 +30,7 @@
 
       <span class="ziti">当前月员工新进率</span>
       <br>
-      <span class="ziti">3</span>
+      <div class="ziti" style="width: 10px;">{{rs1}}</div>
       <br>
 
     </div>
@@ -42,7 +42,7 @@
 
       <span class="ziti">当前月离职率</span>
       <br>
-      <span class="ziti">3</span>
+      <span class="ziti">{{rs2}}</span>
       <br>
 
 
@@ -135,9 +135,11 @@ export default ({
       ],
       data11 : [
       ],
-    value1:{
+      value1:{
 
-    },
+      },
+      rs1:'',
+      rs2:'',
       xj1:[],
       xj:[],
       xjpj:[],
@@ -155,7 +157,7 @@ export default ({
     this.drawLine();
     // 当前月离职率
 
-    
+
 
 
 
@@ -244,7 +246,7 @@ export default ({
       //2、构造图表数据
       option7 = {
         title: {
-          text: '每月员工新进率'
+          text: '每月员工离职率'
         },
 
         tooltip: {
@@ -257,7 +259,7 @@ export default ({
           }
         },
         legend: {
-          data: ['新进率']
+          data: ['离职率']
         },
         toolbox: {
           feature: {
@@ -290,7 +292,7 @@ export default ({
           type: 'value'
         }],
         series: [{
-          name: '新进率',
+          name: '离职率',
           type: 'line',
           stack: 'Total',
           areaStyle: {},
@@ -310,7 +312,7 @@ export default ({
     selectygxj() {
       this.axios
           .get("http://localhost:8007/provider/chaygxj", {
-          /*  params:this.value1,*/
+            /*  params:this.value1,*/
           })
           .then((response) => {
             this.xj1.length=0
@@ -318,32 +320,47 @@ export default ({
             var Growth=0
             this.xjpj.push(Growth)
             this.xjpjxj.push(Growth)
+            this.xjpjxj1.push(Growth)
             if(response.data.length<1){
               /*this.dyrz2=0*/
+
             }else {
               for (var i = 0; i < response.data.length; i++) {
 
-              this.xj.push(response.data[i].rs)
+                this.xj.push(response.data[i].rs)
                 this.xj1.push(response.data[i].year)
 
-              if(i>=1){
-                var Growth1 =  (response.data[i-1].rs+response.data[i].rs)/2
-                this.xjpj.push(Growth1)//工资册平均人数
-                var Growth2 =  (response.data[i].rs-response.data[i-1].rs)
-                this.xjpjxj.push(Growth2)//新进人数
-                 var Growth3= this.xjpjxj[i]/this.xjpj[i]*100
-                this.xjpjxj1.push(Growth3)
-              }
+
+                if(i>=1){
+
+                  var Growth1 =  (response.data[i-1].rs+response.data[i].rs)/2
+                  this.xjpj.push(Growth1)//工资册平均人数
+
+                  var Growth2 =  (response.data[i].rs-response.data[i-1].rs)
+                  this.xjpjxj.push(Growth2)//新进人数
+
+                  if (this.xjpj==0){
+                    this.xjpj.push(1)
+
+                  }
+
+                  var Growth3= this.xjpjxj[i]/this.xjpj[i]*100
+                  this.xjpjxj1.push(Growth3)
+                  this.rs1=this.xjpjxj1[this.xjpjxj1.length-1]
+
+
+
+                }
 
               }
             }
             //获取本月对比上月离职人数有多少
-          /*  if(this.dyrz==0){  //解决当除数为0时计算公式无法计算的办法
-              this.dyrzpj= (this.dyrz-this.dyrz2) /1*100
-            }else {
-              this.dyrzpj= (this.dyrz-this.dyrz2) /this.dyrz *100
+            /*  if(this.dyrz==0){  //解决当除数为0时计算公式无法计算的办法
+                this.dyrzpj= (this.dyrz-this.dyrz2) /1*100
+              }else {
+                this.dyrzpj= (this.dyrz-this.dyrz2) /this.dyrz *100
 
-            }*/
+              }*/
 
 
           })
@@ -363,20 +380,23 @@ export default ({
 
             var Growth=0
             this.data11.push(Growth)
+            this.xjpjxj2.push(Growth)
             for (var i = 0; i < response.data.length; i++) {
               this.data1.push(response.data[i].rs);
               this.data2.push(response.data[i].year);
 
-          /*    console.log(this.data2)*/
+              /*    console.log(this.data2)*/
               if(i>=1) {
                 var Growth1 = (response.data[i].rs - response.data[i - 1].rs)
                 this.data11.push(Growth1)
 
+                if (this.xjpj==0){
+                  this.xjpj.push(1)
+                }
                 var Growth3= this.data11[i]/this.xjpj[i]*100
                 this.xjpjxj2.push(Growth3)
-                console.log(this.data11+"asdasd")
-                console.log(this.xjpj+"asdasd32")
-                console.log(this.xjpjxj2+"asdasd322444")
+                this.rs2=this.xjpjxj2[this.xjpjxj2.length-1]
+
               }
             }
           })
@@ -387,7 +407,7 @@ export default ({
           });
     },
   },created() {
-   this.selectygxj();
+    this.selectygxj();
     this.selectyglz11();
   }, watch: {
     xj1: {
