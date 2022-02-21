@@ -3,9 +3,9 @@
   <div class="body_1">
     <el-tabs type="border-card">
       <!-- 待办申请页面 -->
-      <el-tab-pane label="待办申请" >
+      <el-tab-pane label="待办申请"  >
 <!--        -->
-        <el-button @click="resetDateFilter1">重置日期过滤</el-button>
+        <el-button @click="positveme">重置</el-button>
         &nbsp;
         <el-input
             v-model="input"
@@ -16,24 +16,13 @@
         <el-button type="success" plain>搜索</el-button>
         <!--  表格 -->
         <el-table
-            ref="filterTable1"
-            row-key="date1"
             :data="tableData"
             style="width: 100%"
         >
           <el-table-column
               prop="AUDITFLOWDETAIDATE"
               label="日期"
-              sortable
               width="140"
-              column-key="date1"
-              :filters="[
-              { text: '2016-05-01', value: '2016-05-01' },
-              { text: '2016-05-02', value: '2016-05-02' },
-              { text: '2016-05-03', value: '2016-05-03' },
-              { text: '2016-05-04', value: '2016-05-04' },
-            ]"
-              :filter-method="filterHandler"
           />
           <el-table-column prop="AUDITFLOWID" label="审批编号" width="100"/>
           <el-table-column prop="auditflowtype" label="流程" width="100"/>
@@ -110,7 +99,7 @@
       <!-- 已办申请页面 -->
       <el-tab-pane label="已办申请">
 <!--        -->
-        <el-button @click="resetDateFilter">重置日期过滤</el-button>
+        <el-button @click="positveed">重置</el-button>
         &nbsp;
         <el-input
             v-model="input"
@@ -120,20 +109,13 @@
         &nbsp;
         <el-button type="success" plain>搜索</el-button>
         <el-table
-            ref="filterTable"
-            row-key="date"
             :data="tableData1"
             style="width: 100%"
-            @click="positveed"
         >
           <el-table-column
               prop="AUDITFLOWDETAIDATE"
               label="日期"
-              sortable
               width="140"
-              column-key="date"
-
-              :filter-method="filterHandler"
           />
           <el-table-column prop="AUDITFLOWID" label="审批编号" width="100"/>
           <el-table-column prop="auditflowtype" label="流程" width="100"/>
@@ -417,7 +399,7 @@ export default {
       },
     };
   },
-  created() {
+  mounted() {
     this.positveme();
     this.positveed();
   },
@@ -431,25 +413,19 @@ export default {
          console.log(response);
         _this.tableData = response.data.data.records
         _this.pageInfo.total=response.data.data.total
-      }).catch(function (error){
-        console.log('获取表单失败')
-        console.log(error)
       })
     },
     positveed(){
-      this.axios({
-        method:'get',
-        url:"http://localhost:8007/provider/worker/positveed",
-        data:this.pageInfo,
-        responseType:'json',
-        responseEncoding:'utf-8',
-      }).then((response)=>{
+      var _this = this;
+      _this.axios.get(
+          "http://localhost:8007/provider/worker/positveed", {
+            params:this.pageInfo,
+          }).then((response)=>{
         console.log(response);
-        this.tableData1 = response.data.data.records
-        this.pageInfo.total=response.data.data.total
-      }).catch(function (error){
-        console.log('获取表单失败')
-        console.log(error)
+        if (response.data.data!=null){
+          _this.tableData1 = response.data.data.records
+          _this.pageInfo.total=response.data.data.total
+        }
       })
     },
 
@@ -514,7 +490,7 @@ export default {
     through2(){
       alert(1)
     }
-  },
+  }
 };
 </script>
 
