@@ -48,7 +48,7 @@
                 </div>
               </div>
               <!--异常考勤汇总-->
-              <div style="width: 936px;border: 1px solid #e9e9e9;">
+              <div style="width: 766px;border: 1px solid #e9e9e9;border-right: none">
                 <div class="aks-div">异常考勤汇总</div>
                 <div>
                   <div class="my-caerdq">
@@ -262,6 +262,54 @@
     </div>
   </el-dialog>
 
+
+  <!-- 迟到明细对话框 -->
+  <el-dialog v-model="dialogTableVisible2" title="请假明细" destroy-on-close width="60%">
+    <div style="height: 350px">
+      <el-table :data="tableDatacd" style="cursor: pointer" size="mini"
+                :header-cell-style="{color:'#606266',background:'rgb(234, 237, 241)',textAlign: 'center'}" :stripe=true>
+        <el-table-column align="center" prop="staffName1" label="姓名"/>
+        <el-table-column align="center" prop="deptName" label="部门"/>
+        <el-table-column align="center" prop="leaveSDate" label="开始时间" width="130px"/>
+        <el-table-column align="center" prop="leaveEDate" label="结束时间" width="130px"/>
+        <el-table-column align="center" prop="leaveType" label="请假类型"/>
+        <el-table-column align="center" prop="leaveMatter" label="请假事由"/>
+        <el-table-column align="center" prop="auditflowStaff" label="审批状态">
+          <template #default="scope">
+            <span v-if="scope.row.auditflowStaff==0">待审</span>
+            <span v-if="scope.row.auditflowStaff==1">通过</span>
+            <span v-if="scope.row.auditflowStaff==2">驳回</span>
+            <span v-if="scope.row.auditflowStaff==3">撤销</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" prop="leaveTotalDate" label="请假总时长"/>
+      </el-table>
+    </div>
+    <template #footer>
+                  <span class="dialog-footer">
+                    <el-button size="mini" type="primary" @click="dialogTableVisible=false">取消</el-button>
+                  </span>
+    </template>
+    <div class="demo-pagination-block">
+      <el-pagination
+          v-model:currentPage="pageInfocd.currenPage"
+          :page-sizes="[5, 10, 30, 50]"
+          v-model:page-size="pageInfocd.pagesize"
+          :default-page-size="pageInfocd.pagesize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="pageInfocd.total"
+          :pager-count="5"
+          background
+          @size-change="querycdAllcd()"
+          @current-change="querycdAllcd()">
+      </el-pagination>
+    </div>
+  </el-dialog>
+
+
+
+
+
 </template>
 
 <script>
@@ -300,6 +348,8 @@ export default {
 
       //加班对话框
       dialogTableVisible1:false,
+      //加班数据
+      tableDatajb: [],
       //加班明细分页
       pageInfo1: {
         currenPage: 1,
@@ -307,8 +357,18 @@ export default {
         pagesize: 5,
         total: 0,
       },
-      tableDatajb: [],
 
+      //迟到明细对话框
+      dialogTableVisible2:false,
+      //迟到数据
+      tableDatacd: [],
+      //迟到明细分页
+      pageInfocd: {
+        currenPage: 1,
+        /* 当前的页 */
+        pagesize: 5,
+        total: 0,
+      },
     }
   },
   created() {
@@ -525,10 +585,11 @@ export default {
 
 .my-caerdq {
   height: 124px;
-  padding-right: 30px;
+  padding-right: 15px;
   padding-left: 50px;
   display: flex;
   align-items: center;
+
 }
 
 .my-ant {
