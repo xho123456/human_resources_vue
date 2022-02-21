@@ -57,18 +57,18 @@
             <li  @click="liback(5)">
               <div v-bind:class="{active:isActive5}">
                 <router-link :to="{path:this.fangqiruzhi,query:{path:this.$route.query.path}}">
-                  <span v-bind:class="{sactive:isActive5}">放弃入职</span>
+                  <span v-bind:class="{sactive:isActive5}">放弃录用</span>
                 </router-link>
               </div>
             </li>
 
-            <li  @click="liback(6)">
-              <div v-bind:class="{active:isActive6}">
-                <router-link :to="{path:this.ylizhi,query:{path:this.$route.query.path}}">
-                  <span v-bind:class="{sactive:isActive6}">已离职</span>
-                </router-link>
-              </div>
-            </li>
+<!--            <li  @click="liback(6)">-->
+<!--              <div v-bind:class="{active:isActive6}">-->
+<!--                <router-link :to="{path:this.ylizhi,query:{path:this.$route.query.path}}">-->
+<!--                  <span v-bind:class="{sactive:isActive6}">已离职</span>-->
+<!--                </router-link>-->
+<!--              </div>-->
+<!--            </li>-->
 
 
           </ul>

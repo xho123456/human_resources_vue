@@ -48,7 +48,7 @@
                 </div>
               </div>
               <!--异常考勤汇总-->
-              <div style="width: 936px;border: 1px solid #e9e9e9;">
+              <div style="width: 766px;border: 1px solid #e9e9e9;border-right: none">
                 <div class="aks-div">异常考勤汇总</div>
                 <div>
                   <div class="my-caerdq">
@@ -101,7 +101,7 @@
                         <div class="show-dv3" title="请假(天)">请假(天)</div>
                       </div>
                     </div>
-                    <div class="my-ant">
+                    <div class="my-ant" @click="querycdjb()">
                       <div class="my-ant-show" style="background-color: rgb(141, 107, 243);">
                         <i class="iconfont" style="font-size: 29px">&#xe69f;</i>
                       </div>
@@ -120,7 +120,7 @@
           <div class="an-card">
             <el-table :data="tableData" style="width: 100%; font-size: 12px;"
                       :header-cell-style="{background:'#eef1f6',color:'#606266',textAlign: 'center'}" >
-              <el-table-column  type="index" label="序号"  width="50"/>
+              <el-table-column type="index" label="序号"  width="50"/>
               <el-table-column prop="dayDate" label="日期" width="140"/>
               <el-table-column prop="name" label="班次" width="130" :show-overflow-tooltip="true">
                 <template #default="scope">
@@ -133,20 +133,22 @@
               </el-table-column>
               <el-table-column label="上班一">
                 <el-table-column prop="smornClock" label="打卡时间" />
-                <el-table-column prop="smornResult" label="打卡结果" width="100"/>
+                <el-table-column prop="smornResult" label="打卡结果" width="100" />
               </el-table-column>
               <el-table-column label="下班一">
-                <el-table-column prop="safternoonClock" label="打卡时间"/>
-                <el-table-column prop="safternoonResult" label="打卡结果" width="100"/>
+                <el-table-column prop="xafternoonClock" label="打卡时间"/>
+                <el-table-column prop="xafternoonResult" label="打卡结果" width="100" />
               </el-table-column>
-              <el-table-column label="上班二">
-                <el-table-column prop="xmornClock" label="打卡时间"/>
-                <el-table-column prop="xmornResult" label="打卡结果" width="100"/>
-              </el-table-column>
-              <el-table-column label="下班二">
-                <el-table-column prop="xafternoonClock" label="打卡时间" />
-                <el-table-column prop="xafternoonResult" label="打卡结果" width="100"/>
-              </el-table-column>
+              <el-table-column prop="atsShould" label="应出勤天数" width="140"/>
+              <el-table-column prop="atShould" label="实际出勤天数" width="140"/>
+              <el-table-column prop="cheLate" label="迟到（次数）" width="140"/>
+              <el-table-column prop="chesLate" label="迟到时长(小时)" width="140"/>
+              <el-table-column prop="zhaiLate" label="早退（次数）" width="140"/>
+              <el-table-column prop="zhaisLate" label="早退时长（小时）" width="140"/>
+              <el-table-column prop="kangLate" label="旷工（次数）" width="140"/>
+              <el-table-column prop="kangsLate" label="旷工时长（小时）" width="140"/>
+              <el-table-column prop="workYing" label="应工作时长" width="140"/>
+              <el-table-column prop="worksYing" label="实际工作时长" width="140"/>
             </el-table>
             <div class="demo-pagination-block" style="margin-top: 10px">
               <el-pagination
@@ -158,8 +160,8 @@
                   :total="pageInfo.total"
                   :pager-count="5"
                   background
-                  @size-change="querycdAll()"
-                  @current-change="querycdAll()"
+                  @size-change="querycdAlldk()"
+                  @current-change="querycdAlldk()"
               >
               </el-pagination>
             </div>
@@ -172,11 +174,11 @@
     </div>
   </div>
 
-  <!-- 请假对话框 -->
+  <!-- 请假记录对话框 -->
   <el-dialog v-model="dialogTableVisible" title="请假明细" destroy-on-close width="60%">
     <div style="height: 350px">
       <el-table :data="tableDatas" style="cursor: pointer" size="mini"
-                :header-cell-style="{color:'#606266',background:'rgb(234, 237, 241)'}" :stripe=true>
+                :header-cell-style="{color:'#606266',background:'rgb(234, 237, 241)',textAlign: 'center'}" :stripe=true>
         <el-table-column align="center" prop="staffName1" label="姓名"/>
         <el-table-column align="center" prop="deptName" label="部门"/>
         <el-table-column align="center" prop="leaveSDate" label="开始时间" width="130px"/>
@@ -201,12 +203,12 @@
     </template>
     <div class="demo-pagination-block">
       <el-pagination
-          v-model:currentPage="pageInfo.currenPage"
+          v-model:currentPage="pageInfo2.currenPage"
           :page-sizes="[5, 10, 30, 50]"
-          v-model:page-size="pageInfo.pagesize"
-          :default-page-size="pageInfo.pagesize"
+          v-model:page-size="pageInfo2.pagesize"
+          :default-page-size="pageInfo2.pagesize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="pageInfo.total"
+          :total="pageInfo2.total"
           :pager-count="5"
           background
           @size-change="querycdAll()"
@@ -215,6 +217,98 @@
       </el-pagination>
     </div>
   </el-dialog>
+
+  <!-- 加班记录对话框 -->
+  <el-dialog v-model="dialogTableVisible1" title="加班明细" destroy-on-close width="60%">
+    <div style="height: 350px">
+      <el-table :data="tableDatajb" style="cursor: pointer" size="mini"
+                :header-cell-style="{color:'#606266',background:'rgb(234, 237, 241)',textAlign: 'center'}" :stripe=true>
+        <el-table-column align="center" prop="staffName1" label="姓名"/>
+        <el-table-column align="center" prop="deptName" label="部门"/>
+        <el-table-column align="center" prop="overtimeaskSDate" label="开始时间" width="130px"/>
+        <el-table-column align="center" prop="overtimeaskEDate" label="结束时间" width="130px"/>
+        <el-table-column align="center" prop="overtimeaskType" label="加班类型"/>
+        <el-table-column align="center" prop="overtimeaskMatter" label="加班事由"/>
+        <el-table-column align="center" prop="auditflowStaff" label="审批状态">
+          <template #default="scope">
+            <span v-if="scope.row.auditflowStaff==0">待审</span>
+            <span v-if="scope.row.auditflowStaff==1">通过</span>
+            <span v-if="scope.row.auditflowStaff==2">驳回</span>
+            <span v-if="scope.row.auditflowStaff==3">撤销</span>
+          </template>
+        </el-table-column>
+        <el-table-column  align="center" prop="overtimeaskTotalDate" label="总时长(小时)"/>
+      </el-table>
+    </div>
+    <template #footer>
+                  <span class="dialog-footer">
+                    <el-button size="mini" type="primary" @click="dialogTableVisible=false">取消</el-button>
+                  </span>
+    </template>
+    <div class="demo-pagination-block">
+      <el-pagination
+          v-model:currentPage="pageInfo1.currenPage"
+          :page-sizes="[5, 10, 30, 50]"
+          v-model:page-size="pageInfo1.pagesize"
+          :default-page-size="pageInfo1.pagesize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="pageInfo1.total"
+          :pager-count="5"
+          background
+          @size-change="querycdjb()"
+          @current-change="querycdjb()"
+      >
+      </el-pagination>
+    </div>
+  </el-dialog>
+
+
+  <!-- 迟到明细对话框 -->
+  <el-dialog v-model="dialogTableVisible2" title="请假明细" destroy-on-close width="60%">
+    <div style="height: 350px">
+      <el-table :data="tableDatacd" style="cursor: pointer" size="mini"
+                :header-cell-style="{color:'#606266',background:'rgb(234, 237, 241)',textAlign: 'center'}" :stripe=true>
+        <el-table-column align="center" prop="staffName1" label="姓名"/>
+        <el-table-column align="center" prop="deptName" label="部门"/>
+        <el-table-column align="center" prop="leaveSDate" label="开始时间" width="130px"/>
+        <el-table-column align="center" prop="leaveEDate" label="结束时间" width="130px"/>
+        <el-table-column align="center" prop="leaveType" label="请假类型"/>
+        <el-table-column align="center" prop="leaveMatter" label="请假事由"/>
+        <el-table-column align="center" prop="auditflowStaff" label="审批状态">
+          <template #default="scope">
+            <span v-if="scope.row.auditflowStaff==0">待审</span>
+            <span v-if="scope.row.auditflowStaff==1">通过</span>
+            <span v-if="scope.row.auditflowStaff==2">驳回</span>
+            <span v-if="scope.row.auditflowStaff==3">撤销</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" prop="leaveTotalDate" label="请假总时长"/>
+      </el-table>
+    </div>
+    <template #footer>
+                  <span class="dialog-footer">
+                    <el-button size="mini" type="primary" @click="dialogTableVisible=false">取消</el-button>
+                  </span>
+    </template>
+    <div class="demo-pagination-block">
+      <el-pagination
+          v-model:currentPage="pageInfocd.currenPage"
+          :page-sizes="[5, 10, 30, 50]"
+          v-model:page-size="pageInfocd.pagesize"
+          :default-page-size="pageInfocd.pagesize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="pageInfocd.total"
+          :pager-count="5"
+          background
+          @size-change="querycdAllcd()"
+          @current-change="querycdAllcd()">
+      </el-pagination>
+    </div>
+  </el-dialog>
+
+
+
+
 
 </template>
 
@@ -239,11 +333,42 @@ export default {
         pagesize: 5,
         total: 0,
       },
+
       //请假对话框
       dialogTableVisible:false,
       //请假数据
       tableDatas:[],
+      //请假明细分页
+      pageInfo2: {
+        currenPage: 1,
+        /* 当前的页 */
+        pagesize: 5,
+        total: 0,
+      },
 
+      //加班对话框
+      dialogTableVisible1:false,
+      //加班数据
+      tableDatajb: [],
+      //加班明细分页
+      pageInfo1: {
+        currenPage: 1,
+        /* 当前的页 */
+        pagesize: 5,
+        total: 0,
+      },
+
+      //迟到明细对话框
+      dialogTableVisible2:false,
+      //迟到数据
+      tableDatacd: [],
+      //迟到明细分页
+      pageInfocd: {
+        currenPage: 1,
+        /* 当前的页 */
+        pagesize: 5,
+        total: 0,
+      },
     }
   },
   created() {
@@ -285,21 +410,23 @@ export default {
         ]
       });
     },
-    //当前登录用户考勤迟到记录查询
+    //当前登录用户考勤请假记录查询
     querycdAll(){
       this.dialogTableVisible = true
       this.axios({
         url: "http://localhost:8007/provider/leave/queryallqjs",
         method: "post",
         data: {
-          currenPage: this.pageInfo.currenPage,
-          pagesize:this.pageInfo.pagesize,
+          currenPage: this.pageInfo2.currenPage,
+          pagesize:this.pageInfo2.pagesize,
+          staffId:this.useralls.staffId
         },
         responseType: 'json',
         responseEncoding: 'utf-8',
       }).then((response) => {
+        console.log(response)
         this.tableDatas = response.data.data.records
-        this.pageInfo.total = response.data.data.total
+        this.pageInfo2.total = response.data.data.total
       }).catch(function (error) {
         console.log('获取列表失败')
         console.log(error);
@@ -311,6 +438,7 @@ export default {
         url: "http://localhost:8007/provider/leave/leavenumbers",
         method: "post",
         data: {
+          staffId:this.useralls.staffId
         },
         responseType: 'json',
         responseEncoding: 'utf-8',
@@ -321,6 +449,32 @@ export default {
         console.log(error);
       })
     },
+    //当前登录用户考勤申请加班记录查询
+    querycdjb(){
+      this.dialogTableVisible1 = true
+      this.axios({
+        url: "http://localhost:8007/provider/overtimes/queryallqjb",
+        method: "post",
+        data: {
+          currenPage: this.pageInfo.currenPage,
+          pagesize:this.pageInfo.pagesize,
+          staffId:this.useralls.staffId
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.tableDatajb = response.data.data.records
+        this.pageInfo1.total = response.data.data.total
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+
+
+
+
+
     //当前登录用户考勤打卡记录查询（按照月份查询）
     querycdAlldk(){
       this.axios({
@@ -329,6 +483,7 @@ export default {
         data: {
           currenPage: this.pageInfo.currenPage,
           pagesize:this.pageInfo.pagesize,
+          staffId: this.useralls.staffId
         },
         responseType: 'json',
         responseEncoding: 'utf-8',
@@ -339,6 +494,9 @@ export default {
         console.log('获取列表失败')
         console.log(error);
       })
+    },
+    queryjiab(){
+      this.dialogTableVisible1 = true;
     },
 
 
@@ -427,10 +585,11 @@ export default {
 
 .my-caerdq {
   height: 124px;
-  padding-right: 30px;
+  padding-right: 15px;
   padding-left: 50px;
   display: flex;
   align-items: center;
+
 }
 
 .my-ant {

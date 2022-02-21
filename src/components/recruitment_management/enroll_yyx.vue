@@ -244,7 +244,7 @@ export default {
     },
     //录用新增
     addEmployes(name){
-      if(this.luDates == null){
+      if(this.luDates == null || this.luDates == ''){
         this.$refs[name].validate((valid) => {
           if (valid) {
             this.axios({

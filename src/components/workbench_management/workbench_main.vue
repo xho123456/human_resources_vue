@@ -5,6 +5,7 @@
       <div style="padding: 20px; display: flex;">
         <div style="width: 85px; height: 85px;">
           <img :src="useralls.staffPicture" width="85" height="85" alt="">
+<!--          <img src="../assets/syx.jpg" width="85" height="85" alt="">-->
         </div>
         <div style=" margin-left: 10px;">
           <div style="padding: 10px;">
@@ -363,13 +364,13 @@ export default {
         total: 0
       },
       allnumber: {
-        number1: '',
-        number2: '',
-        number3: '',
-        number4: '',
-        number5: '',
-        number7: '',
-        number8: '',
+        number1: '', //待办筛选：在找职位
+        number2: '', //待办筛选：新简历
+        number3: '', //待办筛选：候选人
+        number4: '', //待办筛选：待面试
+        number5: '', //待办筛选：已面试待处理
+        number7: '', //待办筛选：待接受offer
+        number8: '', //待办筛选：待入职
       },
       //公告对话框
       dialogVisible: false,
@@ -378,14 +379,14 @@ export default {
     }
   },
   created() {
-    this.selectNumberone();
-    this.selectNumbertwo();
-    this.selectNumberthree();
-    this.selectNumberfour();
-    this.selectNumberfix();
-    this.selectNumbersix();
-    this.selectNumbernice();
-    this.selectNumbero();
+    this.selectNumberone();   //待办筛选：在找职位
+    this.selectNumbertwo();   //待办筛选：新简历
+    this.selectNumberthree(); //待办筛选：候选人
+    this.selectNumberfour();  //待办筛选：待面试
+    this.selectNumberfix();   //待办筛选：已面试待处理
+    this.selectNumbersix();   //待办筛选：待接受offer
+    this.selectNumbernice();  //待办筛选：待入职
+    this.selectNumbero();     //公告查询
   },
   methods: {
     //待办筛选：在找职位
@@ -394,6 +395,7 @@ export default {
         url: "http://localhost:8007/provider/work/recruites",
         method: "post",
         data: {
+          //招聘计划状态为在招职位计划
           recruitmentZt: 0
         },
         responseType: 'json',
@@ -411,6 +413,7 @@ export default {
         url: "http://localhost:8007/provider/work/resumes",
         method: "post",
         data: {
+          //简历状态为以新简历
           resumeZt: 0
         },
         responseType: 'json',
@@ -428,6 +431,7 @@ export default {
         url: "http://localhost:8007/provider/work/resumes",
         method: "post",
         data: {
+          //简历状态为候选人
           resumeZt: 1
         },
         responseType: 'json',
@@ -445,6 +449,7 @@ export default {
         url: "http://localhost:8007/provider/work/resumes",
         method: "post",
         data: {
+          //简历状态为待面试
           resumeZt: 2
         },
         responseType: 'json',
@@ -462,6 +467,7 @@ export default {
         url: "http://localhost:8007/provider/work/resumes",
         method: "post",
         data: {
+          //简历状态为以面试
           resumeZt: 5
         },
         responseType: 'json',
@@ -479,6 +485,7 @@ export default {
         url: "http://localhost:8007/provider/work/resumes",
         method: "post",
         data: {
+          //简历状态为待录用
           resumeZt: 7
         },
         responseType: 'json',
@@ -496,6 +503,7 @@ export default {
         url: "http://localhost:8007/provider/work/resumes",
         method: "post",
         data: {
+          //简历状态为待入职
           resumeZt: 8
         },
         responseType: 'json',
@@ -507,7 +515,6 @@ export default {
         console.log(error);
       })
     },
-
     //公告查询
     selectNumbero() {
       this.axios({
@@ -516,7 +523,7 @@ export default {
         data: {
           currenPage: this.pageInfo.currenPage,
           pagesize: this.pageInfo.pagesize,
-          staffId: this.useralls.staffId
+          staffId: this.useralls.staffId  //当前登录的员工编号
         },
         responseType: 'json',
         responseEncoding: 'utf-8',
@@ -529,14 +536,14 @@ export default {
       })
     },
 
-    //公告查看
+    //公告修改
     querygg(id, row) {
       this.axios({
         url: "http://localhost:8007/provider/workno/updatedno",
         method: "post",
         data: {
           noticeStaffId: id,
-          noticeState: 1,
+          noticeState: 1  // 1 表示：公告状态为已读
         },
         responseType: 'json',
         responseEncoding: 'utf-8',
