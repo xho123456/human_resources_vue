@@ -192,13 +192,13 @@ export default {
        params:this.options,
           })
           .then((response) => {
-            console.log("查询");
+            alert(1)
+            console.log("查询111111111111");
             console.log(response);
            /* alert(this.pageInfo.currentPage+"this.pageInfo.currentPage")*/
            /* alert(response.data.size+"response.data.size")*/
               this.options=response.data;
                this.options1=response.data;
-
           })
           .catch(function (error) {
             console.log("失败")

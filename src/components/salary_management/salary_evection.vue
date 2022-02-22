@@ -3,158 +3,446 @@
   <div class="saas-main-content">
     <div class="j-card j-card-bordered mainContent">
       <div class="j-card-body">
-        <span></span>
-        <div style="margin-top: 20px">
-          <router-link :to="{path:this.insertevectionplan,query:{path: this.$route.query.path,name:'新增'}}">
-            <button type="button" class="ant-btn ant-btn-primary">
-              <i aria-label="图标: plus" class="anticon anticon-plus">
-                <svg viewBox="64 64 896 896" focusable="false" class="" data-icon="plus" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path d="M482 152h60q8 0 8 8v704q0 8-8 8h-60q-8 0-8-8V160q0-8 8-8z"></path>
-                  <path d="M176 474h672q8 0 8 8v60q0 8-8 8H176q-8 0-8-8v-60q0-8 8-8z"></path>
-                </svg></i>
-              <span>新增</span>
-            </button>
-          </router-link>
+        <div class="body_2">
 
+          <el-tabs v-model="activeName" @tab-click="handleClick">
 
-        </div>
+            <!--  定薪 -->
+            <el-drawer v-model="drawer" title="I am the title" :with-header="false">
+              <h3 style="margin-top:1px;">定薪</h3><br/>
+              <el-form :inline="true" ref="formInline" :model="formInline" :rules="rules" class="demo-form-inline">
+                <el-form-item>
+                  <template #label>
+                    <div class="el-form-item__label">试用期基本工资</div>
+                  </template>
+                  <el-input v-model="fixedSalary.fixedwagePeriodmoney"  placeholder="请输入" disabled/>
+                </el-form-item>
+                <el-form-item>
+                  <template #label>
+                    <div class="el-form-item__label">正式基本工资</div>
+                  </template>
 
-        <div style="margin-top:-32px;">
-          <!--搜索输入框-->
-          <el-row style="width:140px;float:right;">
-            <el-input v-model="seek" placeholder="方案名称">
+                  <template #default="scope">
+                    <el-input v-model="fixedSalary.fixedwageOfficialmoney"  placeholder="请输入"
+                              :disabled="false"  v-if="yz.Officialmoney===null" />
+                    <el-input v-model="fixedSalary.fixedwageOfficialmoney"  placeholder="请输入"
+                              :disabled="true" v-if="yz.Officialmoney!=null" />
+                  </template>
+                </el-form-item><br>
+
+                <!-- 转正日期输入框 -->
+                <el-form-item>
+
+                  <template #label>
+                    <div class="el-form-item__label">转正日期</div>
+                  </template>
+                  <div class="block" >
+                    <el-date-picker style="width: 210px;" v-model="postdate" type="date" placeholder="请选择" disabled>
+
+                    </el-date-picker>
+                  </div>
+                </el-form-item>
+                <el-form-item>
+                  <template #label>
+                    <div class="el-form-item__label">备注</div>
+                  </template>
+                  <el-input v-model="fixedSalary.fixedwageRemark"  placeholder="请输入" />
+                </el-form-item>
+
+                <br>
+                <!-- 按钮 -->
+                <div style="margin-top: 30px;">
+                  <el-button @click="disly=!disly,RestForm()">取消</el-button>
+                  <el-button type="primary" @click="updatedept()">保存</el-button>
+                </div>
+              </el-form>
+            </el-drawer>
+
+            <!--  第二个隐藏框      -->
+            <el-button type="primary" style="margin-left: 16px" @click="dialogVisible=true"
+            >新增
+            </el-button>
+            <el-dialog
+                v-model="dialogVisible"
+                title="新增"
+                width="30%"
+                :before-close="handleClose"
+            >
+
+              <el-form ref="form" :model="dept" label-width="120px">
+                <el-form-item label="方案名称：">
+                  <el-input v-model="business1.businessName"></el-input>
+                </el-form-item>
+
+                <el-form-item label="节假日加班工资：">
+                  <el-input v-model="business1.workschemeHolidayratio"></el-input>
+                </el-form-item>
+                <el-form-item label="休息日加班工资：">
+                  <el-input v-model="business1.workschemeDayoffratio"></el-input>
+                </el-form-item>
+                <el-form-item label="工作日加班工资：">
+                  <el-input v-model="business1.workschemeWorkratio"></el-input>
+                </el-form-item>
+                <el-form-item label="备注：">
+                  <el-input v-model="business1.workschemeRemark"></el-input>
+                </el-form-item>
+              </el-form>
+              <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="dialogVisible = false,addworkscheme()"
+        >确定</el-button
+        >
+      </span>
+              </template>
+            </el-dialog>
+
+            <!-- 测试下拉按钮 -->
+            <el-input size="small" v-model="pageInfo.businessName" placeholder="请输入方案名称" style="width:150px;position: absolute;right: 80px;">
               <template #suffix>
-                <el-icon class="el-input__icon"><i-search/></el-icon>
+                <el-icon style="margin-top:9px;margin-right:10px"><i-search @click="selectEndAuditflow()"></i-search></el-icon>
               </template>
             </el-input>
-          </el-row>
+
+            <br />
+            <br />
+            <el-table :data="tableData" style="width: 100%">
+              <el-table-column fixed prop="businessId" label="出差方案编号" width="150" />
+              <el-table-column prop="travelId" label="出差编号" width="120" />
+              <el-table-column prop="businessName" label="出差方案名称" width="120" />
+              <el-table-column prop="businessOnemoney" label="出差一天金额" width="120" />
+              <el-table-column prop="businessState" label="状态" width="120" />
+              <el-table-column prop="businessRemark" label="备注" width="120" />
+              <el-table-column prop="createdTime" label="创建时间" width="120" />
+              <el-table-column prop="updatedTime" label="修改时间" width="120" />
+              <el-table-column fixed="right" label="操作" width="120">
+                <template #default="scope">
+                  <el-button type="text" size="small" @click="drawer = true,fixedSalary={fixedwagePeriodmoney:tableData[scope.$index].fixedwagePeriodmoney,fixedwageOfficialmoney:tableData[scope.$index].fixedwageOfficialmoney,fixedwageRemark:tableData[scope.$index].fixedwageRemark,fixedwageId:tableData[scope.$index].fixedwageId},yz={Officialmoney:tableData[scope.$index].fixedwageOfficialmoney}">编辑 </el-button>
+                  <el-button type="text" size="small" @click="drawer1 = true,fixedSalary={fixedwagePeriodmoney:tableData[scope.$index].fixedwagePeriodmoney,fixedwageOfficialmoney:tableData[scope.$index].fixedwageOfficialmoney,fixedwageRemark:tableData[scope.$index].fixedwageRemark,fixedwageId:tableData[scope.$index].fixedwageId},yz={Officialmoney:tableData[scope.$index].fixedwageOfficialmoney},Salary={deptId:tableData[scope.$index].deptId,staffId:tableData[scope.$index].staffId,staffName:tableData[scope.$index].staffName,frontSalary:tableData[scope.$index].fixedwageOfficialmoney}">删除 </el-button>
+
+                </template>
+              </el-table-column>
+            </el-table>
+            <!-- 分页插件 -->
+            <div class="demo-pagination-block" style="float: right">
+              <el-pagination
+                  v-model:currentPage="pageInfo.currentPage"
+                  v-model:page-size="pageInfo.pageSize"
+                  :default-page-size="pageInfo.pageSize"
+                  :page-sizes="[3, 4, 5, 6]"
+                  :page-size="3"
+                  :pager-count="4"
+                  layout="total, sizes, prev, pager, next, jumper"
+                  :total="pageInfo.total"
+                  @size-change="selectEndAuditflow"
+                  @current-change="selectEndAuditflow"
+                  prev-text="上一页"
+                  next-text="下一页"
+                  background
+              >
+              </el-pagination>
+            </div>
+
+
+
+            <!-- 调薪查询 -->
+
+
+
+          </el-tabs>
+
+
         </div>
-
-        <!-- 表格内容部分 -->
-        <div class="sub-Content__primary" style="margin-top: 50px">
-
-          <el-table :data="tableData" stripe style="width: 100%">
-            <el-table-column prop="name" label="方案名称" width="180" />
-            <el-table-column prop="name" label="核算规则" width="180" />
-            <el-table-column prop="name" label="适用对象" width="180" />
-            <el-table-column prop="name" label="职位" width="180" />
-            <el-table-column prop="name" label="备注" width="180" />
-            <el-table-column prop="name" label="状态" width="180" />
-            <el-table-column fixed="right" label="操作" width="180">
-              <template #default="scope">
-                <router-link :to="{path:this.insertevectionplan,query:{path: this.$route.query.path,name:'编辑'}}">
-                  <el-button type="text" size="small" @click="handleClick"
-                  >编辑 </el-button
-                  >
-                </router-link>&nbsp;
-                <el-button type="text" size="small" @click="handleClick">禁用 </el-button>
-<!--                <el-button type="text" size="small">删除 </el-button>-->
-                <el-popconfirm @confirm="deleteRow(scope.$index, tableData)"
-                               title="确认要删除此方案吗?">
-                  <template #reference>
-                    <el-button type="text" size="small" style="color: orange">删除 </el-button>
-                  </template>
-                </el-popconfirm>
-              </template>
-            </el-table-column>
-          </el-table>
-
-        </div>
-
-        <!-- 分页插件 -->
-        <div class="demo-pagination-block">
-          <el-pagination
-              v-model:currentPage="pageInfo.currentPage"
-              :page-sizes="[3, 5, 10, 50]"
-              v-model:page-size="pageInfo.pagesize"
-              :default-page-size="pageInfo.pagesize"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="pageInfo.total"
-              :pager-count="5"
-              background
-              @size-change="selectUsers"
-              @current-change="selectUsers"
-          >
-          </el-pagination>
-        </div>
-
-
-
       </div>
     </div>
   </div>
+
+
 </template>
 
 <script>
+import {
+  defineComponent,
+  ref
+} from 'vue'
 import {ElMessage} from "element-plus";
 
+
+
 export default {
-  data(){
-    return{
-      //新增编辑出差方案
-      insertevectionplan:'/salary/insertevectionplan',
-      seek:"",
-      tableData: [
-        {
-          date: '2016-05-03',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Home',
-        },
-        {
-          date: '2016-05-02',
-          name: 'Tom',
-          state: 'California',
-          city: 'Los Angeles',
-          address: 'No. 189, Grove St, Los Angeles',
-          zip: 'CA 90036',
-          tag: 'Office',
-        },
-      ],
+  data() {
+    return {
+      dialogVisible:false,
+      drawer: false,
+      drawer1: false,
+      disly_1:false,
+      activeName: 'first',
+      periodpay: '',
+      duepay: '',
+      periodfixed: '',
+      duefixed: '',
+      postdate: '',
+      remark: '',
+      increasepay: '',
+      range: '',
+      takedate: '',
+      cause: '',
+      remark2: '',
+      seek:'',
+      dept2:'',
+      seek2:'',
       pageInfo: {
-        // 分页参数
-        currentPage: 1, //当前页
-        pagesize: 3, // 页大小
-        total: 0, // 总页数
+        currentPage: 1,
+        /* 当前的页 */
+        pageSize: 3,
+        total: 0,
+        businessName:'',
       },
 
+      tableData: [
+
+      ],
+      tableData1: [
+
+      ],
+      yz:{
+        Officialmoney:"",
+      },
+      fixedSalary :{
+        fixedwageId:"", //固定工资表id
+        fixedwagePeriodmoney:"",//试用基本工资
+        fixedwageOfficialmoney:"",//正式基本工资
+        fixedwageRemark:"",//备注
+      },     workscheme1:{
+        workschemeId:"",//加班方案编号
+        workschemeName:"",//加班方案名称
+        workschemeHolidayratio:"",//节假日加班比例
+        workschemeDayoffratio:"",//休息日加班比例
+        workschemeWorkratio:"",//工作日加班比例
+        workschemeState:0,//状态;0：启用，1：禁用
+        workschemeRemark:"",//备注
+      },
+      business1:{
+        businessId:"",
+        businessName:"",
+        businessOnemoney:"",
+        businessState:0,
+        businessRemark:"",
+      },
+      options:[
+        {
+          value: '',
+          label: '',
+        },
+
+      ],
+      Salary:{
+        deptId:'',
+        staffId:'',
+        staffName:'',
+        frontSalary:'',//调薪前
+        afterSalary:'',//调薪后
+        salaryRemarks:'',
+        takeEffectDate:'',//生效日期
+        salaryState:0,//默认为不同意 0
+      },
     }
   },
-  methods:{
-    // 删除行
-    deleteRow(index, rows) {
-      rows.splice(index, 1);
-      ElMessage({
-        message: '删除成功',
-        type: 'success',
+  methods: {
+
+    //查询员工 部门 固定工资 职位
+    selectEndAuditflow() {
+      this.axios({
+        method:'post',
+        url:"http://localhost:8007/provider/chuaifanan/a",
+        data:this.pageInfo,
+        responseType:'json',
+        responseEncoding:'utf-8'
+      })  .then((response) => {
+        console.log("查询giao111");
+        console.log(response.data.data.records);
+        this.tableData = response.data.data.records;
+        this.pageInfo.total = response.data.data.total;
       })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+
+
+    },
+    handleClick(tab, event) {
+      console.log(tab, event)
+
+    },
+    submitForm() {
+      if (this.duepay.length == 0) {
+        ElMessage({
+          message: '请输入正式基本工资',
+          type: 'warning',
+        })
+      } else if (this.duefixed.length == 0) {
+        ElMessage({
+          message: '请输入正式固定工资',
+          type: 'warning',
+        })
+      } else {
+        alert(1111)
+      }
+    },
+    submitForm2(){
+      if (this.increasepay.length == 0) {
+        ElMessage({
+          message: '请输入调薪后基本工资',
+          type: 'warning',
+        })
+      } else if (this.takedate.length == 0) {
+        ElMessage({
+          message: '请输入生效日期',
+          type: 'warning',
+        })
+      } else if (this.cause.length == 0) {
+        ElMessage({
+          message: '请输入调薪原因',
+          type: 'warning',
+        })
+      } else {
+        alert(1111)
+      }
+    },
+    Salarypd(){
+      /*/!*   alert('11111111111')
+       if (this.fixedSalary.fixedwageOfficialmoney===null){
+         alert('msg')
+           document.getElementById("aaa").css("disabled","false")
+       }else {
+         alert('error')*!/
+       }*/
+
+    },
+    RestForm(){
+      this.periodpay='',
+          this.duepay= '',
+          this.periodfixed= '',
+          this.duefixed= '',
+          this.postdate= '',
+          this.remark= '',
+          this.increasepay= '',
+          this.range='',
+          this.takedate= '',
+          this.cause= '',
+          this.remark2= ''
+    },
+    takedates(){
+      var date = new Date();
+      if(this.takedate<date){
+        ElMessage({
+          message:'生效日期不能小于当前日期',
+          type:'warning',
+        })
+      }
+    }
+  },created() {
+    this.selectEndAuditflow();
+
+
+  },watch:{
+    pageInfo:{
+      handler: function () {
+
+        this.selectEndAuditflow();
+
+      },
+      deep: true,
+    },
+    pageInfo1:{
+      handler: function () {
+
+        this.selectEndAuditflow1();
+
+      },
+      deep: true,
     },
   }
 }
 </script>
 
-
 <style scoped>
-@import url("../../css/navigation.css");
-/deep/.ant-btn-primary {
-  color: #fff;
-  background-color: #085fc3;
-  border-color: #085fc3;
-  box-shadow: 0 2px 0 rgb(0 0 0 / 5%);
-  margin-left: 20px;
-}
-/deep/.cell {
-  padding-left: 10px;
-  text-align: center;
-  color: black;
+#tab-first {
+  margin: 40px
 }
 
+/deep/.body_1 {
+  background: #fff;
+  border-radius: 4px;
+  /* font-size: 14px; */
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  min-height: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+  border: 1px solid #e9e9e9;
+  position: relative;
+  padding: 0 24px;
+  color: rgba(0, 0, 0, 0.65);
+}
+/deep/.el-input__inner{
+  height: 32px;
+}
+/deep/.body_2 {
+  background: #fff;
+  border-radius: 4px;
+  /* font-size: 14px; */
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  min-height: 100%;
+  min-height: 720px;
+  padding: 16px;
+  box-sizing: border-box;
+  border: 1px solid #e9e9e9;
+  position: relative;
+  padding: 0 24px;
+  color: rgba(0, 0, 0, 0.65);
+  margin: 20px;
+
+}
+
+/deep/.body_3 {
+  background: #e8edf2;
+  padding: 24px 0 34px 24px;
+  min-height: 100%;
+  box-sizing: border-box;
+  /* display: none; */
+  text-align: center;
+  border: 1px solid #e9e9e9;
+}
+/deep/.body_4{
+  background: #e8edf2;
+  padding: 24px 0 34px 24px;
+  min-height: 100%;
+  box-sizing: border-box;
+  /* display: none; */
+
+  text-align: center;
+  border: 1px solid #e9e9e9;
+}
+
+/deep/.el-form--inline .el-form-item {
+  margin-right: 110px;
+}
+
+/deep/.el-form-item__label {
+  width: 110px;
+}
 /* 分页的样式 */
 /deep/.demo-pagination-block {
   float: right;
   margin: 20px;
 }
-
+/deep/.el-table thead{
+  color: #607d8b;
+}
 </style>

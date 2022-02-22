@@ -3,8 +3,8 @@
   <div class="body_1">
     <el-tabs type="border-card">
       <!-- 待办申请页面 -->
-      <el-tab-pane label="待办申请" @click="salaryme">
-        <el-button @click="resetDateFilter1">重置日期过滤</el-button>
+      <el-tab-pane label="待办申请">
+        <el-button @click="salaryme">重置</el-button>
         &nbsp;
         <el-input
             v-model="input"
@@ -17,11 +17,11 @@
         <el-table
             ref="filterTable1"
             row-key="date1"
-            :data="tableData1"
+            :data="tableData"
             style="width: 100%"
         >
           <el-table-column
-              prop="date1"
+              prop="auditflowdetaidate"
               label="日期"
               sortable
               width="140"
@@ -34,13 +34,18 @@
             ]"
               :filter-method="filterHandler"
           />
-          <el-table-column prop="AUDITFLOW_ID" label="审批编号" width="100"/>
-          <el-table-column prop="AUDITFLOW_TYPE" label="流程" width="100"/>
-          <el-table-column prop="STAFF_ID" label="申请人" width="150"/>
-          <!-- <el-table-column prop="name" label="操作人" width="100" /> -->
-          <el-table-column prop="AUDITFLOW_STATE" label="状态" width="100"/>
-          <el-table-column prop="STAFF_NAME" label="当前审批人" width="150"/>
-          <el-table-column prop="UPDATED_TIME" label="最近处理" width="150"/>
+          <el-table-column prop="auditflowid" label="审批编号" width="100"/>
+          <el-table-column prop="auditflowtype" label="流程" width="100"/>
+          <el-table-column prop="staffname1" label="申请人" width="150"/>
+          <el-table-column prop="auditflowdetaistate" label="状态" width="100">
+            <template #default="scope">
+              <span v-if="scope.row.auditflowdetaistate==0">审批中</span>
+              <span v-if="scope.row.auditflowdetaistate==1">待我审批</span>
+              <span v-if="scope.row.auditflowdetaistate==2">已审批</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="staffname2" label="当前审批人" width="150"/>
+          <el-table-column prop="createdtime" label="最近处理" width="150"/>
 
           <el-table-column label="操作">
             <template #default="scope">
@@ -100,11 +105,52 @@
       </el-tab-pane>
       <!-- 点击详情，弹出抽屉-->
       <el-drawer v-model="drawer" title="I am the title" :with-header="false">
-        <span>Hi there!</span>
+        <el-form ref="form" :model="details">
+          <el-form-item label="标题：">
+            <el-input v-model="details[0].auditflowTitle" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="申请人：">
+            <el-input v-model="details[0].staffName1" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="调薪前基本工资：">
+            <el-input v-model="details[0].frontsalary" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="调薪后基本工资：">
+            <el-input v-model="details[0].aftersalary" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="备注：">
+            <el-input v-model="details[0].salaryremarks" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="生效日期：">
+            <el-input v-model="details[0].takeeffectdate" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="当前审核状态：">
+            <el-input v-if="details[0].auditflowdetaiState===0" v-model="state.ongoing" disabled></el-input>
+            <el-input v-if="details[0].auditflowdetaiState===1" v-model="state.approval" disabled></el-input>
+            <el-input v-if="details[0].auditflowdetaiState===2" v-model="state.through" disabled></el-input>
+            <el-input v-if="details[0].auditflowdetaiState===3" v-model="state.rejected" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="申请状态：">
+            <el-input v-if="details[0].auditflowstate===0" v-model="state.pending" disabled></el-input>
+            <el-input v-if="details[0].auditflowstate===1" v-model="state.through" disabled></el-input>
+            <el-input v-if="details[0].auditflowstate===2" v-model="state.rejected" disabled></el-input>
+            <el-input v-if="details[0].auditflowstate===3" v-model="state.undo" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="审批人：">
+            <el-input v-model="details[0].staffName2" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="审批备注：">
+            <el-input v-model="details[0].auditflowdetaiRemarks" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="审核时间：">
+            <el-input v-model="details[0].auditflowdetaiDate" disabled></el-input>
+          </el-form-item>
+        </el-form>
       </el-drawer>
+
       <!-- 已办申请页面 -->
       <el-tab-pane label="已办申请" @click="salaryed">
-        <el-button @click="resetDateFilter">重置日期过滤</el-button>
+        <el-button @click="resetDateFilter">重置</el-button>
         &nbsp;
         <el-input
             v-model="input"
@@ -117,30 +163,27 @@
         <el-table
             ref="filterTable"
             row-key="date"
-            :data="tableData"
+            :data="tableData1"
             style="width: 100%"
         >
           <el-table-column
-              prop="date"
+              prop="auditflowdetaidate"
               label="日期"
-              sortable
               width="140"
-              column-key="date"
-              :filters="[
-              { text: '2016-05-01', value: '2016-05-01' },
-              { text: '2016-05-02', value: '2016-05-02' },
-              { text: '2016-05-03', value: '2016-05-03' },
-              { text: '2016-05-04', value: '2016-05-04' },
-            ]"
-              :filter-method="filterHandler"
           />
-          <el-table-column prop="AUDITFLOW_ID" label="审批编号" width="100"/>
-          <el-table-column prop="AUDITFLOW_TYPE" label="流程" width="100"/>
-          <el-table-column prop="STAFF_ID" label="申请人" width="150"/>
-          <!-- <el-table-column prop="name" label="操作人" width="100" /> -->
-          <el-table-column prop="AUDITFLOW_STATE" label="状态" width="100"/>
-          <el-table-column prop="STAFF_NAME" label="历史审批人" width="150"/>
-          <el-table-column prop="UPDATED_TIME" label="最近处理" width="140"/>
+          <el-table-column prop="auditflowid" label="审批编号" width="100"/>
+          <el-table-column prop="auditflowtype" label="流程" width="100"/>
+          <el-table-column prop="staffname1" label="申请人" width="150"/>
+          <el-table-column prop="auditflowdetaistate" label="状态" width="100">
+            <template #default="scope">
+              <span v-if="scope.row.auditflowdetaistate==0">审批中</span>
+              <span v-if="scope.row.auditflowdetaistate==1">待我审批</span>
+              <span v-if="scope.row.auditflowdetaistate==2">已审批</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="staffname2" label="当前审批人" width="150"/>
+          <el-table-column prop="createdtime" label="最近处理" width="150"/>
+
           <el-table-column label="操作">
             <template #default="scope">
               <el-button
@@ -541,9 +584,9 @@ export default {
       },
     };
   },
-  created() {
+  mounted() {
     this.salaryme();
-    //this.positveed();
+    this.salaryed();
   },
   methods: {
     salaryme(){
@@ -555,9 +598,6 @@ export default {
         console.log(response);
         _this.tableData = response.data.data.records
         _this.pageInfo.total=response.data.data.total
-      }).catch(function (error){
-        console.log('获取表单失败')
-        console.log(error)
       })
     },
     salaryed(){
@@ -567,11 +607,10 @@ export default {
             params:this.pageInfo,
           }).then((response)=>{
         console.log(response);
-        _this.tableData = response.data.data.records
-        _this.pageInfo.total=response.data.data.total
-      }).catch(function (error){
-        console.log('获取表单失败')
-        console.log(error)
+        if (response.data.data!=null){
+          _this.tableData1 = response.data.data.records
+          _this.pageInfo.total=response.data.data.total
+        }
       })
     },
 
