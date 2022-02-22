@@ -29,12 +29,14 @@
                         <el-button type="text" size="mini" v-if="value1!== value3" @click="newday()">今天</el-button>
                         <el-button type="text" size="mini" @click="prevDate">上一天</el-button>
                         <el-date-picker
+                            @change="querycdAll()"
                             v-model="value1"
                             type="date"
                             size="mini"
                             :clearable="false"
                             style="padding-right: 10px;padding-left: 10px;width: 100px;"
-                            placeholder="选择日期">
+                            placeholder="选择日期"
+                            value-format="YYYY-MM-DD">
                         </el-date-picker>
                         <el-button type="text" size="mini" @click="nextDate">下一天</el-button>
                       </div>
@@ -43,10 +45,41 @@
                       <div class="ant-day1">查看范围: </div>
                       <div class="ant-day2">
                         <el-radio-group v-model="radio2" size="mini" :border="true">
-                          <el-radio-button label="全部"></el-radio-button>
+                          <el-radio-button label="全部" @click="Alls()"></el-radio-button>
                           <el-radio-button label="部门"></el-radio-button>
                           <el-radio-button label="人员"></el-radio-button>
                         </el-radio-group>
+                      </div>
+                      <div>
+                        <div style="margin-top: 5px;">
+                          <el-select v-model="input4" clearable ref="vueSelect"  size="small"
+                                     v-if="radio2=='部门'"
+                                     @click="onclicks()">
+                            <el-option hidden></el-option>
+                            <el-tree
+                                :data="deptlists"
+                                :default-expand-all=true
+                                :check-on-click-node=true
+                                :check-strictly=true
+                                node-key="deptId"
+                                :props="defaultProps"
+                                ref="tree"
+                                @check-change="handleCheckChange()"
+                            />
+                          </el-select>
+
+                          <el-input
+                              v-if="radio2=='人员'"
+                              v-model="input5"
+                              placeholder="请输入员工姓名"
+                              size="small"
+                          >
+                            <template #append>
+                              <el-button @click="querycdAll()">搜索</el-button>
+                            </template>
+                          </el-input>
+                        </div>
+
                       </div>
                  </div>
               </div>
@@ -69,11 +102,25 @@
                 </el-table-column>
                 <el-table-column label="上班一">
                   <el-table-column prop="smornClock" label="打卡时间" />
-                  <el-table-column prop="smornResult" label="打卡结果" width="100" />
+                  <el-table-column label="打卡结果" width="100">
+                    <template #default="scope">
+                      <span v-if="scope.row.smornResult=='正常'">{{scope.row.smornResult}}</span>
+                      <span style="color: red" v-if="scope.row.smornResult=='迟到' || scope.row.smornResult=='旷工'">
+                      {{scope.row.smornResult}}
+                    </span>
+                    </template>
+                  </el-table-column>
                 </el-table-column>
                 <el-table-column label="下班一">
                   <el-table-column prop="xafternoonClock" label="打卡时间"/>
-                  <el-table-column prop="xafternoonResult" label="打卡结果" width="100" />
+                  <el-table-column label="打卡结果" width="100">
+                    <template #default="scope">
+                      <span v-if="scope.row.xafternoonResult=='正常'">{{scope.row.xafternoonResult}}</span>
+                      <span style="color: red" v-if="scope.row.xafternoonResult=='早退' || scope.row.xafternoonResult=='旷工'">
+                      {{scope.row.xafternoonResult}}
+                    </span>
+                    </template>
+                  </el-table-column>
                 </el-table-column>
                 <el-table-column prop="atsShould" label="应出勤天数" width="140"/>
                 <el-table-column prop="atShould" label="实际出勤天数" width="140"/>
@@ -114,7 +161,16 @@ import {ElMessage} from "element-plus";
 
 export default {
   data(){
+    const defaultProps = {
+      children: 'deptlist',
+      label: 'deptName',
+    }
     return{
+      defaultProps,
+      //部门下拉选=选择器
+      input5:'',
+      //员工搜索框
+      input4:'',
       value1:'',
       value3:'',
       radio2:'全部',
@@ -125,19 +181,42 @@ export default {
         total: 0,
         classesName:''
       },
-      tableData:[]
+      tableData:[],
+      //存放部门信息、职位信息、招聘计划信息
+      deptlists: '',
     }
   },
   created() {
+    //获取当前时间并打印
     this.getCurrentTime();
+    //考勤all打卡记录查询（按照天数查询）
     this.querycdAll();
+    //查询所有部门信息
+    this.selectAlldept();
   },
   methods: {
+    //点击Select选择器清空原有复选框选项
+    onclicks() {
+      this.$refs.tree.setCheckedKeys([]);
+    },
+    //筛选：节点选中状态发生变化时的回调
+    handleCheckChange(data, checked, indeterminate) {
+      //获取所有选中的节点 start
+      let res = this.$refs.tree.getCheckedNodes()
+      res.forEach((item) => {
+        //赋值给选择器
+        this.input4 = item.deptName
+        //调用查询方法
+        this.querycdAll();
+        //关闭Select选择器
+        this.$refs.vueSelect.blur();
+      })
+    },
     getCurrentTime() {
       //获取当前时间并打印
       var _this = this;
       let yy = new Date().getFullYear();
-      let mm = new Date().getMonth()+1 <10 ? '0'+new Date().getMonth() : new Date().getMonth();
+      let mm = new Date().getMonth()+1 <10 ? '0'+(new Date().getMonth()+1) : new Date().getMonth()+1;
       let dd = new Date().getDate() <10 ? '0'+new Date().getDate() : new Date().getDate();
       _this.value1 = yy+'-'+mm+'-'+dd;
       _this.value3 = yy+'-'+mm+'-'+dd;
@@ -148,6 +227,7 @@ export default {
           new Date(this.value1).getTime() - 24 * 60 * 60 * 1000
       ); //计算当前日期 -1
       this.value1 = this.convertToDate(odata); //格式化日期并赋值
+      this.querycdAll();
     },
     nextDate() {
       //后一天
@@ -155,6 +235,7 @@ export default {
           new Date(this.value1).getTime() + 24 * 60 * 60 * 1000
       ); //计算当前日期 +1
       this.value1 = this.convertToDate(odata); //格式化日期并赋值
+      this.querycdAll();
     },
     convertToDate(date) {
       var date = new Date(date);
@@ -168,12 +249,20 @@ export default {
     newday(){//今天
       var _this = this;
       let yy = new Date().getFullYear();
-      let mm = new Date().getMonth()+1 <10 ? '0'+new Date().getMonth() : new Date().getMonth();
+      let mm = new Date().getMonth()+1 <10 ? '0'+(new Date().getMonth()+1) : new Date().getMonth()+1;
       let dd = new Date().getDate() <10 ? '0'+new Date().getDate() : new Date().getDate();
       _this.value1 = yy+'-'+mm+'-'+dd;
+      this.querycdAll();
     },
-
-
+    //查看范围：全部按钮
+    Alls(){
+      //清空部门选择器
+      this.input4='';
+      //清空员工搜索框
+      this.input5='';
+      //重新调用查询方法
+      this.querycdAll();
+    },
     //考勤all打卡记录查询（按照天数查询）
     querycdAll(){
       this.axios({
@@ -181,13 +270,33 @@ export default {
         method: "post",
         data: {
           currenPage: this.pageInfo.currenPage,
-          pagesize:this.pageInfo.pagesize
+          pagesize:this.pageInfo.pagesize,
+          dates:this.value1,
+          staffName:this.input5,
+          deptName:this.input4,
         },
         responseType: 'json',
         responseEncoding: 'utf-8',
       }).then((response) => {
         this.tableData = response.data.data.records
         this.pageInfo.total = response.data.data.total
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    /**
+     * select：查询所有部门信息
+     */
+    selectAlldept() {
+      this.axios({
+        url: "http://localhost:8007/provider/dept/dept/selectAlldept",
+        method: "post",
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.log(response);
+        this.deptlists = response.data.data
       }).catch(function (error) {
         console.log('获取列表失败')
         console.log(error);
@@ -226,7 +335,6 @@ export default {
 .ant-day2{
   padding:5px;
   line-height: 30px;
-  width: 86%;
 }
 .el-radio-group {
   font-size: 0;

@@ -37,7 +37,7 @@
 								</el-option>
 							</el-select>
                              &nbsp;
-                            <el-input v-model="pageInfo.recruitmentPlanName" placeholder="招聘计划名称"
+              <el-input v-model="pageInfo.recruitmentPlanName" placeholder="招聘计划名称"
 								class="input-with-select" size="small" style="width: 300px;">
 								<template #append>
 									<el-button @click="getrecrselectAll()">搜索</el-button>

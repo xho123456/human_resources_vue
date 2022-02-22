@@ -1,4 +1,4 @@
-<!-- 考勤记录汇总 -->
+<!-- 月考勤统计 -->
 <template>
   <div class="saas-main-content">
     <div class="j-card j-card-bordered mainContent">
@@ -10,7 +10,7 @@
               <div class="my-span1" style="display: flex;">
                 <i class="iconfont" style="font-size: 20px">&#xe7d9;</i>
               </div>
-              <div class="my-span2">考勤记录汇总</div>
+              <div class="my-span2">月考勤统计</div>
             </div>
             <div>
               <el-button type="primary" size="small">导入Excel</el-button>
@@ -222,7 +222,7 @@ export default {
 .ant-day2{
   padding:5px;
   line-height: 30px;
-  width: 86%;
+  /*width: 86%;*/
 }
 .el-radio-group {
   font-size: 0;
