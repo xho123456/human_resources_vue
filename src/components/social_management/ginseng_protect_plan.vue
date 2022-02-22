@@ -13,13 +13,14 @@
           <!-- 下拉选择器 -->
           <div class="resume">
             <el-select
-                v-model="condition"
+                v-model="pageInfo.defInsuredState"
                 size="small"
                 clearable
                 placeholder="请选择"
+                @click="pageSelect()"
             >
               <el-option
-                  v-for="item in disabled"
+                  v-for="item in defInsuredState"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -37,25 +38,28 @@
                     :default-sort="{ prop: 'date', order: 'descending' }"
                     @selection-change="deletepl"
           >
-            <el-table-column prop="scheme_id" label="方案编号"/>
-            <el-table-column prop="scheme_name" label="方案名称"/>
-            <el-table-column prop="insured_number" label="参保人数"/>
-            <el-table-column prop="scheme_state" label="状态"/>
+            <el-table-column type="index" label="序号" width="100" />
+            <el-table-column prop="defInsuredName" label="方案名称"/>
+            <el-table-column prop="defInsuredNumber" label="参保人数"/>
+            <el-table-column prop="defInsuredState" label="状态">
+              <template #default="scope">
+                <span v-if="scope.row.defInsuredState==0">启用</span>
+                <span v-if="scope.row.defInsuredState==1">禁用</span>
+              </template>
+            </el-table-column>
             <el-table-column label="操作">
-              <template #default="scope"
-              >
+              <template #default="scope">
                 <router-link :to="{path:this.path,query:{path:this.$route.query.path,name:'修改'}}">
                   <el-button size="small" type="text">
                     <i class="iconfont" style="font-size: 13px;color: #5aaaff">&#xe606</i>
                     修改
                   </el-button>
-                </router-link
-                >&nbsp;
+                </router-link>&nbsp;
 
-                <el-button type="text" size="small"> {{ scope.row.tableData === '启用' ? '禁用 ' : '启用 ' }}</el-button>
+                <el-button type="text" size="small"> {{ scope.row.defInsuredState === 0 ? '禁用 ' : '启用 ' }}</el-button>
 
                 <!-- 删除行确认框 -->
-                <el-popconfirm v-if="scope.row.scheme_state==='禁用'"
+                <el-popconfirm v-if="scope.row.defInsuredState===1"
                                @confirm="deleteRow(scope.$index, tableData)" title="删除此方案?">
                   <template #reference>
                     <el-button style="color:red" type="text" size="small">
@@ -74,19 +78,24 @@
         <!-- 分页插件 -->
         <div class="demo-pagination-block">
           <el-pagination
+              v-model:current-page="pageInfo.currentPage"
               v-model:currentPage="pageInfo.currentPage"
-              :page-sizes="[3, 5, 10, 50]"
               v-model:page-size="pageInfo.pagesize"
               :default-page-size="pageInfo.pagesize"
+              :page-sizes="[3, 4, 5, 6]"
+              :page-size="3"
+              :pager-count="4"
               layout="total, sizes, prev, pager, next, jumper"
               :total="pageInfo.total"
-              :pager-count="5"
+              @size-change="pageSelect"
+              @current-change="pageSelect"
+              prev-text="上一页"
+              next-text="下一页"
               background
-              @size-change="selectUsers"
-              @current-change="selectUsers"
           >
           </el-pagination>
         </div>
+
       </div>
     </div>
   </div>
@@ -98,7 +107,43 @@ import {ref, defineComponent} from "vue";
 import { ElMessage } from 'element-plus'
 
 export default {
+  data() {
+    return {
+      path: "/social/basic_setup/new_amend_scheme",
+      pageInfo: {
+        // 分页参数
+        currentPage: 1,
+        pagesize: 3,
+        total: 0,
+        defInsuredState:''
+      },
+      //下拉选择器
+      defInsuredState: [
+        {value: "0", label: "启用"},
+        {value: "1", label: "禁用"},
+      ],
+
+      // 参保方案表数据
+      tableData: [],
+    };
+  },
+  created() {
+   this.pageSelect()
+  },
   methods: {
+    pageSelect(){
+      this.axios({
+        method:'post',
+        url:"http://localhost:8007/provider/defInsured/page",
+        data:this.pageInfo,
+        responseType:'json',
+        responseEncoding:'utf-8',
+      }).then((response)=>{
+        console.log(response)
+        this.tableData = response.data.data.records
+        this.pageInfo.total=response.data.data.total
+      })
+    },
     // 删除行
     deleteRow(index, rows) {
       rows.splice(index, 1);
@@ -108,57 +153,7 @@ export default {
       })
     },
   },
-  data() {
-    return {
-      path: "/social/basic_setup/new_amend_scheme",
-      pageInfo: {
-        // 分页参数
-        currentPage: 1, //当前页
-        pagesize: 3, // 页大小
-        total: 0, // 总页数
-      },
-      //下拉选择器
-      disabled: [
-        {value: "0", label: "启用"},
-        {value: "1", label: "禁用"},
-      ],
-      // 下拉框的值
-      condition: "",
-      // 参保方案表数据
-      tableData: [
-        {
-          scheme_id: 1, // 方案id
-          scheme_name: "方案1", // 方案名称
-          insured_number: 10, // 参保人数
-          scheme_state: "启用", // 方案状态
-        },
-        {
-          scheme_id: 2, // 方案id
-          scheme_name: "方案2", // 方案名称
-          insured_number: 20, // 参保人数
-          scheme_state: "禁用", // 方案状态
-        },
-        {
-          scheme_id: 3, // 方案id
-          scheme_name: "方案3", // 方案名称
-          insured_number: 30, // 参保人数
-          scheme_state: "启用", // 方案状态
-        },
-        {
-          scheme_id: 4, // 方案id
-          scheme_name: "方案4", // 方案名称
-          insured_number: 40, // 参保人数
-          scheme_state: "禁用", // 方案状态
-        },
-        {
-          scheme_id: 5, // 方案id
-          scheme_name: "方案5", // 方案名称
-          insured_number: 50, // 参保人数
-          scheme_state: "启用", // 方案状态
-        },
-      ],
-    };
-  },
+
 };
 </script>
 
@@ -184,7 +179,7 @@ export default {
 
 /* 分页的样式 */
 .demo-pagination-block {
-  float: right;
+  float: left;
   margin: 20px;
 }
 

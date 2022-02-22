@@ -3,8 +3,9 @@
   <div class="body_1">
     <el-tabs type="border-card">
       <!-- 待办申请页面 -->
-      <el-tab-pane label="待办申请" @click="positveme">
-        <el-button @click="resetDateFilter1">重置日期过滤</el-button>
+      <el-tab-pane label="待办申请"  >
+<!--        -->
+        <el-button @click="positveme">重置</el-button>
         &nbsp;
         <el-input
             v-model="input"
@@ -15,24 +16,13 @@
         <el-button type="success" plain>搜索</el-button>
         <!--  表格 -->
         <el-table
-            ref="filterTable1"
-            row-key="date1"
-            :data="tableData1"
+            :data="tableData"
             style="width: 100%"
         >
           <el-table-column
               prop="AUDITFLOWDETAIDATE"
               label="日期"
-              sortable
               width="140"
-              column-key="date1"
-              :filters="[
-              { text: '2016-05-01', value: '2016-05-01' },
-              { text: '2016-05-02', value: '2016-05-02' },
-              { text: '2016-05-03', value: '2016-05-03' },
-              { text: '2016-05-04', value: '2016-05-04' },
-            ]"
-              :filter-method="filterHandler"
           />
           <el-table-column prop="AUDITFLOWID" label="审批编号" width="100"/>
           <el-table-column prop="auditflowtype" label="流程" width="100"/>
@@ -100,7 +90,6 @@
           >
             <!--  @size-change="selectUsers" @current-change="selectUsers" -->
           </el-pagination>
-          {{date}}
         </div>
       </el-tab-pane>
       <!-- 点击详情，弹出抽屉-->
@@ -108,8 +97,9 @@
         <span>我是抽屉</span>
       </el-drawer>
       <!-- 已办申请页面 -->
-      <el-tab-pane label="已办申请" @click="positveed">
-        <el-button @click="resetDateFilter">重置日期过滤</el-button>
+      <el-tab-pane label="已办申请">
+<!--        -->
+        <el-button @click="positveed">重置</el-button>
         &nbsp;
         <el-input
             v-model="input"
@@ -119,19 +109,13 @@
         &nbsp;
         <el-button type="success" plain>搜索</el-button>
         <el-table
-            ref="filterTable"
-            row-key="date"
-            :data="tableData"
+            :data="tableData1"
             style="width: 100%"
         >
           <el-table-column
               prop="AUDITFLOWDETAIDATE"
               label="日期"
-              sortable
               width="140"
-              column-key="date"
-
-              :filter-method="filterHandler"
           />
           <el-table-column prop="AUDITFLOWID" label="审批编号" width="100"/>
           <el-table-column prop="auditflowtype" label="流程" width="100"/>
@@ -140,6 +124,7 @@
             <template #default="scope">
               <span v-if="scope.row.auditflowdetaistate==0">审批中</span>
               <span v-if="scope.row.auditflowdetaistate==1">待我审批</span>
+              <span v-if="scope.row.auditflowdetaistate==2">已审批</span>
             </template>
           </el-table-column>
           <el-table-column prop="staffname2" label="历史审批人" width="150"/>
@@ -166,8 +151,8 @@
               layout="total, sizes, prev, pager, next, jumper"
               :total="pageInfo.total"
               :pager-count="5"
-              @size-change="positveed()"
-              @current-change="positveed()"
+              @size-change="positveed"
+              @current-change="positveed"
               prev-text="上一页"
               next-text="下一页"
               background
@@ -175,7 +160,6 @@
           </el-pagination>
 
         </div>
-        {{date}}
       </el-tab-pane>
       <!--       我的申请页面:转正 -->
       <el-tab-pane label="我的申请">
@@ -205,7 +189,7 @@
         <el-table
             ref="filterTable"
             row-key="date"
-            :data="tableData"
+            :data="tableData2"
             style="width: 100%"
         >
           <el-table-column
@@ -224,10 +208,10 @@
           />
           <el-table-column prop="name" label="审批编号" width="150"/>
           <el-table-column prop="name" label="流程" width="150"/>
-          <el-table-column prop="name" label="申请人" width="160"/>
-          <el-table-column prop="name" label="状态" width="160"/>
-          <el-table-column prop="name" label="当前审批人" width="160"/>
-          <el-table-column prop="name" label="最近处理" width="160"/>
+          <el-table-column prop="name" label="申请人" width="150"/>
+          <el-table-column prop="name" label="状态" width="150"/>
+          <el-table-column prop="name" label="当前审批人" width="150"/>
+          <el-table-column prop="name" label="最近处理" width="150"/>
           <el-table-column label="操作" >
             <template #default="scope" >
               <el-popconfirm
@@ -393,121 +377,19 @@ export default {
         //备注
         remarks_1: "",
         //日期
-        date1: "",
+        date: "",
       },
 
       // 待办转正审批列表
       tableData: [
 
-        {
-          date: "2016-05-03",
-          //审批编号
-          AUDITFLOW_ID: "0001",
-          //类型
-          AUDITFLOW_TYPE: "转正",
-          //申请人（员工名称）
-          STAFF_ID: "名字",
-          //审批状态
-          AUDITFLOW_STATE: "通过",
-          //审批人
-          STAFF_NAME: "管理员",
-          //最近处理
-          UPDATED_TIME: "2020-01-01",
-        },
-        {
-          date: "2016-05-04",
-          //审批编号
-          AUDITFLOW_ID: "0001",
-          //类型
-          AUDITFLOW_TYPE: "转正",
-          //申请人（员工名称）
-          STAFF_ID: "名字",
-          //审批状态
-          AUDITFLOW_STATE: "通过",
-          //审批人
-          STAFF_NAME: "管理员",
-          //最近处理
-          UPDATED_TIME: "2020-01-01",
-        },
-        {
-          date: "2016-05-05",
-          //审批编号
-          AUDITFLOW_ID: "0001",
-          //类型
-          AUDITFLOW_TYPE: "转正",
-          //申请人（员工名称）
-          STAFF_ID: "名字",
-          //审批状态
-          AUDITFLOW_STATE: "通过",
-          //审批人
-          STAFF_NAME: "管理员",
-          //最近处理
-          UPDATED_TIME: "2020-01-01",
-        },
       ],
       // 已办转正审批列表
       tableData1: [
-        {
-          date1: "2016-05-02",
-          //审批编号
-          AUDITFLOW_ID: "0001",
-          //类型
-          AUDITFLOW_TYPE: "转正",
-          //申请人（员工名称）
-          STAFF_ID: "名字",
-          //审批状态
-          AUDITFLOW_STATE: "通过",
-          //审批人
-          STAFF_NAME: "管理员",
-          //最近处理
-          UPDATED_TIME: "2020-01-01",
-        },
-        {
-          date1: "2016-05-03",
-          //审批编号
-          AUDITFLOW_ID: "0001",
-          //类型
-          AUDITFLOW_TYPE: "转正",
-          //申请人（员工名称）
-          STAFF_ID: "名字",
-          //审批状态
-          AUDITFLOW_STATE: "通过",
-          //审批人
-          STAFF_NAME: "管理员",
-          //最近处理
-          UPDATED_TIME: "2020-01-01",
-        },
-        {
-          date1: "2016-05-04",
-          //审批编号
-          AUDITFLOW_ID: "0001",
-          //类型
-          AUDITFLOW_TYPE: "转正",
-          //申请人（员工名称）
-          STAFF_ID: "名字",
-          //审批状态
-          AUDITFLOW_STATE: "通过",
-          //审批人
-          STAFF_NAME: "管理员",
-          //最近处理
-          UPDATED_TIME: "2020-01-01",
-        },
-        {
-          date1: "2016-05-05",
-          //审批编号
-          AUDITFLOW_ID: "0001",
-          //类型
-          AUDITFLOW_TYPE: "转正",
-          //申请人（员工名称）
-          STAFF_ID: "名字",
-          //审批状态
-          AUDITFLOW_STATE: "通过",
-          //审批人
-          STAFF_NAME: "管理员",
-          //最近处理
-          UPDATED_TIME: "2020-01-01",
-        },
+
       ],
+      // 我的转正审批列表
+      tableData2: [],
       // 分页
       pageInfo: {
         // 分页参数
@@ -517,9 +399,9 @@ export default {
       },
     };
   },
-  created() {
+  mounted() {
     this.positveme();
-    //this.positveed();
+    this.positveed();
   },
   methods: {
     positveme(){
@@ -528,12 +410,9 @@ export default {
           "http://localhost:8007/provider/worker", {
             params:this.pageInfo,
           }).then((response)=>{
-        console.log(response);
+         console.log(response);
         _this.tableData = response.data.data.records
         _this.pageInfo.total=response.data.data.total
-      }).catch(function (error){
-        console.log('获取表单失败')
-        console.log(error)
       })
     },
     positveed(){
@@ -543,11 +422,10 @@ export default {
             params:this.pageInfo,
           }).then((response)=>{
         console.log(response);
-        _this.tableData = response.data.data.records
-        _this.pageInfo.total=response.data.data.total
-      }).catch(function (error){
-        console.log('获取表单失败')
-        console.log(error)
+        if (response.data.data!=null){
+          _this.tableData1 = response.data.data.records
+          _this.pageInfo.total=response.data.data.total
+        }
       })
     },
 
@@ -612,7 +490,7 @@ export default {
     through2(){
       alert(1)
     }
-  },
+  }
 };
 </script>
 

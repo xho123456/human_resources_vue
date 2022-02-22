@@ -6,33 +6,33 @@
         <el-col :span="4">
           <el-card shadow="always" style="background-color: rgb(35, 167, 161);color:white;font-size:14px;" @click="staffroster">
             <p>在职</p>
-            <p>24</p>
+
           </el-card>
         </el-col>
 
         <el-col :span="5" >
           <el-card shadow="hover" style="background-color: rgb(35, 167, 161);color:white;font-size:14px;" @click="staffhistory">
             <p>离职员工</p>
-            <p>0</p>
+
           </el-card>
         </el-col>
 
         <el-col :span="5">
           <el-card shadow="never" style="background-color: rgb(35, 167, 161);color:white;font-size:14px; " @click="staffElite">
             <p>精英干部</p>
-            <p>5</p>
+
           </el-card>
         </el-col>
         <el-col :span="5">
           <el-card shadow="never" style="background-color: rgb(35, 167, 161);color:white;font-size:14px; " @click="staffpunishment">
             <p>惩罚员工</p>
-            <p>3</p>
+
           </el-card>
         </el-col>
         <el-col :span="5">
           <el-card shadow="never" style="background-color: rgb(35, 167, 161);color:white;font-size:14px;" @click="staffreward">
             <p>获奖员工</p>
-            <p>0</p>
+
           </el-card>
         </el-col>
 

@@ -8,36 +8,46 @@
           <div class="ant-popover-inner">
             <div style="height: 300px;width: 300px;background-color: white;box-shadow: rgba(12, 11, 11, 0.28) 0px 0px 5px;">
               <!--日历-->
-                <div style="height: 50px; padding: 0 16px;border-bottom: 1px solid #e9e9e9;color: #666;">
-                  <div style="height: 100%;line-height: 50px;">
-                    <span><i class="iconfont" style="color: #61a8f5;font-size: 22px;margin-right: 8px;position: relative;top: 3px;">&#xe62b;</i></span>
-                    <span style="margin-right: 8px;font-size: 14px;color: #333;">{{gettime}}</span>
-                    <span style="font-size: 14px;color: #333;">{{week}}</span>
+              <div style="height: 50px; padding: 0 16px;border-bottom: 1px solid #e9e9e9;color: #666;">
+                <div style="height: 100%;line-height: 50px;">
+                  <span><i class="iconfont" style="color: #61a8f5;font-size: 22px;margin-right: 8px;position: relative;top: 3px;">&#xe62b;</i></span>
+                  <span style="margin-right: 8px;font-size: 14px;color: #333;">{{gettime}}</span>
+                  <span style="font-size: 14px;color: #333;">{{week}}</span>
+                </div>
+              </div>
+              <!--内容-->
+              <div style="height: 250px ; width: 100%">
+                <div style="padding-bottom: 40px;;width: 275px;border-left: 1px solid #e6e6e6;margin-left: 25px">
+                  <div style="padding-top: 20px">
+                    <el-timeline >
+                      <el-timeline-item timestamp="上班时间"  placement="top" >
+                        <div>
+                          <div v-if="querydays!=null">
+                            <span style="font-size: 12px;padding-right: 10px;">打卡时间</span>
+                            <span style="font-size: 12px">{{querydays.smornClock}}</span>
+                          </div>
+                          <el-button size="mini" type="primary" v-if="querydays==null" @click="addcresses()">打卡</el-button>
+                        </div>
+                      </el-timeline-item>
+                      <el-timeline-item timestamp="下班时间" placement="top">
+
+                        <div v-if="querydays!=null">
+                          <div v-if="querydays.xafternoonClock!=null">
+                            <span style="font-size: 12px;padding-right: 10px;">打卡时间</span>
+                            <span style="font-size: 12px">{{querydays.xafternoonClock}}</span>
+                            <p style="font-size: 12px">更新打卡时间</p>
+                          </div>
+                          <div v-if="querydays!='' && querydays.smornClock!=null && querydays.xafternoonClock==null">
+                            <el-button size="mini" type="primary"  @click="isupdateddkx()">打卡</el-button>
+                          </div>
+                        </div>
+
+                      </el-timeline-item>
+                    </el-timeline>
                   </div>
                 </div>
-              <!--内容-->
-                <div style="height: 250px ; width: 100%">
-                   <div style="padding-bottom: 40px;;width: 275px;border-left: 1px solid #e6e6e6;margin-left: 25px">
-                     <div style="padding-top: 20px">
-                       <el-timeline >
-                         <el-timeline-item timestamp="上班时间"  placement="top" >
-                           <div>
-                             <span style="font-size: 12px;padding-right: 10px;">打卡时间</span>
-                             <span style="font-size: 12px">{{gettime}}</span>
-                           </div>
-                         </el-timeline-item>
-                         <el-timeline-item timestamp="下班时间" placement="top">
-                           <div>
-                             <span style="font-size: 12px;padding-right: 10px;">打卡时间</span>
-                             <span style="font-size: 12px">{{gettime}}</span>
-                             <p style="font-size: 12px">更新打卡时间</p>
-                           </div>
-                         </el-timeline-item>
-                       </el-timeline>
-                     </div>
-                   </div>
-                   <div></div>
-                </div>
+                <div></div>
+              </div>
             </div>
           </div>
         </div>
@@ -68,6 +78,7 @@
           <span style="font-size: 12px" @click="divDogs=!divDogs">考勤</span>
         </div>
         <img :src="useralls.staffPicture" width="30" height="30" alt="">
+        <!--        <img src="./assets/syx.jpg" width="30" height="30" alt="">-->
         <span>
 					 <el-dropdown trigger="click">
 					        <span style="color: #fff; cursor: pointer;">
@@ -75,9 +86,9 @@
 					        </span>
 					        <template #dropdown>
 					          <el-dropdown-menu>
-                      <router-link :to="{path:this.userxx,query:{path:this.$route.query.path}}">
-                        <el-dropdown-item>账号消息</el-dropdown-item>
-                      </router-link>
+<!--                      <router-link :to="{path:this.userxx,query:{path:this.$route.query.path}}">-->
+                      <!--                        <el-dropdown-item>账号消息</el-dropdown-item>-->
+                      <!--                      </router-link>-->
 					            <el-dropdown-item>退出</el-dropdown-item>
 					          </el-dropdown-menu>
 					        </template>
@@ -157,9 +168,12 @@
       </el-main>
     </el-container>
   </el-container>
+
 </template>
 
 <script>
+import {ElMessage} from "element-plus";
+
 export default {
   data() {
     return {
@@ -179,11 +193,30 @@ export default {
       //保存当前激活菜单
       activePath: this.$store.state.activate_router,
 
+      //打卡
+      querydays:'',    //判断当前登录用户是否有当天的考勤记录
+      cressesId:'',    //当前启用班次
+      dagowork:'',     //上班打卡时间
+      clockrecordId:'',//存放上班打卡数据新增后其获取编号
+      punchdataDay:'', //当前用户当天的打卡记录
+      smornResult:'',  //上班考勤结果
+
+      offworkdays:'',  //下班打卡时间
+      offclock:'',     //下班考勤结果
+
     }
   },
   created() {
+    //系统当前时间
     this.getCurrentTime();
-    console.log(this.getCurrentTime());
+
+    //判断当前用户当天是否有打卡记录
+    this.queryday();
+    //查询冲当前启用的班次
+    this.querycresses();
+    this.towquerydkday();
+
+
   },
   methods: {
     getCurrentTime() {
@@ -202,7 +235,195 @@ export default {
     },
     saveNavState(activePath) {
       this.$store.state.activate_router = activePath
+    },
+
+
+    //判断当前登录用户是否有当天的考勤记录
+    queryday(){
+      this.axios.get('http://localhost:8007/provider/works/dakaworks?id='+this.useralls.staffId,{
+      }).then((res) => {
+        this.querydays = res.data.data
+      }).catch(function (error){
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+
+    //查询冲当前启用的班次
+    querycresses(){
+      this.axios.get('http://localhost:8007/provider/gclasses/allclasses',{
+      }).then((res) => {
+        this.cressesId = res.data.data
+      }).catch(function (error){
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    //上班打卡按钮事件：点击新增一条考勤和一条打卡记录
+    addcresses(){
+      //获取系统当前时间
+      let _this = this
+      let hh = new Date().getHours() < 10 ? '0' + new Date().getHours() : new Date().getHours();
+      let mf = new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes();
+      let ss = new Date().getSeconds() < 10 ? '0' + new Date().getSeconds() : new Date().getSeconds();
+      _this.dagowork =hh + ':' + mf + ':' + ss;
+      this.axios({
+        url: "http://localhost:8007/provider/record/addrecord",
+        method: "post",
+        data: {
+          //当前登录员工的id
+          staffId:this.useralls.staffId,
+          //打卡日期：当天
+          dayDate:this.gettime,
+          // //打卡时间：时分秒
+          smornClock: this.dagowork
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        //查询当前新增的打卡记录
+        this.querydkday();
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    //打卡记录表新增一条数据后获取该数据的编号
+    querydkday(){
+      this.axios.get('http://localhost:8007/provider/works/querydkday?id='+this.useralls.staffId,{
+      }).then((res) => {
+        this.clockrecordId = res.data.data
+        this.addshens(); //考勤表数据添加
+      }).catch(function (error){
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    //当前用户考勤表数据添加
+    addshens(){
+      this.axios({
+        url: "http://localhost:8007/provider/shee/addshee",
+        method: "post",
+        data: {
+          //当前登录员工的id
+          staffId:this.useralls.staffId,
+          //当前启用班次
+          classesId:this.cressesId.classesId,
+          //当天打卡记录id
+          clockRecordId: this.clockrecordId.clockRecordId
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.isupdateddks();
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    //打卡记录表数据修改
+    isupdateddks(){
+      //上班打卡时间格式化
+      let one1 = new Date("2022-12-01 "+this.dagowork.substring(0,5))
+      //归定上班打卡时间格式化
+      let two1 = new Date("2022-12-01 "+this.cressesId.classesTimeones)
+      if(one1>two1){
+        this.smornResult = "迟到"
+      } else{
+        this.smornResult = "正常"
+      }
+      this.axios({
+        url: "http://localhost:8007/provider/works/isupdateddk",
+        method: "post",
+        data: {
+          //当天打卡记录id
+          clockRecordId: this.clockrecordId.clockRecordId,
+          //上班考勤结果
+          smornResult:this.smornResult
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.log(response)
+        if (response.data.data === "成功") {
+          ElMessage({
+            message: "打卡成功！！！",
+            type: "success",
+          });
+        }
+        //判断当前登录用户是否有当天的考勤记录
+        this.queryday();
+        //查询当前用户当天的打卡记录
+        this.towquerydkday();
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+
+    //查询当前用户当天的打卡记录
+    towquerydkday(){
+      this.axios.get('http://localhost:8007/provider/works/querydkday?id='+this.useralls.staffId,{
+      }).then((res) => {
+        this.punchdataDay = res.data.data
+      }).catch(function (error){
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+
+    //上班打卡按钮事件：点击后修改打卡表数据
+    isupdateddkx(){
+      //获取系统当前时间
+      let _this = this
+      let hh = new Date().getHours() < 10 ? '0' + new Date().getHours() : new Date().getHours();
+      let mf = new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes();
+      let ss = new Date().getSeconds() < 10 ? '0' + new Date().getSeconds() : new Date().getSeconds();
+      _this.offworkdays =hh + ':' + mf + ':' + ss;
+      //下班打卡时间格式化
+      let one = new Date("2022-12-01 "+this.offworkdays.substring(0,5))
+      //归定下班打卡时间格式化
+      let two = new Date("2022-12-01 "+this.cressesId.classesTimetwox)
+      if(one>two){
+        this.offclock = "正常"
+      } else{
+        this.offclock = "早退"
+      }
+      this.axios({
+        url: "http://localhost:8007/provider/works/isupdateddk",
+        method: "post",
+        data: {
+          //当天打卡记录id
+          clockRecordId: this.punchdataDay.clockRecordId,
+          //下班打卡时间
+          xafternoonClock:this.offworkdays,
+          //下班考勤结果
+          xafternoonResult:this.offclock
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.log(response)
+        if (response.data.data === "成功") {
+          ElMessage({
+            message: "打卡成功！！！",
+            type: "success",
+          });
+        }
+        //判断当前登录用户是否有当天的考勤记录
+        this.queryday();
+        //查询当前用户当天的打卡记录
+        this.towquerydkday();
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
     }
+
+
+
+
+
   }
 }
 </script>

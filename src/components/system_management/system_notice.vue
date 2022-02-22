@@ -100,13 +100,6 @@
                         default-first-option
                         size="small"
                     >
-                      <!--                      <el-option
-                                                v-for="item in deptName"
-                                                :key="item"
-                                                :label="item.deptName"
-                                                :value="item.deptName"
-                                            >
-                                            </el-option>-->
                       <el-option hidden></el-option>
                       <el-tree
                           accordion
@@ -148,7 +141,7 @@
                       </el-button>
                       <!--										&lt;!&ndash; 修改按钮 &ndash;&gt;"innerVisible = true"-->
 
-                      <el-button size="mini" style="width: 65px;" type="primary" @click="judges(),updata()">
+                      <el-button size="mini" style="width: 65px;" type="primary" @click="judges()">
                         {{judge}}
                       </el-button>
                     </div>
@@ -255,11 +248,11 @@
           </div>
           <!--已看人员-->
           <div class="zhuagtai">已看人员：
-            <span v-for="item in staffName">&nbsp;{{item}}</span>
+            <span v-for="item in unreadName">&nbsp;{{item}}</span>
           </div>
           <!--未看人员-->
           <div class="zhuagtai">未看人员：
-            <span v-for="item in unreadName">&nbsp;{{item}}</span>
+            <span v-for="item in staffName">&nbsp;{{item}}</span>
           </div>
           <!--发布时间-->
           <div class="zhuagtai">发布时间：
@@ -296,9 +289,9 @@
         <!--        {{examine}}-->
         <!--        <br>-->
         <!--        {{deptName}}-->
-        {{affiche.deptName}}
-        {{staffsName}}
-        {{a}}
+<!--        {{affiche.deptName}}-->
+<!--        {{staffsName}}-->
+<!--        {{a}}-->
         <!--        {{affiche.deptlist}}-->
       </div>
 
@@ -668,15 +661,12 @@ export default {
      */
     deptsName(){
       this.deptName=[];
-      let _this=this
       this.axios({
         method:'get',
         url:"http://localhost:8007/provider/depts/selectDepts",
         responseType:'json',
         responseEncoding:'utf-8',
       }).then(response=>{
-        console.log(1)
-        console.log(response)
         this.affiche.deptlist=response.data.data
         // response.data.data.forEach(e=> {
         //   this.deptName.push(e)
@@ -714,6 +704,7 @@ export default {
       this.affiche.noticeTitle=row.noticeTitle;
       this.noticeName(row);
     },
+
     //点击修改赋值部门名称
     noticeName(row){
       this.axios({
@@ -866,13 +857,13 @@ export default {
           type: 'error',
         })
       }else{
-
+        this.updata()
         this.outerVisible=false
       }
     },
     //新增或修改方法判断方法
     judges(){
-      if(this.judge==="新增"){
+      if(this.judge=="新增"){
         this.new();
       }else{
         this.amend()
@@ -901,7 +892,6 @@ export default {
       this.pageInfo.noticeTitle='',
           this.pageInfo.noticeType='',
           this.pageInfo.noticePeople=''
-
     }
   }
 }

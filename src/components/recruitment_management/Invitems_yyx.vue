@@ -296,7 +296,7 @@ export default {
     },
     //添加面试消息
     addInter(name) {
-      if(this.mDates == ''){
+      if(this.mDates == '' || this.mDates==null){
         this.$refs[name].validate((valid) => {
           if (valid) {
             this.axios({
@@ -305,11 +305,14 @@ export default {
               data: {
                 resumeId: this.sid,
                 interviewTime: this.ruleForm.date1,
-                staffId: this.ruleForm.staffsid,
+                staffId: this.ruleForm.staffsid
               },
               responseType: 'json',
               responseEncoding: 'utf-8',
             }).then((response) => {
+              console.log(1)
+              console.log(1)
+
               console.log(response)
               this.updateinterzt();//新增后更改其简历状态
               this.$router.go(-1);
@@ -336,7 +339,7 @@ export default {
               responseEncoding: 'utf-8',
             }).then((response) => {
               console.log(response)
-              this.updateinterzt();//新增后更改其简历状态
+              this.updateinterzt();//更改其简历状态
               this.$router.go(-1); //返回上级
             }).catch(function (error) {
               console.log('获取列表失败')
