@@ -216,10 +216,10 @@
 	                  />
 	                  <el-table-column prop="name" label="审批编号" width="150"/>
 	                  <el-table-column prop="name" label="流程" width="150"/>
-	                  <el-table-column prop="name" label="申请人" width="160"/>
-	                  <el-table-column prop="name" label="状态" width="160"/>
-	                  <el-table-column prop="name" label="当前审批人" width="160"/>
-	                  <el-table-column prop="name" label="最近处理" width="160"/>
+	                  <el-table-column prop="name" label="申请人" width="150"/>
+	                  <el-table-column prop="name" label="状态" width="150"/>
+	                  <el-table-column prop="name" label="当前审批人" width="150"/>
+	                  <el-table-column prop="name" label="最近处理" width="150"/>
 	                  <el-table-column label="操作" >
 	                    <template #default="scope" >
 	                      <el-popconfirm

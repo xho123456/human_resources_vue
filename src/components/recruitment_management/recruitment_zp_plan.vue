@@ -23,15 +23,6 @@
 								+ 新增</el-button>
 
 
-
-							<el-button type="primary" plain size="small" @click="">
-								<el-icon style="font-size: 13px">
-									<i-upload />
-								</el-icon>
-								导入
-							</el-button>
-
-
 							<el-button type="primary" size="small" plain @click="derive()">
 								<el-icon style="font-size: 13px">
 									<i-folder-opened />
@@ -46,7 +37,7 @@
 								</el-option>
 							</el-select>
                              &nbsp;
-                            <el-input v-model="pageInfo.recruitmentPlanName" placeholder="招聘计划名称"
+              <el-input v-model="pageInfo.recruitmentPlanName" placeholder="招聘计划名称"
 								class="input-with-select" size="small" style="width: 300px;">
 								<template #append>
 									<el-button @click="getrecrselectAll()">搜索</el-button>
@@ -209,7 +200,7 @@
 				<!-- 表格内容部分 -->
 				<div class="sub-Content__primary">
 					<el-table :data="tableData" style="width: 100%; cursor: pointer" size="mini"
-						:header-cell-style="{background:'#eef1f6',color:'#606266'}" :stripe=true>
+						:header-cell-style="{background:'#eef1f6',color:'#606266',textAlign:'center'}" :stripe=true>
 						<el-table-column type="index" label="序号" />
 						<el-table-column label="招聘计划名称" width="200">
 							<template #default="scope">
@@ -221,7 +212,7 @@
 						</el-table-column>
 						<el-table-column prop="postName" label="招聘职位" width="200" />
 						<el-table-column prop="deptName" label="需求部门" width="200" />
-						<el-table-column prop="recruitmentPlanNumber" label="招聘人数" width="200" />
+						<el-table-column prop="recruitmentPlanNumber" label="招聘人数" width="140" />
 						<el-table-column prop="recruitmentPlanStartTime" label="发布时间" width="200" />
 						<el-table-column prop="staffName" label="发布人" width="200" />
 						<el-table-column label="招聘状态" width="200">
@@ -374,6 +365,7 @@
 			return {
 				defaultProps,
 				//路由
+        aa:[1,2,3],
 				plandetails: '/recruitment/plan/details',
         addplans:'/recruitment/plan/addplans',
         //当前登录用户消息
@@ -822,6 +814,10 @@
 <style type="text/css" scoped>
 	@import url("../../css/zpdaohang.css");
 
+  /deep/.el-table td.el-table__cell div {
+    box-sizing: border-box;
+    text-align: center;
+  }
 	.demo-pagination-block {
 		margin-left: 15px;
 		margin-top: 10px;

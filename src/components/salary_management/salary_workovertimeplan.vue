@@ -1,4 +1,4 @@
-<!--固定工资方案 -->
+<!--加班方案 -->
 <template>
   <div class="saas-main-content">
     <div class="j-card j-card-bordered mainContent">
@@ -9,106 +9,110 @@
 
             <!--  定薪 -->
             <el-drawer v-model="drawer" title="I am the title" :with-header="false">
-              <h3 style="margin-top:1px;">定薪</h3><br/>
+              <h3 style="margin-top:1px;">加班方案编辑</h3><br/>
               <el-form :inline="true" ref="formInline" :model="formInline" :rules="rules" class="demo-form-inline">
                 <el-form-item>
                   <template #label>
-                    <div class="el-form-item__label">试用期基本工资</div>
+                    <div class="el-form-item__label">加班方案名称</div>
                   </template>
-                  <el-input v-model="fixedSalary.fixedwagePeriodmoney"  placeholder="请输入" disabled/>
+                  <el-input v-model="workscheme.workschemeName"  placeholder="请输入" />
                 </el-form-item>
                 <el-form-item>
                   <template #label>
-                    <div class="el-form-item__label">正式基本工资</div>
+                    <div class="el-form-item__label">节假日加班工资</div>
                   </template>
 
                   <template #default="scope">
-                    <el-input v-model="fixedSalary.fixedwageOfficialmoney"  placeholder="请输入"
-                              :disabled="false"  v-if="yz.Officialmoney===null" />
-                    <el-input v-model="fixedSalary.fixedwageOfficialmoney"  placeholder="请输入"
-                              :disabled="true" v-if="yz.Officialmoney!=null" />
+                    <el-input v-model="workscheme.workschemeHolidayratio"  placeholder="请输入" />
                   </template>
-                </el-form-item><br>
 
-                <!-- 转正日期输入框 -->
+                </el-form-item>
+
                 <el-form-item>
-
                   <template #label>
-                    <div class="el-form-item__label">转正日期</div>
+                    <div class="el-form-item__label">休息日加班工资</div>
                   </template>
-                  <div class="block" >
-                    <el-date-picker style="width: 210px;" v-model="postdate" type="date" placeholder="请选择" disabled>
-
-                    </el-date-picker>
-                  </div>
+                  <el-input v-model="workscheme.workschemeDayoffratio"  placeholder="请输入" />
+                </el-form-item>
+                <el-form-item>
+                  <template #label>
+                    <div class="el-form-item__label">工作日加班工资</div>
+                  </template>
+                  <el-input v-model="workscheme.workschemeWorkratio"  placeholder="请输入" />
                 </el-form-item>
                 <el-form-item>
                   <template #label>
                     <div class="el-form-item__label">备注</div>
                   </template>
-                  <el-input v-model="fixedSalary.fixedwageRemark"  placeholder="请输入" />
+                  <el-input v-model="workscheme.workschemeRemark"  placeholder="请输入" />
                 </el-form-item>
-
-                <br>
-                <!-- 按钮 -->
-                <div style="margin-top: 30px;">
-                  <el-button @click="disly=!disly,RestForm()">取消</el-button>
-                  <el-button type="primary" @click="updatedept()">保存</el-button>
-                </div>
-              </el-form>
-            </el-drawer>
-
-            <!--  第二个隐藏框      -->
-            <el-drawer v-model="drawer1" title="I am the title" :with-header="false">
-              <h3 style="margin-top:1px;">调薪1</h3><br/>
-              <el-form :inline="true" :model="Salary"  :rules="rules" class="demo-form-inline">
-                <el-form-item>
-                  <template #label>
-                    <div class="el-form-item__label">调薪后基本工资</div>
-                  </template>
-                  <el-input v-model.number="Salary.afterSalary"  placeholder="请输入" />
-                </el-form-item>
-                <el-form-item>
-                  <template #label>
-                    <div class="el-form-item__label">调薪幅度</div>
-                  </template>
-                  <el-input v-model="range"   disabled />
+                <el-form-item label="状态：  ">
+                  <el-radio-group v-model="workscheme.workschemeState">
+                    <el-radio :label="0">启用</el-radio>
+                    <el-radio :label="1">禁用</el-radio>
+                  </el-radio-group>
                 </el-form-item><br>
 
 
-                <el-form-item>
-                  <template #label>
-                    <div class="el-form-item__label">调薪备注</div>
-                  </template>
-                  <el-input v-model="Salary.salaryRemarks"  placeholder="请输入" />
-                </el-form-item>
+
+
 
                 <br>
-
                 <!-- 按钮 -->
                 <div style="margin-top: 30px;">
                   <el-button @click="disly_1=!disly_1,RestForm()">取消</el-button>
-                  <el-button type="primary" @click="addSalary()">保存</el-button>
+                  <el-button type="primary" @click="updateworkscheme()">保存</el-button>
                 </div>
               </el-form>
             </el-drawer>
 
 
+
+
+            <el-button type="primary" style="margin-left: 16px" @click="dialogVisible=true"
+            >新增
+            </el-button>
+            <el-dialog
+                v-model="dialogVisible"
+                title="新增"
+                width="30%"
+                :before-close="handleClose"
+            >
+
+              <el-form ref="form" :model="dept" label-width="120px">
+                <el-form-item label="方案名称：">
+                  <el-input v-model="workscheme1.workschemeName"></el-input>
+                </el-form-item>
+
+                <el-form-item label="节假日加班工资：">
+                  <el-input v-model="workscheme1.workschemeHolidayratio"></el-input>
+                </el-form-item>
+                <el-form-item label="休息日加班工资：">
+                  <el-input v-model="workscheme1.workschemeDayoffratio"></el-input>
+                </el-form-item>
+                <el-form-item label="工作日加班工资：">
+                  <el-input v-model="workscheme1.workschemeWorkratio"></el-input>
+                </el-form-item>
+                <el-form-item label="备注：">
+                  <el-input v-model="workscheme1.workschemeRemark"></el-input>
+                </el-form-item>
+              </el-form>
+              <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="dialogVisible = false,addworkscheme()"
+        >确定</el-button
+        >
+      </span>
+              </template>
+            </el-dialog>
             <!-- 测试下拉按钮 -->
-            <el-input size="small" v-model="pageInfo.staffName" placeholder="请输入员工姓名" style="width:150px;position: absolute;right: 80px;">
+            <el-input size="small" v-model="pageInfo.workschemeName" placeholder="请输入方案名称" style="width:150px;position: absolute;right: 80px;">
               <template #suffix>
                 <el-icon style="margin-top:9px;margin-right:10px"><i-search @click="selectEndAuditflow()"></i-search></el-icon>
               </template>
             </el-input>
-            <el-select v-model="pageInfo.deptName" placeholder="请选择部门" style="position: absolute;right: 300px; width: 150px;" >
-              <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.deptName"
-                  :value="item.deptName"
-              >
-              </el-option>
-            </el-select>
+
             <br />
             <br />
             <el-table :data="tableData" style="width: 100%">
@@ -117,17 +121,29 @@
               <el-table-column prop="workschemeHolidayratio" label="节假日加班工资" width="120" />
               <el-table-column prop="workschemeDayoffratio" label="休息日加班比例" width="150" />
               <el-table-column prop="workschemeWorkratio" label="工作日加班比例" width="120" />
-              <el-table-column prop="workschemeState" label="状态" width="120" />
+
+              <el-table-column label="状态"   >
+                <template #default="scope">
+                  <span v-if="scope.row.workschemeState===1">禁用</span>
+                  <span v-if="scope.row.workschemeState===0">启用</span>
+                </template>
+              </el-table-column>
               <el-table-column prop="workschemeRemark" label="备注" width="120" />
               <el-table-column prop="createdTime" label="创建时间" width="120" />
               <el-table-column prop="updatedTime" label="修改时间" width="120" />
               <el-table-column fixed="right" label="操作" width="120">
                 <template #default="scope">
-                  <el-button type="text" size="small" @click="drawer = true,fixedSalary={fixedwagePeriodmoney:tableData[scope.$index].fixedwagePeriodmoney,fixedwageOfficialmoney:tableData[scope.$index].fixedwageOfficialmoney,fixedwageRemark:tableData[scope.$index].fixedwageRemark,fixedwageId:tableData[scope.$index].fixedwageId},yz={Officialmoney:tableData[scope.$index].fixedwageOfficialmoney}">定薪 </el-button>
-                  <el-button type="text" size="small" @click="drawer1 = true,fixedSalary={fixedwagePeriodmoney:tableData[scope.$index].fixedwagePeriodmoney,fixedwageOfficialmoney:tableData[scope.$index].fixedwageOfficialmoney,fixedwageRemark:tableData[scope.$index].fixedwageRemark,fixedwageId:tableData[scope.$index].fixedwageId},yz={Officialmoney:tableData[scope.$index].fixedwageOfficialmoney},Salary={deptId:tableData[scope.$index].deptId,staffId:tableData[scope.$index].staffId,staffName:tableData[scope.$index].staffName,frontSalary:tableData[scope.$index].fixedwageOfficialmoney}">调薪 </el-button>
-
+                  <el-button type="text" size="small" @click="drawer = true,workscheme={workschemeId:tableData[scope.$index].workschemeId,workschemeName:tableData[scope.$index].workschemeName,workschemeHolidayratio:tableData[scope.$index].workschemeHolidayratio,workschemeDayoffratio:tableData[scope.$index].workschemeDayoffratio,workschemeWorkratio:tableData[scope.$index].workschemeWorkratio,workschemeRemark:tableData[scope.$index].workschemeRemark,workschemeState:tableData[scope.$index].workschemeState},yz={Officialmoney:tableData[scope.$index].fixedwageOfficialmoney}">编辑 </el-button>
+                  <el-popconfirm @confirm="deleteworkscheme(tableData[scope.$index].workschemeId)"
+                                 title="确认要删除此方案吗?">
+                    <template #reference>
+                      <el-button type="text" size="small" style="color:darkorange" >删除 </el-button>
+                    </template>
+                  </el-popconfirm>
                 </template>
+
               </el-table-column>
+
             </el-table>
             <!-- 分页插件 -->
             <div class="demo-pagination-block" style="float: right">
@@ -178,6 +194,7 @@ import {ElMessage} from "element-plus";
 export default {
   data() {
     return {
+      dialogVisible:false,
       drawer: false,
       drawer1: false,
       disly_1:false,
@@ -201,17 +218,10 @@ export default {
         /* 当前的页 */
         pageSize: 3,
         total: 0,
-        deptName:'',
+        workschemeName:"",
         staffName:'',
       },
-      pageInfo1: {
-        currentPage: 1,
-        /* 当前的页 */
-        pageSize: 3,
-        total: 0,
-        deptName:'',
-        staffName:'',
-      },
+
       tableData: [
 
       ],
@@ -221,11 +231,24 @@ export default {
       yz:{
         Officialmoney:"",
       },
-      fixedSalary :{
-        fixedwageId:"", //固定工资表id
-        fixedwagePeriodmoney:"",//试用基本工资
-        fixedwageOfficialmoney:"",//正式基本工资
-        fixedwageRemark:"",//备注
+
+      workscheme:{
+        workschemeId:"",//加班方案编号
+        workschemeName:"",//加班方案名称
+        workschemeHolidayratio:"",//节假日加班比例
+        workschemeDayoffratio:"",//休息日加班比例
+        workschemeWorkratio:"",//工作日加班比例
+        workschemeState:"",//状态;0：启用，1：禁用
+        workschemeRemark:"",//备注
+      },
+      workscheme1:{
+        workschemeId:"",//加班方案编号
+        workschemeName:"",//加班方案名称
+        workschemeHolidayratio:"",//节假日加班比例
+        workschemeDayoffratio:"",//休息日加班比例
+        workschemeWorkratio:"",//工作日加班比例
+        workschemeState:0,//状态;0：启用，1：禁用
+        workschemeRemark:"",//备注
       },
       options:[
         {
@@ -268,7 +291,78 @@ export default {
 
 
     },
-    //查询员工 部门 固定工资 职位
+    //添加加班方案表
+    addworkscheme(){
+      this.axios.post("http://localhost:8007/provider/addworkschemee",this.workscheme1)
+          .then(response => {
+            this.workscheme1.workschemeId=null
+            if (response.data === "添加失败") {
+              ElMessage.error('添加失败')
+            } else {
+              ElMessage({
+                message: '添加成功',
+                type: 'success',
+
+              })
+              this.selectEndAuditflow();
+            }
+          }).catch(function (error) {
+        console.log(error);
+      });
+
+
+
+    },
+    //修改加班方案
+    updateworkscheme(){
+      this.axios({
+        method:"put",
+        url:"http://localhost:8007/provider/updateWorkscheme/Workscheme",
+        data:this.workscheme,
+        responseType:'json',
+        responseEncoding:"utf-8"
+      }).then(response=>{
+        console.log(response)
+        if(response.data==="成功"){
+          ElMessage.error("修改失败")
+        }else{
+          ElMessage({
+            type:"success",
+            message:"修改成功"
+          })
+          this.selectEndAuditflow();
+        }
+      })
+    },
+    //删除加班方案表
+    deleteworkscheme(id) {
+      this.axios({
+        url: "http://localhost:8007/provider/deleteWorkscheme/b",
+        method: "post",
+        data: [id],
+        responseType:'json',
+        responseEncoding:'utf-8'
+      })
+          .then((response) => {
+            if (response.data === "删除失败") {
+
+              ElMessage.error("删除失败");
+
+            } else {
+              this.selectEndAuditflow();
+              ElMessage({
+                type: "success",
+                message: "删除成功",
+
+              });
+              console.log(response.data[0]+"ashdja")
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    },
+    //查询加班方案
     selectEndAuditflow() {
       this.axios({
         method:'post',

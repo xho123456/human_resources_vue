@@ -178,8 +178,9 @@
 export default {
   data() {
     return {
-      addresume: '/recruitment/recruit/addresume',
-      details:'/recruitment/resume/details',
+      //路由跳转
+      addresume: '/recruitment/recruit/addresume', //新增简历页
+      details:'/recruitment/resume/details',  //简历详情页
 
       pageInfo: {
         currenPage: 1,
@@ -233,12 +234,12 @@ export default {
     }
   },
   created() {
-    this.selectAllresum();
-    this.selecthxr();
-    this.selectyyy();
-    this.selectmsz();
-    this.selectdrz();
-    this.selectyrz();
+    this.selectAllresum(); //通过招聘计划编号查询所招简历信息
+    this.selecthxr(); //人数统计：候选人
+    this.selectyyy(); //人数统计：已邀约
+    this.selectmsz(); //人数统计：面试中
+    this.selectdrz(); //人数统计：待入职
+    this.selectyrz(); //人数统计：已入职
 
   },
   methods: {
@@ -260,7 +261,7 @@ export default {
       }).then((response) => {
         console.log(response);
         this.tableData = response.data.data.records
-        // this.pageInfo.total = response.data.data.total
+        this.pageInfo.total = response.data.data.total
       }).catch(function (error) {
         console.log('获取列表失败')
         console.log(error);
