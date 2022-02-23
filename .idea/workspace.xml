@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7782e118-91e8-4d6c-900a-0a4856553f34" name="Changes" comment="完善" />
+    <list default="true" id="7782e118-91e8-4d6c-900a-0a4856553f34" name="Changes" comment="完善">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/social_management/ginseng_protect_plan.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/ginseng_protect_plan.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/social_management/insured_management.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/insured_management.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/social_management/new_amend_scheme.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/new_amend_scheme.vue" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -12,6 +17,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitToolBoxStore">
+    <option name="projectConfigVersion" value="4" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -42,6 +50,7 @@
       <option name="presentableId" value="Default" />
       <updated>1645187290701</updated>
       <workItem from="1645187293451" duration="14344000" />
+      <workItem from="1645362677257" duration="80748000" />
     </task>
     <task id="LOCAL-00001" summary="完善">
       <created>1645277258669</created>
@@ -50,7 +59,14 @@
       <option name="project" value="LOCAL" />
       <updated>1645277258669</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="完善">
+      <created>1645277352364</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1645277352364</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -70,5 +86,35 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="完善" />
     <option name="LAST_COMMIT_MESSAGE" value="完善" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/system_management/system_notice.vue</url>
+          <line>303</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/social_management/new_amend_scheme.vue</url>
+          <line>437</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/social_management/ginseng_protect_plan.vue</url>
+          <line>83</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/social_management/insured_management.vue</url>
+          <line>179</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
