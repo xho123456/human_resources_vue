@@ -10,17 +10,19 @@
         <div class="inputs">
           <span style="margin-left: 23px">参保方案：</span>
           <el-select
-              v-model="scheme_name"
+              @change="operation()"
+              v-model="defInsuredName"
               style="width: 325px"
               size="small"
               clearable
               placeholder="请选择"
+              @focus="scheme()"
           >
             <el-option
                 v-for="item in insured_scheme"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                :key="item.defInsuredName"
+                :label="item.defInsuredName"
+                :value="item.defInsuredId"
             >
             </el-option>
           </el-select>
@@ -41,11 +43,15 @@
             </span>
           </el-popover>
           <br/><br/>
+
+
           <!-- 填写基本参数的表单 -->
           <div style="text-align: center">
             <!-- 社保 -->
             <div class="form-div">
               <el-switch
+                  @change="adds()"
+                  v-model="valued"
                   class="form-seitch"
                   inline-prompt
                   active-text="开"
@@ -54,7 +60,8 @@
                 <el-form-item prop="name">
                   <span>社保基数：</span>
                   <el-input
-                      v-model="name"
+                      :disabled="open"
+                      v-model="insured.insuredPaymentNumber"
                       size="small"
                       placeholder="请输入社保基数"
                   />
@@ -62,6 +69,8 @@
                 <el-form-item prop="name">
                   <span style="margin-left: -3px">参保月份：</span>
                   <el-date-picker
+                      :disabled="true"
+                      v-model="insured.insuredPaymentInsuredMonth"
                       style="width: 246px"
                       size="small"
                       type="month"
@@ -72,6 +81,8 @@
 
                   <span style="margin-left: -3px">计薪月份：</span>
                   <el-date-picker
+                      :disabled="true"
+                      v-model="insured.insuredPaymentSalaryMonth"
                       style="width: 246px"
                       size="small"
                       type="month"
@@ -84,6 +95,8 @@
             <!-- 公积金 -->
             <div class="form-div">
               <el-switch
+                  @change="add()"
+                  v-model="valueb"
                   class="form-seitch"
                   inline-prompt
                   active-text="开"
@@ -94,6 +107,8 @@
                 <el-form-item prop="name">
                   公积金基数：
                   <el-input
+                      :disabled="enable"
+                      v-model="fund.insuredPaymentNumber"
                       style="width: 244px"
                       size="small"
                       placeholder="请输入公积金基数"
@@ -103,6 +118,8 @@
 
                   <span style="margin-left: 12px">参保月份：</span>
                   <el-date-picker
+                      v-model="fund.insuredPaymentInsuredMonth"
+                      :disabled="true"
                       style="width: 246px"
                       size="small"
                       type="month"
@@ -112,6 +129,9 @@
                 <el-form-item>
                   <span style="margin-left: 12px">计薪月份：</span>
                   <el-date-picker
+                      v-model="fund.insuredPaymentSalaryMonth"
+                      :disabled="true"
+                      disabled="false"
                       style="width: 246px"
                       size="small"
                       type="month"
@@ -139,19 +159,19 @@
 
           <!-- 下拉选择器 -->
           <div style="width: 200px" class="resume-operation">
-            <el-select
-                size="small"
-                v-model="dept_name"
-                clearable
-                placeholder="选择部门"
-            >
-              <el-option
-                  v-for="item in depts"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-              >
-              </el-option>
+            <el-select v-model="pageInfo.deptMane" clearable ref="vueSelect"  size="small"
+                       @click="onclicks()">
+              <el-option hidden></el-option>
+              <el-tree
+                  :data="deptlists"
+                  :default-expand-all=true
+                  :check-on-click-node=true
+                  :check-strictly=true
+                  node-key="deptId"
+                  :props="defaultProps"
+                  ref="tree"
+                  @check-change="handleCheckChangesx()"
+              />
             </el-select>
           </div>
         </div>
@@ -195,27 +215,46 @@
       </div>
     </div>
   </div>
-  &nbsp;
+  {{deptIdss}}
 </template>
 
 <script>
 import {ref, defineComponent} from "vue";
 
 export default {
-  data() {
+  data() { const defaultProps = {
+    children: 'deptlist',
+    label: 'deptName',
+  }
     return {
+      defaultProps,
+      deptlists:[],
+      deptIdss:'',
+      //社保禁用启用
+      open:true,
+      //基金禁用启用
+      enable:true,
+      //参保集合
+      insured:{
+        insuredPaymentNumber:'',
+        insuredPaymentInsuredMonth:'',
+        insuredPaymentSalaryMonth:'',
+      },
+      //积金集合
+      fund:{
+        insuredPaymentNumber:'',
+        insuredPaymentInsuredMonth:'',
+        insuredPaymentSalaryMonth:'',
+    },
+      //开关
+      valued:false,
+      valueb:false,
+      //跳地址路由
       path: "/social/basic_setup/insured_scheme",
       // 参保方案
-      scheme_name: null,
+      defInsuredName: '',
       // 参保方案下拉选择器值
-      insured_scheme: [
-        {value: "1", label: "方案1"},
-        {value: "2", label: "方案2"},
-        {value: "3", label: "方案3"},
-        {value: "4", label: "方案4"},
-        {value: "5", label: "方案5"},
-      ],
-      name: "",
+      insured_scheme: [],
       // 分页参数
       pageInfo: {
         currentPage: 1, //当前页
@@ -243,43 +282,8 @@ export default {
           hiredate: "1999-12-11", // 员工入职日期
           positive_dates: "2000-02-11", // 员工转正日期
         },
-        {
-          id: 2, // 员工id
-          name: "Tom", // 员工名称
-          dept: "California", // 员工所属部门
-          post: "2", // 员工职位
-          phone: "2", // 员工手机号
-          hiredate: "2", // 员工入职日期
-          positive_dates: "2", // 员工转正日期
-        },
-        {
-          id: 3, // 员工id
-          name: "3", // 员工名称
-          dept: "3", // 员工所属部门
-          post: "3", // 员工职位
-          phone: "3", // 员工手机号
-          hiredate: "3", // 员工入职日期
-          positive_dates: "3", // 员工转正日期
-        },
-        {
-          id: 4, // 员工id
-          name: "4", // 员工名称
-          dept: "4", // 员工所属部门
-          post: "4", // 员工职位
-          phone: "4", // 员工手机号
-          hiredate: "4", // 员工入职日期
-          positive_dates: "4", // 员工转正日期
-        },
-        {
-          id: 5, // 员工id
-          name: "5", // 员工名称
-          dept: "5", // 员工所属部门
-          post: "5", // 员工职位
-          phone: "5", // 员工手机号
-          hiredate: "5", // 员工入职日期
-          positive_dates: "5", // 员工转正日期
-        },
       ],
+
       // 表单验证
       rules: {
         name: [
@@ -287,8 +291,108 @@ export default {
           {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
         ],
       }
+
     };
   },
+  created() {
+    this.getCurrentTime();
+    this.selectAlldepts();
+  },
+  methods:{
+    //点击Select选择器清空原有复选框选项
+    onclicks() {
+      this.$refs.tree.setCheckedKeys([]);
+    },
+    //筛选：节点选中状态发生变化时的回调
+    handleCheckChangesx(data, checked, indeterminate) {
+      //获取所有选中的节点 start
+      let res = this.$refs.tree.getCheckedNodes()
+      res.forEach((item) => {
+        this.deptIdss = item.deptId
+
+        //关闭Select选择器
+        this.$refs.vueSelect.blur();
+      })
+    },
+    /**
+     * select：查询所有部门信息
+     */
+    selectAlldepts() {
+      this.axios({
+        url: "http://localhost:8007/provider/dept/dept/selectAlldept",
+        method: "post",
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.log(response);
+        this.deptlists = response.data.data
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+
+    adds(){
+      if(this.valued===false){
+        this.open=!this.open
+      }else {
+        this.open=!this.open
+      }
+    },
+    add(){
+      if(this.valueb===false){
+        this.enable=!this.enable
+      }else {
+        this.enable=!this.enable
+      }
+
+
+    },
+    /**
+     * 操作
+     */
+    operation(){
+      if(this.defInsuredName!==''){
+        this.valued=true
+      }
+      if(this.defInsuredName!==''){
+        this.valueb=true
+      }
+      if(this.valued===true){
+        this.open=false
+      }
+      if(this.valueb===true){
+        this.enable=false
+      }
+
+  },
+    /**
+     * 获取系统当前时间
+     */
+    getCurrentTime() {
+      //获取当前时间并打印
+      let yy = new Date().getFullYear();
+      let mm = new Date().getMonth()+1;
+      this.insured.insuredPaymentInsuredMonth = yy+'/'+mm;
+      this.insured.insuredPaymentSalaryMonth = yy+'/'+mm;
+      this.fund.insuredPaymentInsuredMonth = yy+'/'+mm;
+      this.fund.insuredPaymentSalaryMonth = yy+'/'+mm;
+    },
+    /**
+     * 查询方案名称
+     */
+    scheme(){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/defInsured/scheme",
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(request=>{
+          console.error(request.data.data)
+          this.insured_scheme = request.data.data
+        })
+}
+  }
 };
 </script>
 
