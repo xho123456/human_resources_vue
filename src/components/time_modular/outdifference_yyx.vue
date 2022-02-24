@@ -57,39 +57,15 @@
             <div style="margin-top: 10px">
               <el-table :data="tableData" :border="true" style="width: 100%; font-size: 12px;"
                         :header-cell-style="{background:'#eef1f6',color:'#606266',textAlign: 'center'}">
-                <el-table-column prop="A" fixed label="序号" width="60"/>
-                <el-table-column prop="B" fixed label="名称" width="100"/>
-                <el-table-column prop="C" fixed label="部门" width="100"/>
-                <el-table-column prop="q" label="6/1"/>
-                <el-table-column prop="w" label="6/2"/>
-                <el-table-column prop="w" label="6/3"/>
-                <el-table-column prop="w" label="6/4"/>
-                <el-table-column prop="w" label="6/5"/>
-                <el-table-column prop="w" label="6/6"/>
-                <el-table-column prop="w" label="6/7"/>
-                <el-table-column prop="q" label="6/8"/>
-                <el-table-column prop="q" label="6/9"/>
-                <el-table-column prop="w" label="6/10"/>
-                <el-table-column prop="q" label="6/11"/>
-                <el-table-column prop="w" label="6/12"/>
-                <el-table-column prop="q" label="6/13"/>
-                <el-table-column prop="w" label="6/14"/>
-                <el-table-column prop="q" label="6/15"/>
-                <el-table-column prop="1" label="6/16"/>
-                <el-table-column prop="1" label="6/17"/>
-                <el-table-column prop="1" label="6/18"/>
-                <el-table-column prop="1" label="6/19"/>
-                <el-table-column prop="1" label="6/20"/>
-                <el-table-column prop="1" label="6/21"/>
-                <el-table-column prop="1" label="6/22"/>
-                <el-table-column prop="1" label="6/23"/>
-                <el-table-column prop="1" label="6/24"/>
-                <el-table-column prop="1" label="6/25"/>
-                <el-table-column prop="1" label="6/26"/>
-                <el-table-column prop="1" label="6/27"/>
-                <el-table-column prop="1" label="6/28"/>
-                <el-table-column prop="1" label="6/29"/>
-                <el-table-column prop="1" label="6/30"/>
+                <el-table-column align="center" type="index" fixed label="序号" width="60"/>
+                <el-table-column align="center" prop="staffName" fixed label="名称" width="100"/>
+                <el-table-column align="center"  fixed label="部门" width="100">
+                  <template #default="scope">
+                    {{scope.row.dept.deptName}}
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" v-for="(item,index) in one" :key="index + item" :label="item.iName" :prop="item.i">
+                </el-table-column>
               </el-table>
               <div class="demo-pagination-block">
                 <el-pagination
@@ -101,8 +77,8 @@
                     :total="pageInfo.total"
                     :pager-count="5"
                     background
-                    @size-change="queryAllPage()"
-                    @current-change="queryAllPage()"
+                    @size-change="querycdAllmothday()"
+                    @current-change="querycdAllmothday()"
                 >
                 </el-pagination>
               </div>
@@ -127,51 +103,18 @@ export default {
       //分页、模糊查询数据
       pageInfo: {
         currenPage: 1,
-        pagesize: 5,
+        pagesize: 999,
         total: 0,
         classesName:''
       },
-      tableData: [
-        {
-          A: "2",
-          B: "王鑫",
-          C: "人事部",
-          q: "迟到",
-          w: "√",
-        },
-        {
-          A: "2",
-          B: "王鑫",
-          C: "人事部",
-          q: "迟到",
-          w: "√",
-        },
-        {
-          A: "2",
-          B: "王鑫",
-          C: "人事部",
-          q: "迟到",
-          w: "√",
-        }, {
-          A: "2",
-          B: "王鑫",
-          C: "人事部",
-          q: "迟到",
-          w: "√",
-        }, {
-          A: "2",
-          B: "王鑫",
-          C: "人事部",
-          q: "迟到",
-          w: "√",
-        },
-
-
-      ],
+      tableData: [],
+      dateArr:[],
+      one:[],
     }
   },
   created() {
     this.getCurrentTime();
+    this.querycdAllmothday();
   },
   methods: {
     getCurrentTime() {
@@ -188,7 +131,44 @@ export default {
       let yy = new Date().getFullYear();
       let mm = new Date().getMonth()+1 <10 ? '0'+new Date().getMonth() : new Date().getMonth();
       _this.value1 = yy+'-'+mm;
-    }
+    },
+    querycdAllmothday(){
+      this.axios({
+        url: "http://localhost:8007/provider/leave/queryallsmothday",
+        method: "post",
+        data: {
+          currenPage: this.pageInfo.currenPage,
+          pagesize:this.pageInfo.pagesize,
+          dates: "2022-02"
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.error(response.data.data.records)
+        this.tableData = response.data.data.records
+        this.pageInfo.total = response.data.data.total
+        this.one=[];
+        for (let i = 0; i <response.data.data.records[0].clockRsList.length ; i++) {
+          let two ={
+            i:i+1,
+            iName:response.data.data.records[0].clockRsList[i].moth
+          }
+          this.one.push(two)
+        }
+        for (let i = 0; i <response.data.data.records.length ; i++) {
+          for (let j = 0; j <response.data.data.records[i].clockRsList.length ; j++) {
+            response.data.data.records[i][j+1]=
+                response.data.data.records[i].clockRsList[j].smornResult+" "+"-"+" "+
+                response.data.data.records[i].clockRsList[j].xafternoonResult
+          }
+        }
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+
+
   }
 
 }
