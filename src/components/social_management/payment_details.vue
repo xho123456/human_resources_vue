@@ -46,18 +46,20 @@
             ><i class="iconfont">&#xe608;</i>批量删除</el-button
           >
 
+          <!-- 搜索按钮 -->
+          <div style="width: 68px;margin-top: 1px;" class="resume-operation">
+            <el-button size="mini" style="width: 68px;height: 29px" type="primary" @click="selectPaers()">
+              搜索
+            </el-button>
+          </div>
           <!-- 输入框 -->
-          <div class="resume-operation">
-            <el-input v-model="empName_search" placeholder="员工姓名">
-              <template #suffix>
-                <el-icon class="el-input__icon"><i-search /></el-icon>
-              </template>
-            </el-input>
+          <div class="resume-operation" style="width: 95px">
+            <el-input v-model="pageInfo.staffName" placeholder="员工姓名"/>
           </div>
 
           <!-- 下拉选择器 -->
           <div class="resume-operation">
-            <el-select clearable size="small" v-model="empState" placeholder="员工状态">
+            <el-select clearable size="small" v-model="pageInfo.staffState" placeholder="员工状态">
               <el-option
                 v-for="item in empState_options"
                 :key="item.value"
@@ -69,41 +71,48 @@
           </div>
 
           <!-- 部门树形选择框 -->
-          <div class="resume-operation">
-            <el-select clearable v-model="dept_name" multiple placeholder="选择部门">
-              <el-option
-                v-for="item in depts"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
+
+          <div style="width: 170px" class="resume-operation">
+            <el-select placeholder="选择部门" v-model="deptName" clearable ref="vueSelect"  size="small"
+                       @click="onclicks()" >
+              <el-option hidden></el-option>
+              <el-tree
+                  :data="deptlists"
+                  :default-expand-all=true
+                  :check-on-click-node=true
+                  :check-strictly=true
+                  node-key="deptId"
+                  :props="defaultProps"
+                  ref="tree"
+                  @check-change="handleCheckChangesx()"
+              />
             </el-select>
           </div>
         </div>
 
         <!-- 表格内容部分 -->
         <div class="sub-Content__primary">
-          <el-table :data="tableData" style="width: 100%;margin-top: 10px"
+          <el-table :data="tableData" style="width: 100%;margin-top: 10px "
+
                     :header-cell-style="{textAlign: 'center',background:'#F0F0F0',color:'#6C6C6C'}"
                     :cell-style="{ textAlign: 'center' }"
                     :default-sort="{ prop: 'date', order: 'descending' }"
                     @selection-change="deletepl"
           >
             <el-table-column type="selection" width="55" />
-            <el-table-column prop="date" label="编号" width="100"/>
-            <el-table-column prop="name" label="姓名" width="100"/>
-            <el-table-column prop="address" :show-overflow-tooltip='true' label="参保方案" width="120"/>
-            <el-table-column prop="state" label="社保缴纳月份" width="130" />
-            <el-table-column prop="address" label="社保个人缴费"  :show-overflow-tooltip='true' width="130" />
-            <el-table-column prop="address" label="社保企业缴费" :show-overflow-tooltip='true' width="130" />
-            <el-table-column prop="state" label="公积金缴纳月份" width="130" />
+            <el-table-column type="index" label="编号" width="100"/>
+            <el-table-column prop="staffName" label="姓名" width="100"/>
+            <el-table-column prop="defInsuredName" :show-overflow-tooltip='true' label="参保方案" width="120"/>
+            <el-table-column prop="insDetailInsuredMonth" label="社保缴纳月份" width="130" />
+            <el-table-column prop="insDetailSocialPersonPay" label="社保个人缴费"  :show-overflow-tooltip='true' width="130" />
+            <el-table-column prop="insDetailSocialFirmPay" label="社保企业缴费" :show-overflow-tooltip='true' width="130" />
+            <el-table-column prop="insDetailInsuredMonth" label="公积金缴纳月份" width="130" />
             <el-table-column
-              prop="address"
+              prop="insDetailFundPersonPay"
               label="公积金个人缴费"
               width="130"
             />
-            <el-table-column prop="state" label="公积金企业缴费" width="130" />
+            <el-table-column prop="insDetailFundFirmPay" label="公积金企业缴费" width="130" />
             <el-table-column prop="state" label="操作" width="110">
               <template #default>
                 <router-link :to="{path:this.path,query:{path:this.$route.query.path}}">
@@ -115,25 +124,30 @@
         </div>
 
         <!-- 分页插件 -->
+        <!-- 分页 -->
         <div class="demo-pagination-block">
           <el-pagination
-            v-model:currentPage="pageInfo.currentPage"
-            :page-sizes="[3, 5, 10, 50]"
-            v-model:page-size="pageInfo.pagesize"
-            :default-page-size="pageInfo.pagesize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="pageInfo.total"
-            :pager-count="5"
-            background
-            @size-change="selectUsers"
-            @current-change="selectUsers"
+              v-model:current-page="pageInfo.currentPage"
+              v-model:currentPage="pageInfo.currentPage"
+              v-model:page-size="pageInfo.pagesize"
+              :default-page-size="pageInfo.pagesize"
+              :page-sizes="[3, 4, 5, 6]"
+              :page-size="3"
+              :pager-count="4"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="pageInfo.total"
+              @size-change="selectPaers()"
+              @current-change="selectPaers()"
+              prev-text="上一页"
+              next-text="下一页"
+              background
           >
           </el-pagination>
         </div>
       </div>
     </div>
   </div>
-  &nbsp;
+  &nbsp;{{pageInfo.deptIdss}}
 </template>
 
 <script>
@@ -141,30 +155,38 @@ import { ref, defineComponent } from "vue";
 
 export default {
   data() {
+    const defaultProps = {
+      children: 'deptlist',
+      label: 'deptName',
+    }
     return {
+      defaultProps,
+      deptlists:[],
+
+
       path:"/social/social_payment/someone_insured_particulars",
       // 部门名称
-      dept_name: null,
-      // 选择部门 下拉选择器
-      depts: [
-        {value: "1", label: "部门1"},
-        {value: "2", label: "部门2"},
-        {value: "3", label: "部门3"},
-      ],
+      deptName: '',
       // 员工姓名搜索框
       empName_search:"",
       //员工状态下拉选择器
       empState_options: [
-        { value: "0", label: "试用期" },
-        { value: "1", label: "在职" },
-        { value: "2", label: "离职" },
+        { value: 0, label: "试用期" },
+        { value: 1, label: "在职" },
       ],
       empState:"",//员工状态下拉选择器的值
       // 分页参数
       pageInfo: {
-        currentPage: 1, //当前页
-        pagesize: 3, // 页大小
-        total: 0, // 总页数
+        currentPage: 1,
+        pagesize: 3,
+        total: 0,
+        //部门编号
+        deptIdss:'',
+        //员工姓名
+        staffName:'',
+        //员工状态
+        staffState:'',
+
       },
 
 
@@ -192,47 +214,73 @@ export default {
         }
       ],
 
-      tableData: [
-        {
-          date: "2016-05-03",
-          name: "Tom",
-          state: "California",
-          city: "Los Angeles",
-          address: "No. 189, Grove St, Los Angeles",
-          zip: "CA 90036",
-          tag: "Home",
-        },
-        {
-          date: "2016-05-02",
-          name: "Tom",
-          state: "California",
-          city: "Los Angeles",
-          address: "No. 189, Grove St, Los Angeles",
-          zip: "CA 90036",
-          tag: "Office",
-        },
-        {
-          date: "2016-05-04",
-          name: "Tom",
-          state: "California",
-          city: "Los Angeles",
-          address: "No. 189, Grove St, Los Angeles",
-          zip: "CA 90036",
-          tag: "Home",
-        },
-        {
-          date: "2016-05-01",
-          name: "Tom",
-          state: "California",
-          city: "Los Angeles",
-          address: "No. 189, Grove St, Los Angeles",
-          zip: "CA 90036",
-          tag: "Office",
-        },
-      ],
+      tableData: [],
     };
   },
-};
+  created() {
+    this.selectAlldepts();
+    this.selectPaers()
+  },
+  methods:{
+    scheme(){
+
+},
+
+    /**
+     * 分页查询参保明细数据
+     */
+    selectPaers(){
+      this.axios({
+        method:'post',
+        url:"http://localhost:8007/provider/insuredDetail/page",
+        data:this.pageInfo,
+        responseType:'json',
+        responseEncoding:'utf-8',
+      }).then((response)=>{
+        console.log(response)
+        this.tableData = response.data.data.records
+        this.pageInfo.total=response.data.data.total
+
+      })
+    },
+
+    //点击Select选择器清空原有复选框选项
+    onclicks() {
+      this.$refs.tree.setCheckedKeys([]);
+    },
+    //筛选：节点选中状态发生变化时的回调
+    handleCheckChangesx(data, checked, indeterminate) {
+      //获取所有选中的节点 start
+      let res = this.$refs.tree.getCheckedNodes()
+      res.forEach((item) => {
+        this.pageInfo.deptIdss = item.deptId
+        this.deptName = item.deptName
+        //关闭Select选择器
+        this.$refs.vueSelect.blur();
+      })
+    },
+    /**
+     * select：查询所有部门信息
+     */
+    selectAlldepts() {
+      this.axios({
+        url: "http://localhost:8007/provider/dept/dept/selectAlldept",
+        method: "post",
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.deptlists = response.data.data
+      }).catch(function (error) {
+        console.log('获取列表失败')
+      })
+    },
+  }
+}
+
+
+
+
+
 </script>
 
 <style scoped>
