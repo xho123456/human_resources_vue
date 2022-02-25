@@ -6,7 +6,6 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import store from "./store"
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
-
 /**
  *以下代码为2021年10月21日最新加入代码，主要是解决最新
  *版本的icons导入问题。注：el官方目前尚在不断升级，
