@@ -4,8 +4,7 @@
     <el-tabs type="border-card">
       <!-- 待办申请页面 -->
       <el-tab-pane label="待办申请"  >
-<!--        -->
-        <el-button @click="positveme">重置</el-button>
+        <el-button @click="positveme(null)">重置</el-button>
         &nbsp;
         <el-input
             v-model="input"
@@ -13,18 +12,18 @@
             style="width: 130px"
         />
         &nbsp;
-        <el-button type="success" plain>搜索</el-button>
+        <el-button type="success" @click="positveme(input)">搜索</el-button>
         <!--  表格 -->
         <el-table
             :data="tableData"
             style="width: 100%"
         >
           <el-table-column
-              prop="AUDITFLOWDETAIDATE"
+              prop="auditflowdetaidate"
               label="日期"
               width="140"
           />
-          <el-table-column prop="AUDITFLOWID" label="审批编号" width="100"/>
+          <el-table-column prop="auditflowid" label="审批编号" width="100"/>
           <el-table-column prop="auditflowtype" label="流程" width="100"/>
           <el-table-column prop="staffname1" label="申请人" width="150"/>
           <el-table-column prop="auditflowdetaistate" label="状态" width="100">
@@ -32,6 +31,7 @@
               <span v-if="scope.row.auditflowdetaistate==0">审批中</span>
               <span v-if="scope.row.auditflowdetaistate==1">待我审批</span>
               <span v-if="scope.row.auditflowdetaistate==2">已审批</span>
+              <span v-if="scope.row.auditflowdetaistate==3">驳回</span>
             </template>
           </el-table-column>
           <el-table-column prop="staffname2" label="历史审批人" width="150"/>
@@ -82,8 +82,8 @@
               layout="total, sizes, prev, pager, next, jumper"
               :total="pageInfo.total"
               :pager-count="5"
-              @size-change="positveme()"
-              @current-change="positveme()"
+              @size-change="positveme(input)"
+              @current-change="positveme(input)"
               prev-text="上一页"
               next-text="下一页"
               background
@@ -99,25 +99,25 @@
       <!-- 已办申请页面 -->
       <el-tab-pane label="已办申请">
 <!--        -->
-        <el-button @click="positveed">重置</el-button>
+        <el-button @click="positveed(null)">重置</el-button>
         &nbsp;
         <el-input
-            v-model="input"
-            placeholder="输入名称搜索nima"
+            v-model="input2"
+            placeholder="输入名称搜索"
             style="width: 130px"
         />
         &nbsp;
-        <el-button type="success" plain>搜索</el-button>
+        <el-button type="success"  @click="positveed(input2)">搜索</el-button>
         <el-table
             :data="tableData1"
             style="width: 100%"
         >
           <el-table-column
-              prop="AUDITFLOWDETAIDATE"
+              prop="auditflowdetaidate"
               label="日期"
               width="140"
           />
-          <el-table-column prop="AUDITFLOWID" label="审批编号" width="100"/>
+          <el-table-column prop="auditflowid" label="审批编号" width="100"/>
           <el-table-column prop="auditflowtype" label="流程" width="100"/>
           <el-table-column prop="staffname1" label="申请人" width="150"/>
           <el-table-column prop="auditflowdetaistate" label="状态" width="100">
@@ -125,6 +125,7 @@
               <span v-if="scope.row.auditflowdetaistate==0">审批中</span>
               <span v-if="scope.row.auditflowdetaistate==1">待我审批</span>
               <span v-if="scope.row.auditflowdetaistate==2">已审批</span>
+              <span v-if="scope.row.auditflowdetaistate==3">驳回</span>
             </template>
           </el-table-column>
           <el-table-column prop="staffname2" label="历史审批人" width="150"/>
@@ -151,8 +152,8 @@
               layout="total, sizes, prev, pager, next, jumper"
               :total="pageInfo.total"
               :pager-count="5"
-              @size-change="positveed"
-              @current-change="positveed"
+              @size-change="positveed(input2)"
+              @current-change="positveed(input2)"
               prev-text="上一页"
               next-text="下一页"
               background
@@ -164,7 +165,7 @@
       <!--       我的申请页面:转正 -->
       <el-tab-pane label="我的申请">
 
-        <el-button @click="resetDateFilter">重置日期过滤</el-button>
+        <el-button @click="resetDateFilter">重置</el-button>
         <el-button @click="become = true" v-on:click="this.become_1.type_1 = '提前转正'">发起申请</el-button>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -178,13 +179,6 @@
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
-        <el-input
-            v-model="input"
-            placeholder="输入名称搜索"
-            style="width: 130px"
-        />
-        &nbsp;
-        <el-button type="success" plain>搜索</el-button>
         <!-- 表格   -->
         <el-table
             ref="filterTable"
@@ -193,25 +187,23 @@
             style="width: 100%"
         >
           <el-table-column
-              prop="date"
+              prop="auditflowdetaidate"
               label="日期"
-              sortable
               width="140"
-              column-key="date"
-              :filters="[
-              { text: '2016-05-01', value: '2016-05-01' },
-              { text: '2016-05-02', value: '2016-05-02' },
-              { text: '2016-05-03', value: '2016-05-03' },
-              { text: '2016-05-04', value: '2016-05-04' },
-            ]"
-              :filter-method="filterHandler"
           />
-          <el-table-column prop="name" label="审批编号" width="150"/>
-          <el-table-column prop="name" label="流程" width="150"/>
-          <el-table-column prop="name" label="申请人" width="150"/>
-          <el-table-column prop="name" label="状态" width="150"/>
-          <el-table-column prop="name" label="当前审批人" width="150"/>
-          <el-table-column prop="name" label="最近处理" width="150"/>
+          <el-table-column prop="auditflowid" label="审批编号" width="100"/>
+          <el-table-column prop="auditflowtype" label="流程" width="100"/>
+          <el-table-column prop="staffname1" label="申请人" width="150"/>
+          <el-table-column prop="auditflowdetaistate" label="状态" width="100">
+            <template #default="scope">
+              <span v-if="scope.row.auditflowdetaistate==0">审批中</span>
+              <span v-if="scope.row.auditflowdetaistate==1">审批中</span>
+              <span v-if="scope.row.auditflowdetaistate==2">已审批</span>
+              <span v-if="scope.row.auditflowdetaistate==3">驳回</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="staffname2" label="历史审批人" width="150"/>
+          <el-table-column prop="createdtime" label="最近处理" width="140"/>
           <el-table-column label="操作" >
             <template #default="scope" >
               <el-popconfirm
@@ -220,7 +212,7 @@
                   :icon="InfoFilled"
                   icon-color="red"
                   title="确定撤销吗?"
-                  @confirm="through1()"
+                  @confirm="through3()"
               >
                 <template #reference>
                   <el-button type="success" plain>撤销</el-button>
@@ -247,6 +239,10 @@
               layout="total, sizes, prev, pager, next, jumper"
               :total="pageInfo.total"
               :pager-count="5"
+              @size-change="resetDateFilter"
+              @current-change="resetDateFilter"
+              prev-text="上一页"
+              next-text="下一页"
               background
           >
           </el-pagination>
@@ -269,10 +265,10 @@
       >
         <el-form ref="form_1" :model="become_1" label-width="120px">
           <el-form-item label="员工名称 :">
-            <el-input v-model="become_1.name" disabled></el-input>
+            <el-input v-model="staffName" disabled></el-input>
           </el-form-item>
-          <el-form-item label="部门名称 :">
-            <el-input v-model="become_1.dept" disabled></el-input>
+        <el-form-item label="部门编号                  :">
+            <el-input v-model="postNmae" disabled></el-input>
           </el-form-item>
           <el-form-item label="转正类型 :">
             <el-input v-model="become_1.type_1" disabled></el-input>
@@ -301,7 +297,7 @@
                 <div class="block">
                   <el-avatar :size="50" :src="circleUrl"></el-avatar>
                   <div class="sub-title" style="line-height: 10px">
-                    管理一号
+                    审批专员1
                   </div>
                 </div>
               </div>
@@ -312,7 +308,7 @@
                   <el-avatar :size="50" :src="circleUrl"></el-avatar>
                 </div>
                 <div class="sub-title" style="line-height: 10px">
-                  管理二号
+                  审批专员2
                 </div>
               </div>
             </el-col>
@@ -322,7 +318,7 @@
                   <el-avatar :size="50" :src="circleUrl"></el-avatar>
                 </div>
                 <div class="sub-title" style="line-height: 10px">
-                  管理三号
+                  审批专员3
                 </div>
               </div>
             </el-col>
@@ -366,6 +362,10 @@ export default {
   },
   data() {
     return {
+      postNmae:this.$store.state.userall.deptPostId,
+      staffId:this.$store.state.userall.staffId,
+      staffName:this.$store.state.userall.staffName,
+
 
       become_1: {
         //名称
@@ -379,6 +379,10 @@ export default {
         //日期
         date: "",
       },
+
+      input:null,
+      input2:null,
+      input3:null,
 
       // 待办转正审批列表
       tableData: [
@@ -396,37 +400,78 @@ export default {
         currentPage: 1, //当前页
         pagesize: 3, // 页大小
         total: 0, // 总页数
+        staffname1: '',
+        staffid:'',
       },
     };
   },
   mounted() {
-    this.positveme();
+    this.positveme(null);
     this.positveed();
+    this.resetDateFilter();
   },
   methods: {
-    positveme(){
-      var _this = this;
-      _this.axios.get(
-          "http://localhost:8007/provider/worker", {
-            params:this.pageInfo,
-          }).then((response)=>{
-         console.log(response);
-        _this.tableData = response.data.data.records
-        _this.pageInfo.total=response.data.data.total
-      })
+    positveme(like){
+      if(Object.prototype.toString.call(like)===Object.prototype.toString.call(null)) {
+        var _this = this;
+        _this.axios.get(
+            "http://localhost:8007/provider/worker", {
+              params: this.pageInfo,
+            }).then((response) => {
+          console.log(response);
+
+          _this.tableData = response.data.data.records
+          _this.pageInfo.total = response.data.data.total
+        })
+      }else {
+        this.pageInfo.staffname1=like;
+        //alert(this.pageInfo.staffname1);
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/worker/likename",
+          data:this.pageInfo,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then((response)=>{
+          console.log(response);
+          this.tableData = response.data.data.records
+          this.pageInfo.total=response.data.data.total
+        }).catch(function (error){
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }
     },
-    positveed(){
-      var _this = this;
-      _this.axios.get(
-          "http://localhost:8007/provider/worker/positveed", {
-            params:this.pageInfo,
-          }).then((response)=>{
-        console.log(response);
-        if (response.data.data!=null){
-          _this.tableData1 = response.data.data.records
-          _this.pageInfo.total=response.data.data.total
-        }
-      })
+    positveed(like){
+      if(Object.prototype.toString.call(like)===Object.prototype.toString.call(null)) {
+        var _this = this;
+        _this.axios.get(
+            "http://localhost:8007/provider/worker/positveed", {
+              params: this.pageInfo,
+            }).then((response) => {
+          console.log(response);
+          if (response.data.data != null) {
+            _this.tableData1 = response.data.data.records
+            _this.pageInfo.total = response.data.data.total
+          }
+        })
+      }else {
+        this.pageInfo.staffname1=like;
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/positveed/likename",
+          data:this.pageInfo,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then((response)=>{
+          console.log(response);
+          this.tableData1 = response.data.data.records
+          this.pageInfo.total=response.data.data.total
+        }).catch(function (error){
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }
     },
 
     //提交转正
@@ -436,7 +481,52 @@ export default {
       } else if (this.become_1.date1.length === 0) {
         ElMessage("日期不能为空");
       } else {
-        alert(1);
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/worker/add",
+          data:{
+            staffId: this.staffId,
+            // 申请人
+            staffName: this.staffName,
+            // 部门名称
+            deptId: this.postNmae,
+            // 转正类型
+            workertype: this.become_1.type_1,
+            // 转正备注
+            auditflowdetaiRemarks: this.become_1.remarks_1,
+            // 转正日期
+            workerdate: this.become_1.date1,
+            // 审批人1
+            staffName1: "审批专员1",
+            // 审批人2
+            staffName2: "审批专员2",
+            // 审批人3
+            staffName3: "审批专员3",
+            // 审批类型
+            auditflowType: "转正",
+            // 审批标题
+            auditflowTitle: this.staffName + "的" + this.become_1.type_1
+          },
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then((response)=>{
+          console.log(response);
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "申请成功",
+            });
+           // this.resetDateFilter();
+            this.cancel_1();
+          } else {
+            ElMessage.error("你已申请转正");
+            this.cancel_1();
+          //  this.resetDateFilter();
+          }
+        }).catch(function (error){
+          console.log('获取表单失败')
+          console.log(error)
+        })
       }
     },
     // 转正取消
@@ -470,9 +560,23 @@ export default {
     resetDateFilter1() {
       this.$refs.filterTable1.clearFilter("date1");
     },
-    // 重置日期过滤
+    // 我的申请
     resetDateFilter() {
-      this.$refs.filterTable.clearFilter("date");
+      this.pageInfo.staffid=this.staffId;
+      this.axios({
+        method:'post',
+        url:"http://localhost:8007/provider/worker/myid",
+        data:this.pageInfo,
+        responseType:'json',
+        responseEncoding:'utf-8',
+      }).then((response)=>{
+        console.log(response);
+        this.tableData2 = response.data.data.records
+        this.pageInfo.total=response.data.data.total
+      }).catch(function (error){
+        console.log('获取表单失败')
+        console.log(error)
+      })
     },
     clearFilter() {
       this.$refs.filterTable.clearFilter();
@@ -484,11 +588,49 @@ export default {
     },
     // 点击通过确认按钮触发
     through1(){
-      alert(1)
+      if (this.postNmae==16){
+        alert("审批1")
+      }else if (this.postNmae==17){
+        alert("审批2")
+      }else if (this.postNmae==18){
+        alert("审批3")
+      }else {
+        ElMessage({
+          message:"权限不够",
+          type:"warning"
+        })
+      }
+
     },
     // 点击驳回确认按钮触发
     through2(){
-      alert(1)
+      if (this.postNmae==16){
+        alert("审批1")
+      }else if (this.postNmae==17){
+        alert("审批2")
+      }else if (this.postNmae==18){
+        alert("审批3")
+      }else {
+        ElMessage({
+          message:"权限不够",
+          type:"warning"
+        })
+      }
+    },
+    // 点击撤销确认按钮触发
+    through3(){
+      if (this.postNmae==16){
+        alert("审批1"+this.staffId)
+      }else if (this.postNmae==17){
+        alert("审批2"+this.staffId)
+      }else if (this.postNmae==18){
+        alert("审批3"+this.staffId)
+      }else {
+        ElMessage({
+          message:"权限不够",
+          type:"warning"
+        })
+      }
     }
   }
 };
