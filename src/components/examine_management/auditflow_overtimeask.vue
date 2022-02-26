@@ -519,7 +519,7 @@ export default {
            // this.resetDateFilter();
             this.cancel_1();
           } else {
-            ElMessage.error("申请失败");
+            ElMessage.error("你已申请转正");
             this.cancel_1();
           //  this.resetDateFilter();
           }
