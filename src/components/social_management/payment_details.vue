@@ -7,28 +7,27 @@
       <div class="j-card-body">
         <!-- 计薪月份 -->
         <div class="month-div">
-          <span class="month_span">2021-12</span><br /><br />
-          计薪月份<br /><br />
+          <span class="month_span">{{time}}</span><br />
+          <span class="times">计薪月份</span><br><br />
           <el-button type="primary" size="small">重新核算</el-button>
           <el-button type="primary" size="small" style="width: 80px"
             >归档</el-button
           >
         </div>
-
+{{tableDatas.quantity}}
         <!-- 月金额统计 -->
         <div class="month_sum">
           <el-table size="small"
                     :data="tableDatas"
                     stripe style="width: 100%"
-                    :header-cell-style="{textAlign: 'center',background:'#F0F0F0',color:'#6C6C6C'}"
-                    :cell-style="{ textAlign: 'center' }"
+                    :header-cell-style="{height:'60px',textAlign: 'center',background:'#F0F0F0',color:'#6C6C6C'}"
+                    :cell-style="{ textAlign: 'center', padding:'21px'}"
                     :default-sort="{ prop: 'date', order: 'descending' }"
           >
-            <el-table-column prop="mold" label="参保类型" width="189.5"/>
-            <el-table-column prop="quantity" label="参保人数" width="190"/>
-            <el-table-column prop="personage" label="个人缴费" width="189"/>
-            <el-table-column prop="enterprise" label="企业缴费" width="190" />
-            <el-table-column prop="total" label="合计缴费"  width="190" />
+            <el-table-column prop="quantity" label="参保人数" width="215"/>
+            <el-table-column prop="personage" label="个人缴费" width="215"/>
+            <el-table-column prop="enterprise" label="企业缴费" width="215" />
+            <el-table-column prop="total" label="合计缴费"  width="215" />
           </el-table>
         </div>
 
@@ -114,8 +113,8 @@
             />
             <el-table-column prop="insDetailFundFirmPay" label="公积金企业缴费" width="130" />
             <el-table-column prop="state" label="操作" width="110">
-              <template #default>
-                <router-link :to="{path:this.path,query:{path:this.$route.query.path}}">
+              <template #default="scope">
+                <router-link :to="{path:this.path,query:{path:this.$route.query.path,id:scope.row.staffId}}">
                   <el-button type="text" size="small">查看 </el-button>
                 </router-link>
               </template>
@@ -147,7 +146,7 @@
       </div>
     </div>
   </div>
-  &nbsp;{{pageInfo.deptIdss}}
+
 </template>
 
 <script>
@@ -163,7 +162,8 @@ export default {
       defaultProps,
       deptlists:[],
 
-
+      time:'',
+      //跳转页面路径
       path:"/social/social_payment/someone_insured_particulars",
       // 部门名称
       deptName: '',
@@ -181,7 +181,7 @@ export default {
         pagesize: 3,
         total: 0,
         //部门编号
-        deptIdss:'',
+        deptId:'',
         //员工姓名
         staffName:'',
         //员工状态
@@ -192,25 +192,10 @@ export default {
 
       tableDatas:[
         {
-          mold:"企业自主",
-          quantity:'131',
-          personage:'88496.43',
-          enterprise:'324234',
-          total:'2342'
-        },
-        {
-          mold:"人事外包",
-          quantity:'131',
-          personage:'88496.43',
-          enterprise:'324234',
-          total:'2342'
-        },
-        {
-          mold:"合计",
-          quantity:'131',
-          personage:'88496.43',
-          enterprise:'324234',
-          total:'2342'
+          quantity:0,
+          personage:0,
+          enterprise:0,
+          total:0
         }
       ],
 
@@ -220,11 +205,41 @@ export default {
   created() {
     this.selectAlldepts();
     this.selectPaers()
+    this.getCurrentTime()
+    this.detail()
   },
   methods:{
-    scheme(){
+    /**
+     * 参保明细金额数据
+     */
+    detail(){
 
-},
+      this.axios({
+        method:'get',
+        url:"http://localhost:8007/provider/insuredDetail/detail",
+        responseType:'json',
+        responseEncoding:'utf-8',
+      }).then((response)=>{
+        console.log("=====",response)
+
+        this.tableDatas[0].quantity=response.data.data.length
+
+
+        for(let i=0;i<response.data.data.length;i++){
+          //个人
+          this.tableDatas[0].personage+=response.data.data[i].insDetailSocialPersonPay+response.data.data[i].insDetailFundPersonPay
+          //企业
+          this.tableDatas[0].enterprise+=response.data.data[i].insDetailSocialFirmPay+response.data.data[i].insDetailFundFirmPay
+
+        }
+        //总金额
+        this.tableDatas[0].total=this.tableDatas[0].personage+this.tableDatas[0].enterprise
+        this.tableDatas[0].personage=this.tableDatas[0].personage.toFixed(2)
+        this.tableDatas[0].enterprise=this.tableDatas[0].enterprise.toFixed(2)
+        this.tableDatas[0].total=this.tableDatas[0].total.toFixed(2)
+
+      })
+    },
 
     /**
      * 分页查询参保明细数据
@@ -237,7 +252,7 @@ export default {
         responseType:'json',
         responseEncoding:'utf-8',
       }).then((response)=>{
-        console.log(response)
+        console.error(response)
         this.tableData = response.data.data.records
         this.pageInfo.total=response.data.data.total
 
@@ -253,7 +268,7 @@ export default {
       //获取所有选中的节点 start
       let res = this.$refs.tree.getCheckedNodes()
       res.forEach((item) => {
-        this.pageInfo.deptIdss = item.deptId
+        this.pageInfo.deptId = item.deptId
         this.deptName = item.deptName
         //关闭Select选择器
         this.$refs.vueSelect.blur();
@@ -274,6 +289,15 @@ export default {
         console.log('获取列表失败')
       })
     },
+    /**
+     * 获取系统当前时间
+     */
+    getCurrentTime() {
+      //获取当前时间并打印
+      let yy = new Date().getFullYear();
+      let mm = new Date().getMonth()+1;
+      this.time= yy+'/'+mm;
+    },
   }
 }
 
@@ -284,15 +308,17 @@ export default {
 </script>
 
 <style scoped>
-
+.times{
+  margin-left: 53px;
+}
 
 /* 月金额统计 */
 .month_sum {
   display: inline-block;
-  margin-left: 312px;
-  width: 948px;
+  margin-left: 402px;
+  width: 861px;
   height: 159px;
-
+  margin-top: 32px;
   margin-bottom: 40px;
 
 }
@@ -301,15 +327,18 @@ export default {
 .month-div {
   display: inline-block;
   margin: 40px;
-  margin-left: 30px;
+  margin-left: 80px;
   margin-bottom: -157px;
   float: left;
+
 }
 
 /* 计薪月份 */
 .month_span {
   font-weight: bold;
   font-size: 30px;
+  margin-left: 34px;
+
 }
 
 /* 调整输入框的高度 */
