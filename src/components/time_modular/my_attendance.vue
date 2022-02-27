@@ -82,7 +82,7 @@
                       </div>
                       <div class="show-dv1">
                         <div class="show-dv2">{{numbers.numberzt}}</div>
-                        <div class="show-dv3" title="早退(次)">早退(天)</div>
+                        <div class="show-dv3" title="早退(次)">早退(次)</div>
                       </div>
                     </div>
                     <div class="my-ant" @click="querykuang()">
@@ -91,7 +91,7 @@
                       </div>
                       <div class="show-dv1">
                         <div class="show-dv2">{{numbers.numberkg}}</div>
-                        <div class="show-dv3" title="旷工(次)">旷工(天)</div>
+                        <div class="show-dv3" title="旷工(次)">旷工(次)</div>
                       </div>
                     </div>
                     <div class="my-ant">
@@ -119,7 +119,7 @@
                         <i class="iconfont" style="font-size: 29px">&#xe69f;</i>
                       </div>
                       <div class="show-dv1">
-                        <div class="show-dv2">9</div>
+                        <div class="show-dv2">{{numbers.numberjab}}</div>
                         <div class="show-dv3" title="加班(天)">加班(天)</div>
                       </div>
                     </div>
@@ -174,8 +174,6 @@
               <el-table-column prop="zhaisLate" label="早退时长（小时）" width="140"/>
               <el-table-column prop="kangLate" label="旷工（次数）" width="140"/>
               <el-table-column prop="kangsLate" label="旷工时长（小时）" width="140"/>
-              <el-table-column prop="workYing" label="应工作时长" width="140"/>
-              <el-table-column prop="worksYing" label="实际工作时长" width="140"/>
             </el-table>
             <div class="demo-pagination-block" style="margin-top: 10px">
               <el-pagination
@@ -440,6 +438,7 @@ export default {
         numbercd:'', //迟到
         numberzt:'', //早退
         numberkg:'', //旷工
+        numberjab:'',//加班
       },
       tableData: [],
       //分页
@@ -518,6 +517,8 @@ export default {
     this.querynumber();
     //当前登录用户考勤打卡记录查询（按照月份查询）
     this.querycdAlldk();
+
+
   },
   methods: {
     //获取当前月分
@@ -584,6 +585,8 @@ export default {
         this.zaotnumbers();
         //旷工次数统计
         this.kgnumber();
+        //加班次数统计
+        this.jiabnumber();
       }).catch(function (error) {
         console.log('获取列表失败')
         console.log(error);
@@ -687,6 +690,25 @@ export default {
         responseEncoding: 'utf-8',
       }).then((response) => {
         this.numbers.numbercd = response.data.data
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    //迟到次数统计
+    jiabnumber() {
+      this.axios({
+        url: "http://localhost:8007/provider/clock/queryjabnumbers",
+        method: "post",
+        data: {
+          staffId:this.useralls.staffId,
+          dates:this.value1
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.error(response)
+        this.numbers.numberjab = response.data.data
       }).catch(function (error) {
         console.log('获取列表失败')
         console.log(error);

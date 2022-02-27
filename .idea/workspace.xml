@@ -6,14 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="7782e118-91e8-4d6c-900a-0a4856553f34" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/navigation.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navigation.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/organization_management/zz_evection1.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/organization_management/zz_evection1.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/recruitment_management/employment_management/employment_main.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recruitment_management/employment_management/employment_main.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/recruitment_management/recruitment_plan_details.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recruitment_management/recruitment_plan_details.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/recruitment_management/recruitment_zp_plan.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recruitment_management/recruitment_zp_plan.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/time_modular/leave_yyx.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/time_modular/leave_yyx.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/time_modular/my_attendance.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/time_modular/my_attendance.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/workbench_management/workbench_main.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/workbench_management/workbench_main.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/time_modular/outdifference_yyx.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/time_modular/outdifference_yyx.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/time_modular/workovertime_yyx.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/time_modular/workovertime_yyx.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +53,7 @@
       <workItem from="1645187293451" duration="14344000" />
       <workItem from="1645267546343" duration="1808000" />
       <workItem from="1645438850420" duration="720000" />
+      <workItem from="1645946307454" duration="2877000" />
     </task>
     <task id="LOCAL-00001" summary="Changes">
       <created>1645272404172</created>
@@ -64,7 +62,14 @@
       <option name="project" value="LOCAL" />
       <updated>1645272404172</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Changes">
+      <created>1645709156806</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1645709156806</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

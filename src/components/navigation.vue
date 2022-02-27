@@ -242,6 +242,7 @@ export default {
   },
   methods: {
     aa() {
+      console.error(3)
       //获取系统当前时间
       let _this = this
       let hh = new Date().getHours() < 10 ? '0' + new Date().getHours() : new Date().getHours();
@@ -249,11 +250,11 @@ export default {
       let ss = new Date().getSeconds() < 10 ? '0' + new Date().getSeconds() : new Date().getSeconds();
       _this.todays = hh + ':' + mf + ':' + ss;
       //班次：上午上班打卡时间范围
-      let classesTimeones = new Date("2022-12-01 " + this.cressesId.classesTimeones)
       let classesTimeonex = new Date("2022-12-01 " + this.cressesId.classesTimeonex)
       let todays = new Date("2022-12-01 " + this.todays)
       //上午没打卡 ：如果当前时间大于上午下班时段则添加一次打卡记录
       if (todays > classesTimeonex) {
+        console.error(2)
         //新增一次
         this.isnulladd();
       }
@@ -478,6 +479,7 @@ export default {
     //上午旷工打卡流程
     //上午没打卡 ：如果当前时间大于上午下班时段则添加一次打卡记录
     isnulladd() {
+      console.error(1)
       if (this.querydays == null) {
         //获取系统当前时间
         let _this = this
@@ -507,20 +509,24 @@ export default {
           responseType: 'json',
           responseEncoding: 'utf-8',
         }).then((response) => {
-          //打卡记录表新增一条数据后获取该数据的编号
-          this.axios.get('http://localhost:8007/provider/works/querydkday?id=' + this.useralls.staffId, {}).then((res) => {
-            this.clockrecordId2 = res.data.data
-            //打卡记录表新增一条数据后获取该数据的编号
-            this.addshens2();
-          }).catch(function (error) {
-            console.log('获取列表失败')
-            console.log(error);
-          })
+          this.querydaka2();
         }).catch(function (error) {
           console.log('获取列表失败')
           console.log(error);
         })
       }
+    },
+    querydaka2(){
+      //打卡记录表新增一条数据后获取该数据的编号
+      this.axios.get('http://localhost:8007/provider/works/querydkday?id=' + this.useralls.staffId, {}).then((res) => {
+        this.clockrecordId2 = res.data.data
+        console.error(1)
+        //打卡记录表新增一条数据后获取该数据的编号
+        this.addshens2();
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
     },
     addshens2() {
       this.axios({
