@@ -22,12 +22,12 @@
                 :default-sort="{ prop: 'date', order: 'descending' }"
                 @selection-change="deletepl"
       >
-        <el-table-column prop="date" label="计薪月份" />
-        <el-table-column prop="name" label="参保方案" />
-        <el-table-column prop="social" label="社保缴纳月份" />
-        <el-table-column prop="social_numbert" label="社保基数" />
-        <el-table-column prop="rent" label="公积金缴纳月份" />
-        <el-table-column prop="rent_number" label="公积金基数" />
+        <el-table-column prop="insDetailSalaryMonth" label="计薪月份" />
+        <el-table-column prop="defInsuredName" label="参保方案" />
+        <el-table-column prop="insDetailInsuredMonth" label="社保缴纳月份" />
+        <el-table-column prop="insuredPaymentNumber" label="社保基数" />
+        <el-table-column prop="insDetailInsuredMonth" label="公积金缴纳月份" />
+        <el-table-column prop="insuredPaymentFund" label="公积金基数" />
         <el-table-column prop="cz" label="操作">
           <template #default>
             <router-link to="sb3_2new1">
@@ -72,33 +72,6 @@ export default {
         total: 0, // 总页数
       },
       tableData: [
-        {
-          date: "2016-05-03",
-          name: "方案一",
-          social: "2016-06-03",
-          social_numbert: "3000",
-          rent: "2016-05-03",
-          zip: "CA 90036",
-          rent_number: "Home",
-        },
-        {
-          date: "2016-05-03",
-          name: "方案一",
-          social: "2016-06-03",
-          social_numbert: "3000",
-          rent: "2016-05-03",
-          zip: "CA 90036",
-          rent_number: "Home",
-        },
-        {
-          date: "2016-05-03",
-          name: "方案一",
-          social: "2016-06-03",
-          social_numbert: "3000",
-          rent: "2016-05-03",
-          zip: "CA 90036",
-          rent_number: "Home",
-        },
         {
           date: "2016-05-03",
           name: "方案一",

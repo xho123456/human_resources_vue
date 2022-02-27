@@ -26,7 +26,7 @@
               size="mini"
               :min="0"
               controls-position="right"
-              placeholder="基数下限"
+              placeholder="最少基数"
               style="width: 100px"
           />
           &nbsp; ~ &nbsp;
@@ -35,7 +35,7 @@
               size="mini"
               :min="0"
               controls-position="right"
-              placeholder="基数上限"
+              placeholder="最多基数"
               style="width: 100px"
           />
 

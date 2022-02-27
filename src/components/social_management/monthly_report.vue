@@ -3,44 +3,7 @@
   <div class="saas-main-content">
     <div class="j-card j-card-bordered mainContent">
       <div class="j-card-body">
-        <!-- 单个 -->
-        <div class="main_div">
-          <div class="interior_left_div">
-            <span class="social_accumulation">
-              <span>2022-06</span> 社保公积金</span
-            >
-            <span style="font-size: 12px"> &nbsp;已归档</span>
-            <br />
-            <el-button type="text">导出参保明细</el-button>
-            <el-button type="text">删除 </el-button>
-          </div>
 
-          <div class="interior_right_div">
-            <div style="display: inline-block">
-              <span style="margin: 35px">参保人数</span><br />
-              <span style="margin: 35px">1</span>
-            </div>
-
-            <div style="display: inline-block">
-              <span style="margin: 35px">个人缴费</span><br />
-              <span style="margin: 35px">2</span>
-            </div>
-
-            <div style="display: inline-block">
-              <span style="margin: 35px">企业缴费</span><br />
-              <span style="margin: 35px">3</span>
-            </div>
-
-            <div style="display: inline-block; margin-left: 20px">
-              <router-link to="sb3_2">
-                <el-button type="text"><i class="iconfont">&#xe60b;</i></el-button></router-link
-              >
-            </div>
-          </div>
-          <br />
-          <!-- 分割线 -->
-          <div class="cut_off"></div>
-        </div>
 
         <!-- 单个 -->
         <div class="main_div">
@@ -77,6 +40,35 @@
           <br />
           <!-- 分割线 -->
           <div class="cut_off"></div>
+        </div>
+        <div class="payment_project">
+          <!-- 缴纳明细表 -->
+          <el-table :data="tableData" size="mini">
+            <el-table-column prop="defSchemeType" label="缴纳项目" />
+
+            <el-table-column label="基数">
+              <el-table-column prop="basePay" label="缴纳基数" />
+              <el-table-column label="基数范围">
+                <el-table-column prop="defSchemeMin" label="最低" />
+                <el-table-column prop="defSchemeMax" label="最高" />
+              </el-table-column>
+              <el-table-column prop="defSchemeFloor" label="下限" />
+              <el-table-column prop="defSchemeUpper" label="上限" />
+            </el-table-column>
+
+            <el-table-column label="公司缴纳">
+              <el-table-column prop="defSchemeFirmProp" label="缴纳比例" />
+              <el-table-column prop="defSchemeFirmSum" label="固定金额" />
+            </el-table-column>
+
+            <el-table-column label="个人缴纳">
+              <el-table-column prop="defSchemePersonProp" label="缴纳比例" />
+              <el-table-column prop="defSchemePersonSum" label="固定金额" />
+            </el-table-column>
+
+            <el-table-column prop="subtotal" label="小计" />
+
+          </el-table>
         </div>
 
         <!-- 分页插件 -->

@@ -11,42 +11,51 @@
           <el-image class="picture" :src="url"></el-image>
         </div>
         <div style="margin-top: 20px">
-          姓名：121321 <br />
-          部门：2313213 <br />
-          职位：321312321 <br /><br /><br />
-          参保类型： 2312321<br />
-          参保方案：31232131 <br />
-          社保基数：213123213 <br />
-          社保参保月份：1321321 <br />
-          公积金基数：3213213 <br />
-          公积金参保月份： 3213123213<br />
+          姓名：{{datas.staffName}} <br />
+          部门：{{datas.deptName}} <br />
+          职位：{{datas.postName}} <br /><br /><br />
+          参保方案：{{datas.defInsuredName}} <br />
+          社保基数：{{datas.insuredPaymentNumber}} <br />
+          社保参保月份：{{datas.insDetailInsuredMonth}} <br />
+          公积金基数：{{datas.insuredPaymentFund}} <br />
+          公积金参保月份： {{datas.insDetailInsuredMonth}}<br />
         </div>
-        <el-button type="text">调整 </el-button>&nbsp;&nbsp;
-        <el-button type="text">微调 </el-button>
+        <el-popconfirm   title="是否更改此方案?">
+          <template #reference >
+            <el-button type="text" @click="change()">更改方案 </el-button>&nbsp;&nbsp;
+          </template>
+        </el-popconfirm>
+
       </div>
 
       <!-- 右 -->
       <div class="payment_project">
         <!-- 缴纳明细表 -->
         <el-table :data="tableData" size="mini">
-          <el-table-column prop="date" label="缴纳项目" />
-          <el-table-column prop="date" label="基数" />
+          <el-table-column prop="defSchemeType" label="缴纳项目" />
+
+          <el-table-column label="基数">
+            <el-table-column prop="basePay" label="缴纳基数" />
+              <el-table-column label="基数范围">
+                  <el-table-column prop="defSchemeMin" label="最低" />
+                  <el-table-column prop="defSchemeMax" label="最高" />
+              </el-table-column>
+            <el-table-column prop="defSchemeFloor" label="下限" />
+            <el-table-column prop="defSchemeUpper" label="上限" />
+          </el-table-column>
 
           <el-table-column label="公司缴纳">
-            <el-table-column prop="name" label="比例" />
-            <el-table-column prop="state" label="金额" />
+            <el-table-column prop="defSchemeFirmProp" label="缴纳比例" />
+            <el-table-column prop="defSchemeFirmSum" label="固定金额" />
           </el-table-column>
-
-          <el-table-column prop="date" label="公司固定金额" />
 
           <el-table-column label="个人缴纳">
-            <el-table-column prop="name" label="比例" />
-            <el-table-column prop="state" label="金额" />
+            <el-table-column prop="defSchemePersonProp" label="缴纳比例" />
+            <el-table-column prop="defSchemePersonSum" label="固定金额" />
           </el-table-column>
 
-          <el-table-column prop="date" label="个人固定金额" />
+          <el-table-column prop="subtotal" label="小计" />
 
-          <el-table-column prop="date" label="小计" />
         </el-table>
       </div>
     </div>
@@ -70,18 +79,20 @@
         </el-timeline-item>
       </el-timeline>
     </div>
+    {{this.tableData}}
   </div>
 </template>
 
 <script>
 /* 时间线 */
 import { defineComponent } from "vue";
+import {ElMessage} from "element-plus";
 // import { MoreFilled } from "@element-plus/icons-vue";
 
 export default {
   setup() {
     return {
-      /* 时间线 */
+      // /* 时间线 */
       activities: [
         {
           content: "Custom icon",
@@ -115,50 +126,254 @@ export default {
   },
   data() {
     return {
+      datas:{
+        staffName:"",
+        deptName:"",
+        postName:"",
+        defInsuredName:"",
+        insuredPaymentNumber:"",
+        insDetailInsuredMonth:"",
+        insuredPaymentFund:"",
+        insuredPaymentId:'',
+      },
       tableData: [
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333,
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333,
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333,
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333,
-        },
-        {
-          date: "2016-05-08",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333,
-        },
+
       ],
     };
   },
+  created() {
+    this.selectPaers()
+    this.selectscheme()
+  },
+  methods:{
+    /**
+     * 更改参保方案
+     */
+    change(){
+      this.axios({
+        method:'post',
+        url:"http://localhost:8007/provider/insuredPayment/change",
+        data:{
+          insuredPaymentId:this.datas.insuredPaymentId
+        },
+        responseType:'json',
+        responseEncoding:'utf-8',
+      }).then(response=>{
+        if(response.data.data === '更改成功'){
+          ElMessage({
+            type:'success',
+            message:'更改成功'
+          })
+          this.$router.push({path:'/social/social_management/insured_management'})
+        }else{
+          ElMessage.error("更改失败")
+        }
+      })
+    },
+    /**
+     * 查询个人的默认方案数据数据
+     */
+    selectscheme(){
+      this.axios({
+        method:'post',
+        url:"http://localhost:8007/provider/insuredDetail/scheme",
+        data:{
+          staffId:this.$route.query.id
+        },
+        responseType:'json',
+        responseEncoding:'utf-8',
+      }).then((response)=>{
+        for(let i=0;i<response.data.data.length;i++){
+          this.tableData.push(response.data.data[i])
+        }
+        //计算某员工的每一条社保金额
+        for (let i = 0; i <this.tableData.length ; i++) {
+          if(this.tableData[i].defSchemeType==='公积金'){
+
+            if(this.datas.insuredPaymentFund<=this.tableData[i].defSchemeMin){
+
+              if(this.tableData[i].defSchemeMin<=this.tableData[i].defSchemeFloor){
+
+                this.tableData[i]["basePay"]= this.tableData[i].defSchemeFloor
+                let firm=this.tableData[i]["basePay"]*this.tableData[i].defSchemeFirmProp*0.01+this.tableData[i].defSchemeFirmSum
+                let personage=this.tableData[i]["basePay"]*this.tableData[i].defSchemePersonProp*0.01+this.tableData[i].defSchemePersonSum
+                this.tableData[i]["subtotal"]=firm+personage
+
+              }else if(this.tableData[i].defSchemeMin>=this.tableData[i].defSchemeUpper){
+
+                this.tableData[i]["basePay"]= this.tableData[i].defSchemeUpper
+                let firm=this.tableData[i]["basePay"]*this.tableData[i].defSchemeFirmProp*0.01+this.tableData[i].defSchemeFirmSum
+                let personage=this.tableData[i]["basePay"]*this.tableData[i].defSchemePersonProp*0.01+this.tableData[i].defSchemePersonSum
+                this.tableData[i]["subtotal"]=firm+personage
+
+              }else {
+
+                this.tableData[i]["basePay"]= this.tableData[i].defSchemeMin
+                let firm=this.tableData[i]["basePay"]*this.tableData[i].defSchemeFirmProp*0.01+this.tableData[i].defSchemeFirmSum
+                let personage=this.tableData[i]["basePay"]*this.tableData[i].defSchemePersonProp*0.01+this.tableData[i].defSchemePersonSum
+                this.tableData[i]["subtotal"]=firm+personage
+
+              }
+
+            }else if(this.datas.insuredPaymentFund>=this.tableData[i].defSchemeMax){
+
+              if(this.tableData[i].defSchemeMax<=this.tableData[i].defSchemeFloor){
+
+                this.tableData[i]["basePay"]= this.tableData[i].defSchemeFloor
+                let firm=this.tableData[i]["basePay"]*this.tableData[i].defSchemeFirmProp*0.01+this.tableData[i].defSchemeFirmSum
+                let personage=this.tableData[i]["basePay"]*this.tableData[i].defSchemePersonProp*0.01+this.tableData[i].defSchemePersonSum
+                this.tableData[i]["subtotal"]=firm+personage
+
+              }else if(this.tableData[i].defSchemeMax>=this.tableData[i].defSchemeUpper){
+
+                this.tableData[i]["basePay"]= this.tableData[i].defSchemeUpper
+                let firm=this.tableData[i]["basePay"]*this.tableData[i].defSchemeFirmProp*0.01+this.tableData[i].defSchemeFirmSum
+                let personage=this.tableData[i]["basePay"]*this.tableData[i].defSchemePersonProp*0.01+this.tableData[i].defSchemePersonSum
+                this.tableData[i]["subtotal"]=firm+personage
+
+              }else {
+
+                this.tableData[i]["basePay"]= this.tableData[i].defSchemeMax
+                let firm=this.tableData[i]["basePay"]*this.tableData[i].defSchemeFirmProp*0.01+this.tableData[i].defSchemeFirmSum
+                let personage=this.tableData[i]["basePay"]*this.tableData[i].defSchemePersonProp*0.01+this.tableData[i].defSchemePersonSum
+                this.tableData[i]["subtotal"]=firm+personage
+
+              }
+
+            }else{
+
+              if(this.tableData[i].insuredPaymentFund<=this.tableData[i].defSchemeFloor){
+
+                this.tableData[i]["basePay"]= this.tableData[i].defSchemeFloor
+                let firm=this.tableData[i]["basePay"]*this.tableData[i].defSchemeFirmProp*0.01+this.tableData[i].defSchemeFirmSum
+                let personage=this.tableData[i]["basePay"]*this.tableData[i].defSchemePersonProp*0.01+this.tableData[i].defSchemePersonSum
+                this.tableData[i]["subtotal"]=firm+personage
+
+              }else if(this.tableData[i].insuredPaymentFund>=this.tableData[i].defSchemeUpper){
+
+                this.tableData[i]["basePay"]= this.tableData[i].defSchemeUpper
+                let firm=this.tableData[i]["basePay"]*this.tableData[i].defSchemeFirmProp*0.01+this.tableData[i].defSchemeFirmSum
+                let personage=this.tableData[i]["basePay"]*this.tableData[i].defSchemePersonProp*0.01+this.tableData[i].defSchemePersonSum
+                this.tableData[i]["subtotal"]=firm+personage
+
+              }else {
+
+                this.tableData[i]["basePay"]= this.tableData[i].insuredPaymentFund
+                let firm=this.tableData[i]["basePay"]*this.tableData[i].defSchemeFirmProp*0.01+this.tableData[i].defSchemeFirmSum
+                let personage=this.tableData[i]["basePay"]*this.tableData[i].defSchemePersonProp*0.01+this.tableData[i].defSchemePersonSum
+                this.tableData[i]["subtotal"]=firm+personage
+
+              }
+
+            }
+            //社保
+          }else{
+            if(this.datas.insuredPaymentNumber<=this.tableData[i].defSchemeMin){
+
+              if(this.tableData[i].defSchemeMin<=this.tableData[i].defSchemeFloor){
+
+                this.tableData[i]["basePay"]= this.tableData[i].defSchemeFloor
+                let firm=this.tableData[i]["basePay"]*this.tableData[i].defSchemeFirmProp*0.01+this.tableData[i].defSchemeFirmSum
+                let personage=this.tableData[i]["basePay"]*this.tableData[i].defSchemePersonProp*0.01+this.tableData[i].defSchemePersonSum
+                this.tableData[i]["subtotal"]=firm+personage
+
+              }else if(this.tableData[i].defSchemeMin>=this.tableData[i].defSchemeUpper){
+
+                this.tableData[i]["basePay"]= this.tableData[i].defSchemeUpper
+                let firm=this.tableData[i]["basePay"]*this.tableData[i].defSchemeFirmProp*0.01+this.tableData[i].defSchemeFirmSum
+                let personage=this.tableData[i]["basePay"]*this.tableData[i].defSchemePersonProp*0.01+this.tableData[i].defSchemePersonSum
+                this.tableData[i]["subtotal"]=firm+personage
+
+              }else {
+
+                this.tableData[i]["basePay"]= this.tableData[i].defSchemeMin
+                let firm=this.tableData[i]["basePay"]*this.tableData[i].defSchemeFirmProp*0.01+this.tableData[i].defSchemeFirmSum
+                let personage=this.tableData[i]["basePay"]*this.tableData[i].defSchemePersonProp*0.01+this.tableData[i].defSchemePersonSum
+                this.tableData[i]["subtotal"]=firm+personage
+
+              }
+
+            }else if(this.datas.insuredPaymentNumber>=this.tableData[i].defSchemeMax){
+
+              if(this.tableData[i].defSchemeMax<=this.tableData[i].defSchemeFloor){
+
+                this.tableData[i]["basePay"]= this.tableData[i].defSchemeFloor
+                let firm=this.tableData[i]["basePay"]*this.tableData[i].defSchemeFirmProp*0.01+this.tableData[i].defSchemeFirmSum
+                let personage=this.tableData[i]["basePay"]*this.tableData[i].defSchemePersonProp*0.01+this.tableData[i].defSchemePersonSum
+                this.tableData[i]["subtotal"]=firm+personage
+
+              }else if(this.tableData[i].defSchemeMax>=this.tableData[i].defSchemeUpper){
+
+                this.tableData[i]["basePay"]= this.tableData[i].defSchemeUpper
+                let firm=this.tableData[i]["basePay"]*this.tableData[i].defSchemeFirmProp*0.01+this.tableData[i].defSchemeFirmSum
+                let personage=this.tableData[i]["basePay"]*this.tableData[i].defSchemePersonProp*0.01+this.tableData[i].defSchemePersonSum
+                this.tableData[i]["subtotal"]=firm+personage
+
+              }else {
+
+                this.tableData[i]["basePay"]= this.tableData[i].defSchemeMax
+                let firm=this.tableData[i]["basePay"]*this.tableData[i].defSchemeFirmProp*0.01+this.tableData[i].defSchemeFirmSum
+                let personage=this.tableData[i]["basePay"]*this.tableData[i].defSchemePersonProp*0.01+this.tableData[i].defSchemePersonSum
+                this.tableData[i]["subtotal"]=firm+personage
+
+              }
+
+            }else{
+              if(this.tableData[i].insuredPaymentNumber<=this.tableData[i].defSchemeFloor){
+
+                this.tableData[i]["basePay"]= this.tableData[i].defSchemeFloor
+                let firm=this.tableData[i]["basePay"]*this.tableData[i].defSchemeFirmProp*0.01+this.tableData[i].defSchemeFirmSum
+                let personage=this.tableData[i]["basePay"]*this.tableData[i].defSchemePersonProp*0.01+this.tableData[i].defSchemePersonSum
+                this.tableData[i]["subtotal"]=firm+personage
+
+              }else if(this.tableData[i].insuredPaymentNumber>=this.tableData[i].defSchemeUpper){
+
+                this.tableData[i]["basePay"]= this.tableData[i].defSchemeUpper
+                let firm=this.tableData[i]["basePay"]*this.tableData[i].defSchemeFirmProp*0.01+this.tableData[i].defSchemeFirmSum
+                let personage=this.tableData[i]["basePay"]*this.tableData[i].defSchemePersonProp*0.01+this.tableData[i].defSchemePersonSum
+                this.tableData[i]["subtotal"]=firm+personage
+
+              }else {
+
+                this.tableData[i]["basePay"]= this.tableData[i].insuredPaymentNumber
+                let firm=this.tableData[i]["basePay"]*this.tableData[i].defSchemeFirmProp*0.01+this.tableData[i].defSchemeFirmSum
+                let personage=this.tableData[i]["basePay"]*this.tableData[i].defSchemePersonProp*0.01+this.tableData[i].defSchemePersonSum
+                this.tableData[i]["subtotal"]=firm+personage
+
+              }
+
+            }
+          }
+        }
+
+      })
+    },
+    /**
+     * 查询个人的明细数据
+     */
+    selectPaers(){
+      this.axios({
+        method:'post',
+        url:"http://localhost:8007/provider/insuredDetail/datas",
+        data:{
+          staffId:this.$route.query.id
+        },
+        responseType:'json',
+        responseEncoding:'utf-8',
+      }).then((response)=>{
+        console.error(response.data)
+        this.datas.staffName=response.data.data.staffName
+        this.datas.deptName=response.data.data.deptName
+        this.datas.postName=response.data.data.postName
+        this.datas.defInsuredName=response.data.data.defInsuredName
+        this.datas.insuredPaymentFund=response.data.data.insuredPaymentFund
+        this.datas.insuredPaymentNumber=response.data.data.insuredPaymentNumber
+        this.datas.insDetailInsuredMonth=response.data.data.insDetailInsuredMonth
+        this.datas.insuredPaymentId=response.data.data.insuredPaymentId
+      })
+    },
+
+  }
 };
 </script>
 
@@ -176,6 +391,7 @@ export default {
   display: inline-block;
   float: right;
   width: 73%;
+
 }
 
 /* 缴费信息 */
