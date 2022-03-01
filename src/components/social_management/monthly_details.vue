@@ -1,6 +1,6 @@
 <template>
 
-<!-- 社保缴费明细-->
+  <!-- 社保月度缴费明细-->
 
   <div class="saas-main-content">
     <div class="j-card j-card-bordered mainContent">
@@ -9,9 +9,7 @@
         <div class="month-div">
           <span class="month_span">{{time}}</span><br />
           <span class="times">计薪月份</span><br><br />
-          <el-button type="primary" size="small" @click="remove()" style="width: 80px;margin-left: 40px">
-            归档
-          </el-button>
+
 
         </div>
         <!-- 月金额统计 -->
@@ -35,13 +33,13 @@
         <div class="mt-20 ml-20 mr-20">
           <!-- 按钮 -->
           <el-button size="small"
-            ><i class="iconfont">&#xe6a2;</i>批量导出</el-button
+          ><i class="iconfont">&#xe6a2;</i>批量导出</el-button
           >
           <el-button size="small"
-            ><i class="iconfont">&#xe639;</i>批量导入</el-button
+          ><i class="iconfont">&#xe639;</i>批量导入</el-button
           >
           <el-button size="small" type="danger" plain
-            ><i class="iconfont">&#xe608;</i>批量删除</el-button
+          ><i class="iconfont">&#xe608;</i>批量删除</el-button
           >
 
           <!-- 搜索按钮 -->
@@ -59,10 +57,10 @@
           <div class="resume-operation">
             <el-select clearable size="small" v-model="pageInfo.staffState" placeholder="员工状态">
               <el-option
-                v-for="item in empState_options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                  v-for="item in empState_options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
               >
               </el-option>
             </el-select>
@@ -105,14 +103,14 @@
             <el-table-column prop="insDetailSocialFirmPay" label="社保企业缴费" width="130" />
             <el-table-column prop="insDetailInsuredMonth" label="公积金缴纳月份" width="130" />
             <el-table-column
-              prop="insDetailFundPersonPay"
-              label="公积金个人缴费"
-              width="130"
+                prop="insDetailFundPersonPay"
+                label="公积金个人缴费"
+                width="130"
             />
             <el-table-column prop="insDetailFundFirmPay" label="公积金企业缴费" width="130" />
             <el-table-column prop="state" label="操作" width="110">
               <template #default="scope">
-                <router-link :to="{path:this.path,query:{path:this.$route.query.path,id:scope.row.staffId,name:scope.row.staffName}}">
+                <router-link :to="{path:this.paths,query:{path:this.$route.query.paths}}">
                   <el-button type="text" size="small">查看 </el-button>
                 </router-link>
               </template>
@@ -163,7 +161,7 @@ export default {
 
       time:'',
       //跳转页面路径
-      path:"/social/social_payment/someone_insured_particulars",
+      paths:'/social/social_payment/someone_insured_particularss',
       // 部门名称
       deptName: '',
       // 员工姓名搜索框
@@ -198,53 +196,20 @@ export default {
         }
       ],
 
-      tableData: [],
+      tableData: [
+        {
+          insDetailInsuredName:'sfasd',
+        }
+      ],
     };
   },
   created() {
     this.selectAlldepts();
-    this.selectPaers()
+    // this.selectPaers()
     this.getCurrentTime()
     this.detail()
   },
   methods:{
-    remove(){
-      ElMessageBox.confirm(
-          '是否将本月社保归档！！！',
-          '友情提示',
-          {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: '友情提示',
-          }
-      )
-          .then(() => {
-            this.pigeonhole();
-          })
-
-
-    },
-    /**
-     * 归档操作
-     */
-    pigeonhole(){
-      this.axios({
-        method:'get',
-        url:"http://localhost:8007/provider/insuredArchive/pigeonhole",
-        responseType:'json',
-        responseEncoding:'utf-8',
-      }).then((response)=>{
-            if(response.data.data === '归档成功'){
-              ElMessage({
-                type:'success',
-                message:'归档成功'
-              })
-            this.selectPaers()
-            }else {
-              ElMessage.error("归档失败")
-            }
-      })
-    },
 
     /**
      * 参保明细金额数据

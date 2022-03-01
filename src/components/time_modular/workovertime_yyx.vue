@@ -13,7 +13,6 @@
               <div class="my-span2">每日考勤统计</div>
             </div>
             <div>
-              <el-button type="primary" size="small">导入Excel</el-button>
               <el-button type="primary" size="small">导出Excel</el-button>
             </div>
           </div>
@@ -130,8 +129,8 @@
                 <el-table-column prop="zhaisLate" label="早退时长（小时）" width="140"/>
                 <el-table-column prop="kangLate" label="旷工（次数）" width="140"/>
                 <el-table-column prop="kangsLate" label="旷工时长（小时）" width="140"/>
-                <el-table-column prop="workYing" label="应工作时长" width="140"/>
-                <el-table-column prop="worksYing" label="实际工作时长" width="140"/>
+<!--                <el-table-column prop="workYing" label="应工作时长" width="140"/>-->
+<!--                <el-table-column prop="worksYing" label="实际工作时长" width="140"/>-->
               </el-table>
               <div class="demo-pagination-block" style="margin-top: 10px">
                 <el-pagination

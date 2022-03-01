@@ -199,36 +199,25 @@ const routes = [{
 
                         ]
                     },
-                    {// 考勤记录、考勤月报表、历史归档
-                        path: '/yyx/statistics',
-                        component: modules[`${'../components/time_modular/attendance_statistics.vue'}`],
-                        redirect: "/yyx/statistics/record",
-                        children: [
-                            {// 考勤记录
-                                path: '/yyx/statistics/record',
-                                component: modules[`${'../components/time_modular/attendance_record.vue'}`],
-                            },
-                            {// 考勤月报表
-                                path: '/yyx/statistics/report',
-                                component: modules[`${'../components/time_modular/attendance_month.vue'}`],
-                            },
-                            {// 历史归档
-                                path: '/yyx/statistics/archive',
-                                component: modules[`${'../components/time_modular/attendance_history.vue'}`],
-                            },
-                        ]
-                    },
-                    {//加班记录
+                    {//每日考勤统计
                         path: '/yyx/workovertime',
                         component: modules[`${'../components/time_modular/workovertime_yyx.vue'}`],
                     },
-                    {//请假记录
+                    {//考勤月明细
                         path: '/yyx/leave',
                         component: modules[`${'../components/time_modular/leave_yyx.vue'}`],
                     },
-                    {//出差记录
+                    {//月考勤统计
                         path: '/yyx/outdifference',
                         component: modules[`${'../components/time_modular/outdifference_yyx.vue'}`],
+                    },
+                    {// 考勤记录汇总
+                        path: '/yyx/statistics/archive',
+                        component: modules[`${'../components/time_modular/attendance_history.vue'}`],
+                    },
+                    {// 考勤记录汇总详情
+                        path: '/yyx/statistics/report',
+                        component: modules[`${'../components/time_modular/attendance_month.vue'}`],
                     },
                 ]
             },
@@ -557,6 +546,22 @@ const routes = [{
                             {//月度报表
                                 path: '/social/social_payment/monthly_report',
                                 component: modules[`${'../components/social_management/monthly_report.vue'}`],
+                            },
+                            {//社保缴费明细
+                                path: '/social/social_payment/payment_details',
+                                component: modules[`${'../components/social_management/monthly_details.vue'}`],
+                            },
+                            {// 查看月度参保详情
+                                path: '/social/social_payment/someone_insured_particularss',
+                                redirect: "/social/social_payment/someone_insured_particulars/someone_insured_detailss",
+                                component: modules[`${'../components/social_management/monthly_report_particulars.vue'}`],
+                                children: [
+                                    {//参保明细
+                                        path: '/social/social_payment/someone_insured_particulars/someone_insured_detailss',
+                                        component: modules[`${'../components/social_management/monthly_particulars.vue'}`],
+                                    },
+
+                                ]
                             },
                             {//社保缴费明细
                                 path: '/social/social_payment/payment_detail',

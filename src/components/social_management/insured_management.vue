@@ -148,7 +148,7 @@
         <!-- 表格按钮部分 -->
         <div class="mt-20 ml-20 mr-20" style="margin-bottom: 20px;">
           <!-- 提交按钮 -->
-          <el-button style="width: 80px" size="small" type="primary" v-bind:disabled="submit">提交</el-button>
+          <el-button style="width: 80px" size="small" @click="deleteList()" type="primary" v-bind:disabled="submit">提交</el-button>
 
           <!-- 搜索按钮 -->
           <div style="width: 68px;margin-top: 1px;" class="resume-operation">
@@ -158,12 +158,12 @@
           </div>
 
           <!-- 搜索框 -->
-          <el-input v-model="search" style="margin-right: 9px" size="small" class="resume-operation" placeholder="员工名称">
+          <el-input v-model="pageInfo.staffName" style="margin-right: 9px" size="small" class="resume-operation" placeholder="员工名称">
           </el-input>
 
           <!-- 部门下拉选择器 -->
           <div style="width: 177px;" class="resume-operation">
-            <el-select v-model="deptName" clearable ref="vueSelect"  size="small" placeholder="请选择部门"
+            <el-select v-model="deptName" clearable ref="vueSelect"  size="small" placeholder="请选择部门"  @change="selectPaers"
                        @click="onclicks()">
               <el-option hidden></el-option>
               <el-tree
@@ -187,7 +187,7 @@
                     :header-cell-style="{textAlign: 'center',background:'#F0F0F0',color:'#6C6C6C'}"
                     :cell-style="{ textAlign: 'center' }"
                     :default-sort="{ prop: 'date', order: 'descending' }"
-                    @selection-change="deletepl"
+                    @selection-change="aa"
           >
             <!-- 多选框 -->
             <el-table-column type="selection" width="55"/>
@@ -246,7 +246,7 @@ export default {
 
       defaultProps,
       deptlists:[],
-      deptIdss:'',
+      deptId:'',
       //社保禁用启用
       open:true,
       //基金禁用启用
@@ -273,6 +273,7 @@ export default {
       // 参保方案名称
       defInsuredName: '',
 
+
       // 参保方案下拉选择器值
       insured_scheme: [],
 
@@ -282,13 +283,10 @@ export default {
         pagesize: 3,
         total: 0,
         //部门编号
-        deptIdss:'',
+        deptId:'',
         //员工名称
         staffName:''
       },
-
-      // 表格上的 搜索框
-      search: null,
 
       // 未参保人员表数据
       tableData: [
@@ -298,8 +296,8 @@ export default {
 
       //接收表格所有员工id
       table:[],
-
-      id:[],
+      //员工编号
+      staffName:[],
 
       // 表单验证
       rules: {
@@ -318,12 +316,13 @@ export default {
 
   },
   methods:{
-
+    aa(val){
+      this.table=val
+    },
     /**
      * 判断提交按钮是否可用
      */
-    deletepl(val){
-      this.table=val
+    deletepl(){
       if(this.defInsuredName === ''|| this.table =='' || this.insured.insuredPaymentNumber ==='' && this.fund.insuredPaymentNumber ===''){
           this.submit=true
       }else if(this.defInsuredName !== '' && this.table !='' && this.insured.insuredPaymentNumber !=='' && this.fund.insuredPaymentNumber !==''){
@@ -340,23 +339,33 @@ export default {
      * 提交
      */
     deleteList(){
+
       for (let i=0 ; i<this.table.length ; i++){
-        this.id.push(this.table[i].staffId)
+        this.staffName.push(this.table[i].staffName)
       }
       this.axios({
-        method:'delete',
-        url:"http://localhost:8007/provider/notice/list",
-        data:this.id,
+        method:'post',
+        url:"http://localhost:8007/provider/insuredPayment/insert",
+        data: {
+          defInsuredName:this.defInsuredName,
+          insured:this.insured.insuredPaymentNumber,
+          insuredPaymentSalaryMonth:this.fund.insuredPaymentSalaryMonth,
+          insuredPaymentNumber:this.fund.insuredPaymentNumber,
+          staffName:this.staffName,
+        },
         responseType:'json',
         responseEncoding:'utf-8',
       }).then(response=>{
-        if(response.data.data === '删除成功'){
+        if(response.data.data === '新增成功'){
           ElMessage({
             type:'success',
-            message:'删除成功'
+            message:'新增成功'
           })
+          this.selectPaers()
+          this.staffName=[]
         }else{
-          ElMessage.error("删除失败")
+          ElMessage.error("新增失败")
+          this.staffName=[]
         }
       })
     },
@@ -365,6 +374,7 @@ export default {
      * 分页查询参保明细数据
      */
     selectPaers(){
+      alert(111)
       this.axios({
         method:'post',
         url:"http://localhost:8007/provider/insuredPayment/page",
@@ -372,7 +382,7 @@ export default {
         responseType:'json',
         responseEncoding:'utf-8',
       }).then((response)=>{
-        console.log(response)
+
         this.tableData = response.data.data.records
         this.pageInfo.total=response.data.data.total
 
@@ -387,7 +397,7 @@ export default {
       //获取所有选中的节点 start
       let res = this.$refs.tree.getCheckedNodes()
       res.forEach((item) => {
-        this.pageInfo.deptIdss = item.deptId
+        this.pageInfo.deptId = item.deptId
         this.deptName = item.deptName
         //关闭Select选择器
         this.$refs.vueSelect.blur();
@@ -470,7 +480,6 @@ export default {
           responseType:'json',
           responseEncoding:'utf-8',
         }).then(request=>{
-          console.error(request.data.data)
           this.insured_scheme = request.data.data
         })
 }
