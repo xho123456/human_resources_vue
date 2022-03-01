@@ -309,131 +309,6 @@
           </el-pagination>
         </div>
 
-        <!--   弹出抽屉 -->
-        <el-drawer v-model="drawer" title="I am the title" :with-header="false">
-          <el-form-item label="标题：">
-            <el-input v-model="details[0].auditflowTitle" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="申请人：">
-            <el-input v-model="details[0].staffName1" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="当前审核状态：" v-if="details[0].auditflowstate != null">
-            <el-input v-if="details[0].auditflowsState===0" v-model="state.pending" disabled></el-input>
-            <el-input v-if="details[0].auditflowsSate===1" v-model="state.through" disabled></el-input>
-            <el-input v-if="details[0].auditflowState===2" v-model="state.rejected" disabled></el-input>
-            <el-input v-if="details[0].auditflowState===3" v-model="state.undo" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="审批人：" v-if="details[0].staffName2 != null">
-            <el-input v-model="details[0].staffName2" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="申请状态：" v-if="details[0].auditflowdetaiState!= null">
-            <el-input v-if="details[0].auditflowdetaiState===0" v-model="state.ongoing" disabled></el-input>
-            <el-input v-if="details[0].auditflowdetaiState===1" v-model="state.approval" disabled></el-input>
-            <el-input v-if="details[0].auditflowdetaiState===2" v-model="state.through" disabled></el-input>
-            <el-input v-if="details[0].auditflowdetaiState===3" v-model="state.rejected" disabled></el-input>
-            <el-input v-if="details[0].auditflowdetaiState===4" v-model="state.undo1" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="审批备注：" v-if="details[0].auditflowdetaiRemarks != null">
-            <el-input v-model="details[0].auditflowdetaiRemarks" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="审核时间：" v-if="details[0].auditflowdetaiRemarks != null">
-            <el-input v-model="details[0].auditflowdetaiDate" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="审批人：" v-if="details[1].staffName2 != null">
-            <el-input v-model="details[1].staffName2" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="申请状态：" v-if="details[1].auditflowdetaiState!= null">
-            <el-input v-if="details[1].auditflowdetaiState===0" v-model="state.ongoing" disabled></el-input>
-            <el-input v-if="details[1].auditflowdetaiState===1" v-model="state.approval" disabled></el-input>
-            <el-input v-if="details[1].auditflowdetaiState===2" v-model="state.through" disabled></el-input>
-            <el-input v-if="details[1].auditflowdetaiState===3" v-model="state.rejected" disabled></el-input>
-            <el-input v-if="details[1].auditflowdetaiState===4" v-model="state.undo1" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="审批备注：" v-if="details[1].auditflowdetaiRemarks != null">
-            <el-input v-model="details[1].auditflowdetaiRemarks" disabled ellipsis></el-input>
-          </el-form-item>
-          <el-form-item label="审核时间：" v-if="details[1].auditflowdetaiRemarks != null">
-            <el-input v-model="details[1].auditflowdetaiDate" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="审批人：" v-if="details[2].staffName2 != null">
-            <el-input v-model="details[2].staffName2" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="申请状态：" v-if="details[2].auditflowdetaiState!= null">
-            <el-input v-if="details[2].auditflowdetaiState===0" v-model="state.ongoing" disabled></el-input>
-            <el-input v-if="details[2].auditflowdetaiState===1" v-model="state.approval" disabled></el-input>
-            <el-input v-if="details[2].auditflowdetaiState===2" v-model="state.through" disabled></el-input>
-            <el-input v-if="details[2].auditflowdetaiState===3" v-model="state.rejected" disabled></el-input>
-            <el-input v-if="details[2].auditflowdetaiState===4" v-model="state.undo1" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="审批备注：" v-if="details[2].auditflowdetaiRemarks != null">
-            <el-input v-model="details[2].auditflowdetaiRemarks" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="审核时间：" v-if="details[2].auditflowdetaiRemarks != null">
-            <el-input v-model="details[2].auditflowdetaiDate" disabled></el-input>
-          </el-form-item>
-
-          <el-form-item label="标题：">
-            <el-input v-model="details[0].auditflowTitle" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="申请人：">
-            <el-input v-model="details[0].staffName1" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="当前审核状态：" v-if="details[0].auditflowstate != null">
-            <el-input v-if="details[0].auditflowState===0" v-model="state.pending" disabled></el-input>
-            <el-input v-if="details[0].auditflowState===1" v-model="state.through" disabled></el-input>
-            <el-input v-if="details[0].auditflowState===2" v-model="state.rejected" disabled></el-input>
-            <el-input v-if="details[0].auditflowState===3" v-model="state.undo" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="审批人：" v-if="details[0].staffName2 != null">
-            <el-input v-model="details[0].staffName2" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="申请状态：" v-if="details[0].auditflowdetaiState!= null">
-            <el-input v-if="details[0].auditflowdetaiState===0" v-model="state.ongoing" disabled></el-input>
-            <el-input v-if="details[0].auditflowdetaiState===1" v-model="state.approval" disabled></el-input>
-            <el-input v-if="details[0].auditflowdetaiState===2" v-model="state.through" disabled></el-input>
-            <el-input v-if="details[0].auditflowdetaiState===3" v-model="state.rejected" disabled></el-input>
-            <el-input v-if="details[0].auditflowdetaiState===4" v-model="state.undo1" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="审批备注：" v-if="details[0].auditflowdetaiRemarks != null">
-            <el-input v-model="details[0].auditflowdetaiRemarks" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="审核时间：" v-if="details[0].auditflowdetaiRemarks != null">
-            <el-input v-model="details[0].auditflowdetaiDate" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="审批人：" v-if="details[1].staffName2 != null">
-            <el-input v-model="details[1].staffName2" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="申请状态：" v-if="details[1].auditflowdetaiState!= null">
-            <el-input v-if="details[1].auditflowdetaiState===0" v-model="state.ongoing" disabled></el-input>
-            <el-input v-if="details[1].auditflowdetaiState===1" v-model="state.approval" disabled></el-input>
-            <el-input v-if="details[1].auditflowdetaiState===2" v-model="state.through" disabled></el-input>
-            <el-input v-if="details[1].auditflowdetaiState===3" v-model="state.rejected" disabled></el-input>
-            <el-input v-if="details[1].auditflowdetaiState===4" v-model="state.undo1" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="审批备注：" v-if="details[1].auditflowdetaiRemarks != null">
-            <el-input v-model="details[1].auditflowdetaiRemarks" disabled ellipsis></el-input>
-          </el-form-item>
-          <el-form-item label="审核时间：" v-if="details[1].auditflowdetaiRemarks != null">
-            <el-input v-model="details[1].auditflowdetaiDate" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="审批人：" v-if="details[2].staffName2 != null">
-            <el-input v-model="details[2].staffName2" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="申请状态：" v-if="details[2].auditflowdetaiState!= null">
-            <el-input v-if="details[2].auditflowdetaiState===0" v-model="state.ongoing" disabled></el-input>
-            <el-input v-if="details[2].auditflowdetaiState===1" v-model="state.approval" disabled></el-input>
-            <el-input v-if="details[2].auditflowdetaiState===2" v-model="state.through" disabled></el-input>
-            <el-input v-if="details[2].auditflowdetaiState===3" v-model="state.rejected" disabled></el-input>
-            <el-input v-if="details[2].auditflowdetaiState===4" v-model="state.undo1" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="审批备注：" v-if="details[2].auditflowdetaiRemarks != null">
-            <el-input v-model="details[2].auditflowdetaiRemarks" disabled></el-input>
-          </el-form-item>
-          <el-form-item label="审核时间：" v-if="details[2].auditflowdetaiRemarks != null">
-            <el-input v-model="details[2].auditflowdetaiDate" disabled></el-input>
-          </el-form-item>
-        </el-drawer>
-
       </el-tab-pane>
 
       <!--      申请调薪弹出框 -->
@@ -454,18 +329,13 @@
           <el-form-item label="调薪前基本工资">
             <el-input v-model="salary_1.qjbgz" disabled></el-input>
           </el-form-item>
-          <el-form-item label="调薪前岗位工资">
-            <el-input v-model="salary_1.qgwgz" disabled></el-input>
-          </el-form-item>
           <el-form-item label="调薪后基本工资">
             <el-input-number :precision="2" :step="100" :max="30000" :min="0"
                              v-model="salary_1.hjbgz"
                              oninput="value=value.toString().match(/^\d+(?:\.\d{0,2})?/)"
             ></el-input-number>
           </el-form-item>
-          <el-form-item label="调薪后岗位工资">
-            <el-input v-model="salary_1.hgwgz" disabled></el-input>
-          </el-form-item>
+
           <el-form-item label="调薪备注">
             <el-input
                 v-model="salary_1.remarks_1"
@@ -489,7 +359,7 @@
                 <div class="block">
                   <el-avatar :size="50" :src="circleUrl"></el-avatar>
                   <div class="sub-title" style="line-height: 10px">
-                    管理一号
+                    刘金科1
                   </div>
                 </div>
               </div>
@@ -499,7 +369,7 @@
                 <div class="block">
                   <el-avatar :size="50" :src="circleUrl"></el-avatar>
                 </div>
-                <div class="sub-title" style="line-height: 10px">管理二号</div>
+                <div class="sub-title" style="line-height: 10px">刘金科2</div>
               </div>
             </el-col>
             <el-col :span="12">
@@ -507,7 +377,7 @@
                 <div class="block">
                   <el-avatar :size="50" :src="circleUrl"></el-avatar>
                 </div>
-                <div class="sub-title" style="line-height: 10px">管理三号</div>
+                <div class="sub-title" style="line-height: 10px">刘金科3</div>
               </div>
             </el-col>
           </el-form-item>
@@ -561,14 +431,10 @@ export default {
         name: "",
         //部门
         dept: "",
-        //调薪后基本工资
+        //调薪前基本工资
         qjbgz: "",
-        //调薪前岗位工资
-        qgwgz: "",
         //调薪后基本工资
         hjbgz: "",
-        //调薪后岗位工资
-        hgwgz: "",
         //日期
         date1: "",
         //备注
@@ -718,6 +584,7 @@ export default {
     this.salaryme();
     this.salaryed();
     this.salarymy();
+
   },
   methods: {
     salaryme(like){
@@ -798,6 +665,7 @@ export default {
     },
 
     salarymy(){
+      this.myFixedwage();
       this.pageInfo.staffName = this.staffName;
       this.axios({
         method: 'post',
@@ -815,6 +683,23 @@ export default {
       })
     },
 
+    myFixedwage(){
+      this.pageInfo.staffId=this.staffId;
+      this.axios({
+        method: 'post',
+        url: "http://localhost:8007/provider/salary/fixed",
+        data: this.pageInfo,
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response)=>{
+        console.log(response);
+        this.salary_1.qjbgz=response.data.data.fixedwageOfficialmoney
+      }).catch(function (error){
+        console.log('获取表单失败')
+        console.log(error)
+      })
+
+    },
 
 
     // 提交调薪
@@ -835,12 +720,16 @@ export default {
             staffName: this.staffName,
             // 部门编号
             deptId: this.deptId,
-            // 离职原因
-            quitType: this.salary_1.type_1,
-            // 离职说明
-            quitExplain: this.salary_1.remarks_1,
-            // 离职日期
-            formalQuitDate: this.salary_1.date1,
+
+            //调薪前基本工资
+            frontSalary: this.salary_1.qjbgz,
+            //调薪后基本工资
+            afterSalary: this.salary_1.hjbgz,
+            // 调薪日期
+            takeEffectDate: this.salary_1.date1,
+            //调薪备注
+            salaryRemarks: this.salary_1.remarks_1,
+
             // 审批人1
             staffName1: "刘金科1",
             // 审批人2
@@ -848,9 +737,9 @@ export default {
             // 审批人3
             staffName3: "刘金科3",
             // 审批类型
-            auditflowType: "离职",
+            auditflowType: "调薪",
             // 审批标题
-            auditflowTitle: this.staffName + "的" + this.salary_1.type_1
+            auditflowTitle: this.staffName + "的" + this.salary_1.remarks_1
           },
           responseType:'json',
           responseEncoding:'utf-8',
@@ -861,12 +750,12 @@ export default {
               type: "success",
               message: "申请成功",
             });
-            this.quitmy();
-            this.cancel_4();
+            this.salarymy();
+            this.cancel_3();
           } else {
-            ElMessage.error("你已申请离职");
-            this.cancel_4();
-            this.quitmy();
+            ElMessage.error("申请失败");
+            this.cancel_3();
+            this.salarymy();
           }
         }).catch(function (error){
           console.log('获取表单失败')

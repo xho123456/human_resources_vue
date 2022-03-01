@@ -23,16 +23,7 @@
           <el-table-column
             prop="auditflowdetaiDate"
             label="日期"
-            sortable
             width="140"
-            column-key="date1"
-            :filters="[
-              { text: '2016-05-01', value: '2016-05-01' },
-              { text: '2016-05-02', value: '2016-05-02' },
-              { text: '2016-05-03', value: '2016-05-03' },
-              { text: '2016-05-04', value: '2016-05-04' },
-            ]"
-            :filter-method="filterHandler"
           />
           <el-table-column prop="auditflowId" label="审批编号" width="100"/>
           <el-table-column prop="auditflowType" label="流程" width="100"/>

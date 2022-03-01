@@ -695,7 +695,58 @@ export default {
 	    } else if (this.sick_1.date2.length === 0) {
 	      ElMessage("请选择结束时间");
 	    } else {
-	      alert(1);
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/erection/add",
+          data:{
+            staffId: this.staffId,
+            // 申请人
+            staffName: this.staffName,
+            // 部门编号
+            deptId: this.deptId,
+
+            // 请假类型
+            leaveType: this.sick_1.type_1,
+            // 请假事由
+            leaveMatter: this.sick_1.remarks_1,
+            // 请假开始日期
+            travelSDate: this.sick_1.date1,
+            //请假结束日期
+            travelEDate:this.sick_1.date2,
+            //请假总小时
+            travelTotalDate:this.sick_1.date2,
+
+            // 审批人1
+            staffName1: "刘金科1",
+            // 审批人2
+            staffName2: "刘金科2",
+            // 审批人3
+            staffName3: "刘金科3",
+            // 审批类型
+            auditflowType: "请假",
+            // 审批标题
+            auditflowTitle: this.staffName + "的" + this.sick_1.type_1
+          },
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then((response)=>{
+          console.log(response);
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "申请成功",
+            });
+            this.leavemy();
+            this.cancel_8();
+          } else {
+            ElMessage.error("申请失败");
+            this.cancel_8();
+            this.leavemy();
+          }
+        }).catch(function (error){
+          console.log('获取表单失败')
+          console.log(error)
+        })
 	    }
 	  },
 	  // 取消请假

@@ -167,7 +167,7 @@
       <el-tab-pane label="我的申请">
 
         <el-button @click="Movemy">重置日期过滤</el-button>
-        <el-button @click="Change = true" v-on:click="this.Change_1.type_1 = '调岗'">发起申请</el-button>
+        <el-button @click="fqsq" v-on:click="this.Change_1.type_1 = '调岗'">发起申请</el-button>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -278,12 +278,12 @@
             <el-input v-model="Change_1.dept" disabled></el-input>
           </el-form-item>
           <el-form-item label="异动后部门">
-            <el-select v-model="Change_1.dept_1" placeholder="部门名称">
+            <el-select v-model="Change_1.dept_1" placeholder="部门名称" @click="allDeptName()">
               <el-option
                   v-for="item in dept"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  :key="item.deptId"
+                  :label="item.deptName"
+                  :value="item.deptId"
               ></el-option>
             </el-select>
           </el-form-item>
@@ -294,7 +294,7 @@
                 <div class="block">
                   <el-avatar :size="50" :src="circleUrl"></el-avatar>
                   <div class="sub-title" style="line-height: 10px">
-                    管理一号
+                    刘金科1
                   </div>
                 </div>
               </div>
@@ -304,7 +304,7 @@
                 <div class="block">
                   <el-avatar :size="50" :src="circleUrl"></el-avatar>
                 </div>
-                <div class="sub-title" style="line-height: 10px">管理二号</div>
+                <div class="sub-title" style="line-height: 10px">刘金科2</div>
               </div>
             </el-col>
             <el-col :span="12">
@@ -312,7 +312,7 @@
                 <div class="block">
                   <el-avatar :size="50" :src="circleUrl"></el-avatar>
                 </div>
-                <div class="sub-title" style="line-height: 10px">管理三号</div>
+                <div class="sub-title" style="line-height: 10px">刘金科3</div>
               </div>
             </el-col>
           </el-form-item>
@@ -359,6 +359,8 @@ export default {
       staffId:this.$store.state.userall.staffId,
       deptId: this.$store.state.userall.deptId,
 
+
+
       //异动表单
       Change_1: {
         //名称
@@ -372,14 +374,7 @@ export default {
       },
       // 异动后查部门
       dept: ref([
-        {
-          value: '部门1',
-          label: '部门1',
-        },
-        {
-          value: '部门2',
-          label: '部门2',
-        }
+
       ]),
 
       // 待办转正审批列表
@@ -491,7 +486,7 @@ export default {
       this.pageInfo.staffName = this.staffName;
       this.axios({
         method: 'post',
-        url: "http://localhost:8007/provider/quit/departureMy",
+        url: "http://localhost:8007/provider/move/movemy",
         data: this.pageInfo,
         responseType: 'json',
         responseEncoding: 'utf-8',
@@ -505,13 +500,93 @@ export default {
       })
     },
 
+    MoveDeptName(){
+      this.pageInfo.staffId=this.staffId;
+      this.axios({
+        method: 'post',
+        url: "http://localhost:8007/provider/move/deptName",
+        data: this.pageInfo,
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response)=>{
+        console.log(response);
+        this.Change_1.dept=response.data.data.deptName
+      }).catch(function (error){
+        console.log('获取表单失败')
+        console.log(error)
+      })
+    },
+
+    allDeptName(){
+      this.axios.get(
+          "http://localhost:8007/provider/move/alldeptName", {
+
+          }).then((response) => {
+        console.log("数据:",response);
+
+        this.dept = response.data.data
+      })
+    },
+
+    fqsq(){
+      this.Change = true;
+      this.MoveDeptName();
+      this.allDeptName();
+    },
 
     // 提交异动
     submitForm_2() {
       if (this.Change_1.dept_1.length === 0) {
         ElMessage("部门不能为空");
       } else {
-        alert(1);
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/move/add",
+          data:{
+            staffId: this.staffId,
+            // 申请人
+            staffName: this.staffName,
+            // 部门编号
+            deptId: this.deptId,
+
+            // 异动类型
+            transferType: this.Change_1.type_1,
+            // 调动前部门
+            createdDeptName: this.Change_1.dept,
+            // 调动后部门
+            updatedDeptName: this.Change_1.dept_1,
+
+            // 审批人1
+            staffName1: "刘金科1",
+            // 审批人2
+            staffName2: "刘金科2",
+            // 审批人3
+            staffName3: "刘金科3",
+            // 审批类型
+            auditflowType: "异动",
+            // 审批标题
+            auditflowTitle: this.staffName + "的" + this.Change_1.type_1
+          },
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then((response)=>{
+          console.log(response);
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "申请成功",
+            });
+            this.Movemy();
+            this.cancel_2();
+          } else {
+            ElMessage.error("申请失败");
+            this.cancel_2();
+            this.Movemy();
+          }
+        }).catch(function (error){
+          console.log('获取表单失败')
+          console.log(error)
+        })
       }
     },
     // 异动取消

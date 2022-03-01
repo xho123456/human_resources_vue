@@ -247,7 +247,6 @@ export default defineComponent({
 
     selectPostName(){
       this.pageInfo.staffId=this.staffId;
-      let staffId= this.pageInfo.staffId
       var _this = this;
       _this.axios({
         method: 'post',

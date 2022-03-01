@@ -633,7 +633,6 @@ export default {
       })
     },
 
-
 	  // 地址选择器
 	  handleChange() {
 		for (let i = 0; i < this.selectedOptions.length; i++) {
@@ -652,9 +651,62 @@ export default {
 	    } else if (this.travel_1.date2.length === 0) {
 	      ElMessage("请选择结束时间");
 	    } else {
-	      alert(1);
-	    }
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/erection/add",
+          data:{
+            staffId: this.staffId,
+            // 申请人
+            staffName: this.staffName,
+            // 部门编号
+            deptId: this.deptId,
+            // 出差地点
+            travelPlace: this.travel_1.remarks_1,
+            // 出差事由
+            travelMatter: this.travel_1.remarks_2,
+            // 出差开始日期
+            travelSDate: this.travel_1.date1,
+            //出差结束日期
+            travelEDate:this.travel_1.date2,
+            //出差总小时
+            travelTotalDate:this.travel_1.date2,
+
+            // 审批人1
+            staffName1: "刘金科1",
+            // 审批人2
+            staffName2: "刘金科2",
+            // 审批人3
+            staffName3: "刘金科3",
+            // 审批类型
+            auditflowType: "出差",
+            // 审批标题
+            auditflowTitle: this.staffName + "的" + this.travel_1.remarks_2
+          },
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then((response)=>{
+          console.log(response);
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "申请成功",
+            });
+            this.errandmy();
+            this.cancel_7();
+          } else {
+            ElMessage.error("申请失败");
+            this.cancel_7();
+            this.errandmy();
+          }
+        }).catch(function (error){
+          console.log('获取表单失败')
+          console.log(error)
+        })
+
+      }
 	  },
+
+
 	  // 取消出差
 	  cancel_7() {
 	    this.travel_1 = {

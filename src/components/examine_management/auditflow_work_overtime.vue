@@ -735,7 +735,58 @@ export default {
 	    } else if (this.overtime_1.remarks_1.length === 0) {
 	      ElMessage("请输入加班事由");
 	    } else {
-	      alert(1);
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/workover/add",
+          data:{
+            staffId: this.staffId,
+            // 申请人
+            staffName: this.staffName,
+            // 部门编号
+            deptId: this.deptId,
+
+            // 加班类型
+            overtimeaskType: this.overtime_1.type_1,
+            // 备注
+            overtimeaskMatter: this.overtime_1.remarks_1,
+            // 加班开始日期
+            overtimeaskSDate: this.overtime_1.date1,
+            //加班结束日期
+            overtimeaskEDate:this.overtime_1.date2,
+            //加班总小时
+            overtimeaskTotalDate:this.overtime_1.date2,
+
+            // 审批人1
+            staffName1: "刘金科1",
+            // 审批人2
+            staffName2: "刘金科2",
+            // 审批人3
+            staffName3: "刘金科3",
+            // 审批类型
+            auditflowType: "出差",
+            // 审批标题
+            auditflowTitle: this.staffName + "的" + this.overtime_1.type_1
+          },
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then((response)=>{
+          console.log(response);
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "申请成功",
+            });
+            this.Workovermy();
+            this.cancel_5();
+          } else {
+            ElMessage.error("申请失败");
+            this.cancel_5();
+            this.Workovermy();
+          }
+        }).catch(function (error){
+          console.log('获取表单失败')
+          console.log(error)
+        })
 	    }
 	  },
 	  // 取消加班

@@ -653,9 +653,56 @@ export default {
 	    } else if (this.punch_1.remarks_1.length === 0) {
 	      ElMessage("请输入补打卡备注");
 	    } else {
-	      alert(1);
-	    }
-	  },
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/fillclock/add",
+          data:{
+            staffId: this.staffId,
+            // 申请人
+            staffName: this.staffName,
+            // 部门编号
+            deptId: this.deptId,
+
+            // 补打卡类型
+            cardType: this.punch_1.type_1,
+            // 备注
+            cardRemarks: this.punch_1.remarks_1,
+            // 补卡时间
+            cardDate: this.punch_1.date1,
+
+            // 审批人1
+            staffName1: "刘金科1",
+            // 审批人2
+            staffName2: "刘金科2",
+            // 审批人3
+            staffName3: "刘金科3",
+            // 审批类型
+            auditflowType: "补打卡",
+            // 审批标题
+            auditflowTitle: this.staffName + "的" + this.punch_1.type_1
+          },
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then((response)=>{
+          console.log(response);
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "申请成功",
+            });
+            this.upcardmy();
+            this.cancel_6();
+          } else {
+            ElMessage.error("申请失败");
+            this.cancel_6();
+            this.upcardmy();
+          }
+        }).catch(function (error){
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }
+    },
 	  // 取消补打卡
 	  cancel_6() {
 	    this.punch_1 = {
