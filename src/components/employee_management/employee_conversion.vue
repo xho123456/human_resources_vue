@@ -40,7 +40,7 @@
 
             <el-table-column fixed="right" label="操作">
               <template #default="scope">
-                <el-button type="text" size="small" @click="positive(scope.staffId)">办理转正</el-button>
+                <el-button type="text" size="small" @click="positive(scope.row.staffId)">办理转正</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -155,6 +155,9 @@ export default defineComponent({
       }
     };
     return {
+      staffId:this.$store.state.userall.staffId,
+      postName:"",
+
       tableData: [
         {
           staffName: '',
@@ -222,25 +225,34 @@ export default defineComponent({
   },
   methods:{
     positive(id){
-      this.axios({
-        method:'post',
-        url:"http://localhost:8007/provider/staff/positive",
-        data:this.pageInfo,
-        responseType:'json',
-        responseEncoding:'utf-8',
-      }).then(response=>{
-        console.log(response)
-        if (response.data.data === "转正成功") {
-          ElMessage({
-            type: "success",
-            message: "转正成功",
-          });
-          this.selectontrial(null);
-        } else if(response.data.data === "转正失败"){
-          ElMessage.error("转正失败");
-          this.selectontrial(null);
-        }
-      });
+      this.selectPostName();
+      if (this.postName="经理") {
+        this.pageInfo.staffId = id;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/staff/positive",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then(response => {
+          console.log(response)
+          if (response.data.data === "转正成功") {
+            ElMessage({
+              type: "success",
+              message: "转正成功",
+            });
+            this.selectontrial(null);
+          } else if (response.data.data === "转正失败") {
+            ElMessage.error("转正失败");
+            this.selectontrial(null);
+          }
+        });
+      }else {
+        ElMessage({
+          message:"权限不够",
+          type:"warning"
+        })
+      }
     },
 
     selectontrial(like){
@@ -314,8 +326,25 @@ export default defineComponent({
         remarks:'',
         becomedate:''
       }
+    },
+    selectPostName(){
+      this.pageInfo.staffId=this.staffId;
+      this.axios({
+        method: 'post',
+        url: "http://localhost:8007/provider/staff/postName",
+        data: this.pageInfo,
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response)=>{
+        console.log(response);
+        this.postName=response.data.data.postName
+      }).catch(function (error){
+        console.log('获取表单失败')
+        console.log(error)
+      })
     }
-  }
+  },
+
 })
 </script>
 

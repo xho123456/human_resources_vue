@@ -84,6 +84,8 @@ import {ElMessage,ElMessageBox} from "element-plus";
 export default defineComponent({
   data(){
     return{
+      staffId:this.$store.state.userall.staffId,
+      postName:"",
       input:null,
       waivereason:"",
       pageInfo: {
@@ -92,6 +94,7 @@ export default defineComponent({
         pagesize: 3, // 页大小
         total: 0, // 总页数
 
+        staffId:"",
         resumeid:'',
         resumename: '',
         waivereason:'',
@@ -163,26 +166,33 @@ export default defineComponent({
     },
 
     addInduction(row){
-      this.axios({
-        method:'post',
-        url:"http://localhost:8007/provider/staff/addStaff",
-        data:row,
-        responseType:'json',
-        responseEncoding:'utf-8',
-      }).then(response=>{
-        console.log(response)
-        if (response.data.info === 1111) {
-          ElMessage({
-            type: "success",
-            message: "入职成功",
-          });
-          this.selectInduction(null);
-        } else {
-          ElMessage.error("入职失败");
-          this.selectInduction(null);
-        }
-      })
-
+      this.selectPostName();
+      if (this.postName="经理"){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/staff/addStaff",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "入职成功",
+            });
+            this.selectInduction(null);
+          } else {
+            ElMessage.error("入职失败");
+            this.selectInduction(null);
+          }
+        })
+      }else {
+        ElMessage({
+          message:"权限不够",
+          type:"warning"
+        })
+      }
     },
 
     giveupInduction(row){
@@ -235,7 +245,24 @@ export default defineComponent({
       }
     },
 
-
+    selectPostName(){
+      this.pageInfo.staffId=this.staffId;
+      let staffId= this.pageInfo.staffId
+      var _this = this;
+      _this.axios({
+        method: 'post',
+        url: "http://localhost:8007/provider/staff/postName",
+        data: this.pageInfo,
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response)=>{
+        console.log(response);
+       this.postName=response.data.data.postName
+      }).catch(function (error){
+        console.log('获取表单失败')
+        console.log(error)
+      })
+    }
 
   }
 })

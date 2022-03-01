@@ -4,7 +4,7 @@
     <el-tabs type="border-card">
       <!-- 待办申请页面 -->
       <el-tab-pane label="待办申请">
-        <el-button @click="Move">重置</el-button>
+        <el-button @click="Move(null)">重置</el-button>
         &nbsp;
         <el-input
             v-model="input"
@@ -12,7 +12,7 @@
             style="width: 130px"
         />
         &nbsp;
-        <el-button type="success" plain>搜索</el-button>
+        <el-button type="success" @click="Move(null)">搜索</el-button>
         <!--  表格 -->
         <el-table
             :data="tableData"
@@ -82,8 +82,8 @@
               layout="total, sizes, prev, pager, next, jumper"
               :total="pageInfo.total"
               :pager-count="5"
-              @size-change="Move"
-              @current-change="Move"
+              @size-change="Move(input)"
+              @current-change="Move(input)"
               prev-text="上一页"
               next-text="下一页"
               background
@@ -97,15 +97,15 @@
       </el-drawer>
       <!-- 已办申请页面 -->
       <el-tab-pane label="已办申请">
-        <el-button @click="Moved">重置</el-button>
+        <el-button @click="Moved(null)">重置</el-button>
         &nbsp;
         <el-input
-            v-model="input"
+            v-model="input1"
             placeholder="输入名称搜索nima"
             style="width: 130px"
         />
         &nbsp;
-        <el-button type="success" plain>搜索</el-button>
+        <el-button type="success" @click="Moved(null)">搜索</el-button>
 
         <el-table
             :data="tableData1"
@@ -114,25 +114,16 @@
           <el-table-column
               prop="auditflowdetaidate"
               label="日期"
-              sortable
               width="140"
-              column-key="date"
-              :filters="[
-              { text: '2016-05-01', value: '2016-05-01' },
-              { text: '2016-05-02', value: '2016-05-02' },
-              { text: '2016-05-03', value: '2016-05-03' },
-              { text: '2016-05-04', value: '2016-05-04' },
-            ]"
-              :filter-method="filterHandler"
           />
-          <el-table-column prop="auditflowid" label="审批编号" width="100"/>
-          <el-table-column prop="auditflowtype" label="流程" width="100"/>
-          <el-table-column prop="staffname1" label="申请人" width="150"/>
-          <el-table-column prop="auditflowdetaistate" label="状态" width="100">
+          <el-table-column prop="auditflowId" label="审批编号" width="100"/>
+          <el-table-column prop="auditflowType" label="流程" width="100"/>
+          <el-table-column prop="staffName" label="申请人" width="150"/>
+          <el-table-column prop="auditflowdetaiState" label="状态" width="100">
             <template #default="scope">
-              <span v-if="scope.row.auditflowdetaistate==0">审批中</span>
-              <span v-if="scope.row.auditflowdetaistate==1">待我审批</span>
-              <span v-if="scope.row.auditflowdetaistate==2">已审批</span>
+              <span v-if="scope.row.auditflowdetaiState==0">审批中</span>
+              <span v-if="scope.row.auditflowdetaiState==1">待我审批</span>
+              <span v-if="scope.row.auditflowdetaiState==2">已审批</span>
             </template>
           </el-table-column>
           <el-table-column prop="staffname2" label="当前审批人" width="150"/>
@@ -160,8 +151,8 @@
               layout="total, sizes, prev, pager, next, jumper"
               :total="pageInfo.total"
               :pager-count="5"
-              @size-change="Moved()"
-              @current-change="Moved()"
+              @size-change="Moved(input1)"
+              @current-change="Moved(input1)"
               prev-text="上一页"
               next-text="下一页"
               background
@@ -175,7 +166,7 @@
       <!--       我的申请页面:异动 -->
       <el-tab-pane label="我的申请">
 
-        <el-button @click="resetDateFilter">重置日期过滤</el-button>
+        <el-button @click="Movemy">重置日期过滤</el-button>
         <el-button @click="Change = true" v-on:click="this.Change_1.type_1 = '调岗'">发起申请</el-button>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -258,15 +249,15 @@
               layout="total, sizes, prev, pager, next, jumper"
               :total="pageInfo.total"
               :pager-count="5"
+              @size-change="Movemy()"
+              @current-change="Movemy()"
+              prev-text="上一页"
+              next-text="下一页"
               background
           >
           </el-pagination>
         </div>
 
-        <!--   弹出抽屉 -->
-        <el-drawer v-model="drawer" title="I am the title" :with-header="false">
-          <span>臭傻逼啊看什么看</span>
-        </el-drawer>
       </el-tab-pane>
 
       <el-dialog
@@ -357,11 +348,17 @@ export default {
     return {
       drawer: ref(false),
       input: ref(""),
+      input1: ref(""),
       Change,
     };
   },
   data() {
     return {
+      staffName:this.$store.state.userall.staffName,
+      deptPostId:this.$store.state.userall.deptPostId,
+      staffId:this.$store.state.userall.staffId,
+      deptId: this.$store.state.userall.deptId,
+
       //异动表单
       Change_1: {
         //名称
@@ -390,46 +387,125 @@ export default {
       ],
       // 已办转正审批列表
       tableData1: [
+      ],
 
+      tableData2: [
       ],
 
       pageInfo: {
         // 分页参数
         currentPage: 1, //当前页
-        pagesize: 3, // 页大小
+        pageSize: 3, // 页大小
         total: 0, // 总页数
+
+        staffName:"",
+        staffName1: "",
+        auditflowdetaiState:0,
       },
     };
   },
   mounted() {
     this.Move();
     this.Moved();
+    this.Movemy();
   },
   methods: {
-    Move(){
-      var _this = this;
-      _this.axios.get(
-          "http://localhost:8007/provider/move", {
-            params:this.pageInfo,
-          }).then((response)=>{
+    Move(like){
+      if (Object.prototype.toString.call(like)===Object.prototype.toString.call(null)) {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.auditflowdetaiState=1;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/move",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }else {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.auditflowdetaiState=1;
+        this.pageInfo.staffName1 = like;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/move/moveappered",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }
+    },
+    Moved(like){
+      if (Object.prototype.toString.call(like)===Object.prototype.toString.call(null)) {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.auditflowdetaiState=2;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/move",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData2 = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }else {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.staffName1 = like;
+        this.pageInfo.auditflowdetaiState=2;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/move/moveappered",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData1 = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }
+    },
+
+    Movemy(){
+      this.pageInfo.staffName = this.staffName;
+      this.axios({
+        method: 'post',
+        url: "http://localhost:8007/provider/quit/departureMy",
+        data: this.pageInfo,
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
         console.log(response);
-        _this.tableData = response.data.data.records
-        _this.pageInfo.total=response.data.data.total
+        this.tableData2 = response.data.data.records
+        this.pageInfo.total = response.data.data.total
+      }).catch(function (error) {
+        console.log('获取表单失败')
+        console.log(error)
       })
     },
-    Moved(){
-      var _this = this;
-      _this.axios.get(
-          "http://localhost:8007/provider/move/moveappered", {
-            params:this.pageInfo,
-          }).then((response)=>{
-        console.log(response);
-        if (response.data.data!=null){
-          _this.tableData1 = response.data.data.records
-          _this.pageInfo.total=response.data.data.total
-        }
-      })
-    },
+
+
     // 提交异动
     submitForm_2() {
       if (this.Change_1.dept_1.length === 0) {

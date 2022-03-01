@@ -4,7 +4,7 @@
     <el-tabs type="border-card">
       <!-- 待办申请页面 -->
       <el-tab-pane label="待办申请">
-        <el-button @click="resetDateFilter1">重置日期过滤</el-button>
+        <el-button @click="leaaveMe(null)">重置</el-button>
         &nbsp;
         <el-input
             v-model="input"
@@ -12,7 +12,7 @@
             style="width: 130px"
         />
         &nbsp;
-        <el-button type="success" plain>搜索</el-button>
+        <el-button type="success" @click="leaaveMe(input)">搜索</el-button>
         <!--  表格 -->
         <el-table
             ref="filterTable1"
@@ -23,16 +23,7 @@
           <el-table-column
               prop="date1"
               label="日期"
-              sortable
               width="140"
-              column-key="date1"
-              :filters="[
-              { text: '2016-05-01', value: '2016-05-01' },
-              { text: '2016-05-02', value: '2016-05-02' },
-              { text: '2016-05-03', value: '2016-05-03' },
-              { text: '2016-05-04', value: '2016-05-04' },
-            ]"
-              :filter-method="filterHandler"
           />
           <el-table-column prop="AUDITFLOW_ID" label="审批编号" width="100"/>
           <el-table-column prop="AUDITFLOW_TYPE" label="流程" width="100"/>
@@ -42,10 +33,6 @@
           <el-table-column prop="STAFF_NAME" label="当前审批人" width="150"/>
           <el-table-column prop="UPDATED_TIME" label="最近处理" width="150"/>
 
-          <!-- <el-table-column prop="tag" label="操作" width="100">
-						<el-button type="success" plain>通过</el-button>
-						<el-button type="danger" plain>驳回</el-button>
-					</el-table-column> -->
           <el-table-column label="操作">
             <template #default="scope">
               <el-popconfirm
@@ -92,6 +79,10 @@
               layout="total, sizes, prev, pager, next, jumper"
               :total="pageInfo.total"
               :pager-count="5"
+              @size-change="leaaveMe(input)"
+              @current-change="leaaveMe(input)"
+              prev-text="上一页"
+              next-text="下一页"
               background
           >
             <!--  @size-change="selectUsers" @current-change="selectUsers" -->
@@ -104,20 +95,20 @@
       </el-drawer>
       <!-- 已办申请页面 -->
       <el-tab-pane label="已办申请">
-        <el-button @click="resetDateFilter">重置日期过滤</el-button>
+        <el-button @click="leaved(null)">重置</el-button>
         &nbsp;
         <el-input
-            v-model="input"
+            v-model="input1"
             placeholder="输入名称搜索nima"
             style="width: 130px"
         />
         &nbsp;
-        <el-button type="success" plain>搜索</el-button>
+        <el-button type="success" @click="leaved(input1)">搜索</el-button>
 
         <el-table
             ref="filterTable"
             row-key="date"
-            :data="tableData"
+            :data="tableData1"
             style="width: 100%"
         >
           <el-table-column
@@ -165,6 +156,10 @@
               layout="total, sizes, prev, pager, next, jumper"
               :total="pageInfo.total"
               :pager-count="5"
+              @size-change="leaved(input1)"
+              @current-change="leaved(input1)"
+              prev-text="上一页"
+              next-text="下一页"
               background
           >
             <!--  @size-change="selectUsers"
@@ -176,7 +171,7 @@
 	  <!-- 我的申请页面：请假 -->
 	  <el-tab-pane label="我的申请">
 	  	  
-	          <el-button @click="resetDateFilter">重置日期过滤</el-button>
+	          <el-button @click="leavemy">重置</el-button>
 	          <el-button   @click="sick = true" >发起申请</el-button>
 	          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -190,13 +185,7 @@
 	          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	  	  
 	  	  
-	          <el-input
-	              v-model="input"
-	              placeholder="输入名称搜索"
-	              style="width: 130px"
-	          />
-	          &nbsp;
-	          <el-button type="success" plain>搜索</el-button>
+
 	          <!-- 表格   -->
 	          <el-table
 	              ref="filterTable"
@@ -207,16 +196,8 @@
 	            <el-table-column
 	                prop="date"
 	                label="日期"
-	                sortable
 	                width="140"
-	                column-key="date"
-	                :filters="[
-	          { text: '2016-05-01', value: '2016-05-01' },
-	          { text: '2016-05-02', value: '2016-05-02' },
-	          { text: '2016-05-03', value: '2016-05-03' },
-	          { text: '2016-05-04', value: '2016-05-04' },
-	        ]"
-	                :filter-method="filterHandler"
+
 	            />
 	            <el-table-column prop="name" label="审批编号" width="150"/>
 	            <el-table-column prop="name" label="流程" width="150"/>
@@ -259,6 +240,10 @@
 	                layout="total, sizes, prev, pager, next, jumper"
 	                :total="pageInfo.total"
 	                :pager-count="5"
+                  @size-change="leavemy()"
+                  @current-change="leavemy()"
+                  prev-text="上一页"
+                  next-text="下一页"
 	                background
 	            >
 	            </el-pagination>
@@ -396,11 +381,17 @@ export default {
     return {
       drawer: ref(false),
       input: ref(""),
+      input1: ref(""),
 	  sick
     };
   },
   data() {
     return {
+      staffName:this.$store.state.userall.staffName,
+      deptPostId:this.$store.state.userall.deptPostId,
+      staffId:this.$store.state.userall.staffId,
+      deptId: this.$store.state.userall.deptId,
+
 		//请假表单
 		sick_1: {
 		  //名称
@@ -418,7 +409,8 @@ export default {
 		  //请假总时长
 		  date3: "",
 		},
-		options: [{
+		options: [
+        {
 		          value: '病假',
 		          label: '病假'
 		        }, {
@@ -566,16 +558,125 @@ export default {
           UPDATED_TIME: "2020-01-01",
         },
       ],
+
+      tableData2:[],
+
       // 分页
       pageInfo: {
         // 分页参数
         currentPage: 1, //当前页
-        pagesize: 3, // 页大小
+        pageSize: 3, // 页大小
         total: 0, // 总页数
+
+        staffName:"",
+        staffName1: "",
+        auditflowdetaiState:0,
       },
     };
   },
+  mounted() {
+    this.leaaveMe(null);
+    this.leaved(null);
+    this.leavemy();
+  },
   methods: {
+    leaaveMe(like){
+      if (Object.prototype.toString.call(like)===Object.prototype.toString.call(null)) {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.auditflowdetaiState=1;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/leaver/leaverMe",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }else {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.auditflowdetaiState=1;
+        this.pageInfo.staffName1 = like;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/leaver/LikeName",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }
+    },
+
+    leaved(like){
+      if (Object.prototype.toString.call(like)===Object.prototype.toString.call(null)) {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.auditflowdetaiState=2;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/leaver/leaverMe",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData1 = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }else {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.staffName1 = like;
+        this.pageInfo.auditflowdetaiState=2;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/leaver/LikeName",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData1 = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }
+    },
+
+    leavemy(){
+      this.pageInfo.staffName = this.staffName;
+      this.axios({
+        method: 'post',
+        url: "http://localhost:8007/provider/leaver/leaverMy",
+        data: this.pageInfo,
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.log(response);
+        this.tableData2 = response.data.data.records
+        this.pageInfo.total = response.data.data.total
+      }).catch(function (error) {
+        console.log('获取表单失败')
+        console.log(error)
+      })
+    },
+
+
 	  handleNative(val){
 		  let obj = {};//定义对象集合
 		  obj = this.options.find(item => {
