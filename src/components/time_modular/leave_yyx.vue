@@ -1,4 +1,4 @@
-<!-- 考勤记录汇总 -->
+<!-- 考勤月明细 -->
 <template>
   <div class="saas-main-content">
     <div class="j-card j-card-bordered mainContent">
@@ -10,11 +10,10 @@
               <div class="my-span1" style="display: flex;">
                 <i class="iconfont" style="font-size: 20px">&#xe7d9;</i>
               </div>
-              <div class="my-span2">考勤记录汇总</div>
+              <div class="my-span2">考勤月明细</div>
             </div>
             <div>
-              <el-button type="primary" size="small">导入Excel</el-button>
-              <el-button type="primary" size="small">导出Excel</el-button>
+              <el-button type="primary" size="small" @click="querygdall()">归档{{value1}}月份记录</el-button>
             </div>
           </div>
         </div>
@@ -25,20 +24,41 @@
                 <div class="day-div4">
                   <div class="ant-day1">时间范围:</div>
                   <div class="ant-day2">
-                    <el-radio-group v-model="radio1" size="mini" :border="true">
-                      <el-radio-button label="本月"></el-radio-button>
-                      <el-radio-button label="自定义时间范围"></el-radio-button>
-                    </el-radio-group>
+                    <el-button type="primary" size="mini" @click="prevDate" v-if="value1==value3">本月</el-button>
+                    <el-button type="text" size="mini" @click="prevDate" v-if="value1!=value3">本月</el-button>
+                    <el-date-picker
+                        @change="querycdAlls()"
+                        v-model="value1"
+                        type="month"
+                        size="mini"
+                        :clearable="false"
+                        style="padding-right: 10px;padding-left: 10px;width: 100px;"
+                        placeholder="选择日期"
+                        value-format="YYYY-MM"
+                    >
+                    </el-date-picker>
                   </div>
                 </div>
                 <div class="day-div5">
                   <div class="ant-day1">查看范围:</div>
                   <div class="ant-day2">
                     <el-radio-group v-model="radio2" size="mini" :border="true">
-                      <el-radio-button label="全部"></el-radio-button>
-                      <el-radio-button label="部门"></el-radio-button>
+                      <el-radio-button label="全部" @click="quanbquery()"></el-radio-button>
                       <el-radio-button label="人员"></el-radio-button>
                     </el-radio-group>
+                  </div>
+                  <div>
+                    <div style="margin-top: 5px;">
+                      <el-input
+                          v-if="radio2=='人员'"
+                          v-model="input5"
+                          placeholder="请输入员工姓名"
+                          size="small">
+                        <template #append>
+                          <el-button @click="querycdAlls()">搜索</el-button>
+                        </template>
+                      </el-input>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -57,8 +77,7 @@
                 <el-table-column prop="clockRs.s5" label="早退总时长(小时)" width="140"/>
                 <el-table-column prop="clockRs.s6" label="旷工次数(次)" width="140"/>
                 <el-table-column prop="clockRs.s7" label="旷工总时长(小时)" width="140"/>
-<!--                <el-table-column prop="checkfiles.overtimeDays" label="加班天数(天)" width="140"/>-->
-<!--                <el-table-column prop="checkfiles.overtimeHours" label="加班总时长(小时)" width="140"/>-->
+                <el-table-column prop="overtimeask.jbtimes" label="加班总时长(小时)" width="140"/>
                 <el-table-column prop="leaves.qidays" label="请假天数(天)" width="140"/>
                 <el-table-column prop="leaves.qjtimes" label="请假总时长(小时)" width="140"/>
                 <el-table-column prop="travels.ccday" label="出差天数(天)" width="140"/>
@@ -73,8 +92,8 @@
                     :total="pageInfo.total"
                     :pager-count="5"
                     background
-                    @size-change="queryAllPage()"
-                    @current-change="queryAllPage()"
+                    @size-change="querycdAlls()"
+                    @current-change="querycdAlls()"
                 >
                 </el-pagination>
               </div>
@@ -87,23 +106,26 @@
 </template>
 
 <script>
-import {ElMessage} from "element-plus";
+import {ElMessage,ElMessageBox} from "element-plus";
+import {export_json_to_excel} from "../../excal/Export2Excel";
 
 export default {
   data() {
     return {
-      value1: '',
-      value3: '',
+      value1: '', //时间范围选择器
+      value3: '', //本月时间
+      input5:'', //搜索框
       radio1: '本月',
       radio2: '全部',
       //分页、模糊查询数据
       pageInfo: {
         currenPage: 1,
-        pagesize: 999,
+        pagesize: 10,
         total: 0,
         classesName: ''
       },
-      tableData: []
+      tableData: [],
+      ofdfdf:''
     }
   },
   created() {
@@ -115,7 +137,7 @@ export default {
       //获取当前时间并打印
       var _this = this;
       let yy = new Date().getFullYear();
-      let mm = new Date().getMonth() + 1 < 10 ? '0' + new Date().getMonth() : new Date().getMonth();
+      let mm = new Date().getMonth() + 1 < 10 ? '0' + (new Date().getMonth() + 1) : new Date().getMonth() + 1;
       _this.value1 = yy + '-' + mm;
       _this.value3 = yy + '-' + mm;
     },
@@ -123,8 +145,20 @@ export default {
       //获取当前时间并打印
       var _this = this;
       let yy = new Date().getFullYear();
-      let mm = new Date().getMonth() + 1 < 10 ? '0' + new Date().getMonth() : new Date().getMonth();
+      let mm = new Date().getMonth() + 1 < 10 ? '0' + (new Date().getMonth() + 1) : new Date().getMonth() + 1;
       _this.value1 = yy + '-' + mm;
+    },
+    prevDate() { //时间范围查询
+      //获取当前时间并打印
+      var _this = this;
+      let yy = new Date().getFullYear();
+      let mm = new Date().getMonth() + 1 < 10 ? '0' + (new Date().getMonth() + 1) : new Date().getMonth() + 1;
+      _this.value1 = yy + '-' + mm;
+      this.querycdAlls();
+    },
+    quanbquery(){ //全部按钮事件
+      this.input5 = '';
+      this.querycdAlls();
     },
     //考勤all打卡记录查询（按照天数查询）
     querycdAlls() {
@@ -134,7 +168,8 @@ export default {
         data: {
           currenPage: this.pageInfo.currenPage,
           pagesize: this.pageInfo.pagesize,
-          years: '2022-02'
+          years: this.value1,
+          staffName:this.input5
         },
         responseType: 'json',
         responseEncoding: 'utf-8',
@@ -148,6 +183,72 @@ export default {
         console.log(error);
       })
     },
+    //查询当前选择器月份是否有归档数据
+    querygdall(){
+      ElMessageBox.confirm(
+           '是否确定归档'+this.value1+'月份数据?',
+          'Warning',
+          {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+          }
+      ).then(() => {
+            this.axios({
+              url: "http://localhost:8007/provider/Check/querygd",
+              method: "post",
+              data: {
+                currenPage: 1,
+                pagesize: 999,
+                datesgd: this.value1
+              },
+              responseType: 'json',
+              responseEncoding: 'utf-8',
+            }).then((response) => {
+              this.ofdfdf = response.data.data.records
+              this.addguid();
+            }).catch(function (error) {
+              console.log('获取列表失败')
+              console.log(error);
+            })
+      }).catch(() => {
+            ElMessage({
+              type: 'info',
+              message: '已取消操作',
+            })
+          })
+    },
+    //考勤数据归档
+    addguid() {
+      if(this.ofdfdf==''){
+        this.axios({
+          url: "http://localhost:8007/provider/Check/queryMoths",
+          method: "post",
+          data: {
+            currenPage: 1,
+            pagesize: 999,
+            years: this.value1
+          },
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.error(response.data.data)
+            ElMessage({
+              message: "归档成功",
+              type: "success",
+            });
+        }).catch(function (error) {
+          console.log('获取列表失败')
+          console.log(error);
+        })
+      }else {
+        ElMessage({
+          message: "当月已归档",
+          type: "error",
+        });
+      }
+    },
+
   },
 
 
@@ -205,7 +306,6 @@ export default {
 .ant-day2 {
   padding: 5px;
   line-height: 30px;
-  width: 86%;
 }
 
 .el-radio-group {

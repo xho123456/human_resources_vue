@@ -13,7 +13,6 @@
               <div class="my-span2">每日考勤统计</div>
             </div>
             <div>
-              <el-button type="primary" size="small">导入Excel</el-button>
               <el-button type="primary" size="small">导出Excel</el-button>
             </div>
           </div>

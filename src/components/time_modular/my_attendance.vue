@@ -44,14 +44,14 @@
                 <div>
                   <div class="div-a3">
                     <div style="width: 100%">
-                      <div class="div-a4 ant-rows1">234</div>
+                      <div class="div-a4 ant-rows1">{{atttimedayx}}</div>
                       <div class="div-a4">
                         <span class="ant-rows-span1"></span>
                         <span style="font-size: 12px;color: black">实际出勤（天）</span>
                       </div>
                     </div>
                     <div style="width: 100%">
-                      <div class="div-a4 ant-rows2">234</div>
+                      <div class="div-a4 ant-rows2">{{atttimedays-atttimedayx}}</div>
                       <div class="div-a4">
                         <span class="ant-rows-span2"></span>
                         <span style="font-size: 12px;color: black">未出勤（天）</span>
@@ -415,8 +415,6 @@
     </div>
   </el-dialog>
 
-
-
 </template>
 
 <script>
@@ -508,6 +506,10 @@ export default {
         pagesize: 5,
         total: 0,
       },
+      //应出勤天数
+      atttimedays:'',
+      //实际出勤天数
+      atttimedayx:'',
     }
   },
   created() {
@@ -517,10 +519,40 @@ export default {
     this.querynumber();
     //当前登录用户考勤打卡记录查询（按照月份查询）
     this.querycdAlldk();
-
+    this.atttimes_y();
 
   },
   methods: {
+    atttimes_y(){ //应出勤天数
+      var today = new Date();
+      // 获取当月天数 curretMonthDayCount
+      var curretMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      var curretMonthDayCount = curretMonth.getDate();
+      this.atttimedays = curretMonthDayCount-((curretMonthDayCount/7)*2).toString().substring(0,1);
+      this.axios({
+        url: "http://localhost:8007/provider/leave/querydkcounts",
+        method: "post",
+        data: {
+          staffId: this.useralls.staffId,
+          dates:this.value1
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.atttimedayx = response.data.data
+        console.error(response.data.data)
+        //统计图
+        this.$nextTick(function () {
+          this.two("mains");
+        });
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    atttimes_x(){//实际出勤天数
+
+    },
     //获取当前月分
     getCurrentTime() {
       //获取当前时间并打印
@@ -556,8 +588,8 @@ export default {
               show: false
             },
             data: [
-              {value: 1048, name: 'Search Engine'},
-              {value: 735, name: 'Direct'}
+              {value: this.atttimedayx, name: '实际出勤天数'},
+              {value:this.atttimedays-this.atttimedayx, name: '未出勤天数'}
             ]
           }
         ]
@@ -587,6 +619,8 @@ export default {
         this.kgnumber();
         //加班次数统计
         this.jiabnumber();
+        this.atttimes_y();
+        this.atttimes_x();
       }).catch(function (error) {
         console.log('获取列表失败')
         console.log(error);
@@ -797,11 +831,6 @@ export default {
         console.log(error);
       })
     },
-  },
-  mounted() {
-    this.$nextTick(function () {
-      this.two("mains");
-    });
   },
 }
 

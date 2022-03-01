@@ -13,7 +13,6 @@
               <div class="my-span2">月考勤统计</div>
             </div>
             <div>
-              <el-button type="primary" size="small">导入Excel</el-button>
               <el-button type="primary" size="small">导出Excel</el-button>
             </div>
           </div>
@@ -25,11 +24,6 @@
                 <div class="day-div4">
                   <div class="ant-day1">时间范围:</div>
                   <div class="ant-day2">
-                    <!--                    <el-radio-group v-model="radio1" size="mini" :border="true">-->
-                    <!--                      <el-radio-button label="本月"></el-radio-button>-->
-                    <!--                      <el-radio-button label="自定义时间范围"></el-radio-button>-->
-                    <!--                      -->
-                    <!--                    </el-radio-group>-->
                     <el-button type="primary" size="mini" @click="prevDate" v-if="value1==value3">本月</el-button>
                     <el-button type="text" size="mini" @click="prevDate" v-if="value1!=value3">本月</el-button>
                     <el-date-picker
@@ -49,25 +43,22 @@
                   <div class="ant-day1">查看范围:</div>
                   <div class="ant-day2">
                     <el-radio-group v-model="radio2" size="mini" :border="true">
-                      <el-radio-button label="全部"></el-radio-button>
+                      <el-radio-button label="全部" @click="quanbquery()"></el-radio-button>
                       <el-radio-button label="人员"></el-radio-button>
                     </el-radio-group>
                   </div>
                   <div>
                     <div style="margin-top: 5px;">
-
                       <el-input
                           v-if="radio2=='人员'"
                           v-model="input5"
                           placeholder="请输入员工姓名"
-                          size="small"
-                      >
+                          size="small">
                         <template #append>
                           <el-button @click="querycdAllmothday()">搜索</el-button>
                         </template>
                       </el-input>
                     </div>
-
                   </div>
                 </div>
               </div>
@@ -125,7 +116,7 @@ export default {
       //分页、模糊查询数据
       pageInfo: {
         currenPage: 1,
-        pagesize: 999,
+        pagesize: 10,
         total: 0,
         classesName: ''
       },
@@ -161,6 +152,10 @@ export default {
       let yy = new Date().getFullYear();
       let mm = new Date().getMonth() + 1 < 10 ? '0' + new Date().getMonth() : new Date().getMonth();
       _this.value1 = yy + '-' + mm;
+    },
+    quanbquery(){ //全部按钮事件
+      this.input5 = '';
+      this.querycdAllmothday();
     },
     querycdAllmothday() {
       this.axios({
