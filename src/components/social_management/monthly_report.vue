@@ -4,86 +4,86 @@
     <div class="j-card j-card-bordered mainContent">
       <div class="j-card-body">
 
-
-        <!-- 单个 -->
-        <div class="main_div">
-          <div class="interior_left_div">
-            <span class="social_accumulation">
-              <span>2022-06</span> 社保公积金</span
-            >
-            <span style="font-size: 12px"> &nbsp;已归档</span>
-            <br />
-            <el-button type="text">导出参保明细</el-button>
-            <el-button type="text">删除 </el-button>
-          </div>
-
-          <div class="interior_right_div">
-            <div style="display: inline-block">
-              <span style="margin: 35px">参保人数</span><br />
-              <span style="margin: 35px">1</span>
-            </div>
-
-            <div style="display: inline-block">
-              <span style="margin: 35px">个人缴费</span><br />
-              <span style="margin: 35px">2</span>
-            </div>
-
-            <div style="display: inline-block">
-              <span style="margin: 35px">企业缴费</span><br />
-              <span style="margin: 35px">3</span>
-            </div>
-
-            <div style="display: inline-block; margin-left: 20px">
-              <el-button type="text"><i class="iconfont">&#xe60b;</i></el-button>
-            </div>
-          </div>
-          <br />
-          <!-- 分割线 -->
-          <div class="cut_off"></div>
+        <!-- 搜索框 -->
+        <el-button style=" float: right;background-color: #cfe6ff" size="mini" @click="records()">确定</el-button>
+        <!-- 登录时间搜索 -->
+        <div style="float: right;margin-right: 10px;margin-bottom: 20px">
+          <el-date-picker
+              size="small"
+              v-model="pageInfo.createdTime"
+              type="daterange"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              :default-value="[new Date(2010, 9, 1), new Date(2010, 10, 1)]"
+          >
+          </el-date-picker>
         </div>
-        <div class="payment_project">
-          <!-- 缴纳明细表 -->
-          <el-table :data="tableData" size="mini">
-            <el-table-column prop="defSchemeType" label="缴纳项目" />
-
-            <el-table-column label="基数">
-              <el-table-column prop="basePay" label="缴纳基数" />
-              <el-table-column label="基数范围">
-                <el-table-column prop="defSchemeMin" label="最低" />
-                <el-table-column prop="defSchemeMax" label="最高" />
-              </el-table-column>
-              <el-table-column prop="defSchemeFloor" label="下限" />
-              <el-table-column prop="defSchemeUpper" label="上限" />
+        <!-- 单个 -->
+        <div class="main_div" >
+          <el-table
+              :data="tableData" style="width: 100%;margin-top: 10px "
+              :header-cell-style="{textAlign: 'center',background:'#F0F0F0',color:'#6C6C6C'}"
+              :default-sort="{ prop: 'date', order: 'descending' }"
+              @selection-change="deletepl"
+              :cell-style="{ textAlign: 'center', padding:'25px'}">
+            <el-table-column
+                align="center"
+                label="归档时间"
+                prop="createdTime"
+                width="210px">
+            </el-table-column>
+            <el-table-column
+                align="center"
+                label="参保人数"
+                prop="quantity "
+                width="280px">
+            </el-table-column>
+            <el-table-column
+                align="center"
+                label="个人缴费"
+                prop="person"
+                width="280px">
             </el-table-column>
 
-            <el-table-column label="公司缴纳">
-              <el-table-column prop="defSchemeFirmProp" label="缴纳比例" />
-              <el-table-column prop="defSchemeFirmSum" label="固定金额" />
+            <el-table-column
+                align="center"
+                label="企业缴费"
+                prop="enterprise"
+                width="280px">
             </el-table-column>
 
-            <el-table-column label="个人缴纳">
-              <el-table-column prop="defSchemePersonProp" label="缴纳比例" />
-              <el-table-column prop="defSchemePersonSum" label="固定金额" />
-            </el-table-column>
+            <el-table-column
+                align="center"
+                label="操作"
+                width="210px">
 
-            <el-table-column prop="subtotal" label="小计" />
+              <router-link :to="{path:this.paths,query:{path:this.$route.query.path}}">
+              <el-button type="text">归档详情</el-button>
+              </router-link>
+            </el-table-column>
 
           </el-table>
-        </div>
+          </div>
 
-        <!-- 分页插件 -->
+
+
+        <!-- 分页 -->
         <div class="demo-pagination-block">
           <el-pagination
-            v-model:currentPage="pageInfo.currentPage"
-            :page-sizes="[3, 5, 10, 50]"
-            v-model:page-size="pageInfo.pagesize"
-            :default-page-size="pageInfo.pagesize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="pageInfo.total"
-            :pager-count="5"
-            background
-            @size-change="selectUsers"
-            @current-change="selectUsers"
+              v-model:current-page="pageInfo.currentPage"
+              v-model:currentPage="pageInfo.currentPage"
+              v-model:page-size="pageInfo.pagesize"
+              :default-page-size="pageInfo.pagesize"
+              :page-sizes="[3, 4, 5, 6]"
+              :page-size="3"
+              :pager-count="4"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="pageInfo.total"
+              @size-change="records()"
+              @current-change="records()"
+              prev-text="上一页"
+              next-text="下一页"
+              background
           >
           </el-pagination>
         </div>
@@ -97,52 +97,47 @@
 export default {
   data() {
     return {
+      paths:'/social/social_payment/payment_details',
       pageInfo: {
-        // 分页参数
-        currentPage: 1, //当前页
-        pagesize: 3, // 页大小
-        total: 0, // 总页数
+        currentPage: 1,
+        pagesize: 3,
+        total: 0,
+        //社保归档时间
+        createdTime:[],
       },
-      tableData: [
-        {
-          date: "2016-05-03",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-        {
-          date: "2016-05-02",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-        {
-          date: "2016-05-04",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-        {
-          date: "2016-05-01",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-        {
-          date: "2016-05-08",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-        {
-          date: "2016-05-06",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-        {
-          date: "2016-05-07",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-      ],
-      multipleSelection: [],
+      tableData: [ {
+        date: '2016-05-03',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1516 弄'
+      }],
+
     };
   },
+  methods:{
+    records() {
+      this.axios({
+        method: 'post',
+        url: "http://localhost:8007/provider/insuredArchive/record",
+        data: {
+          startTime:this.pageInfo.createdTime[0],
+          endTime:this.pageInfo.createdTime[1],
+          currentPage:this.pageInfo.currentPage,
+          pagesize:this.pageInfo.pagesize,
+          total:this.pageInfo.total,
+
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.tableData = response.data.data.records
+        this.pageInfo.total = response.data.data.total
+
+      })
+    }
+
+  }
+
+
 };
 </script>
 
@@ -182,6 +177,7 @@ export default {
 /* 大div */
 .main_div {
   margin-bottom: 10px;
+
 }
 
 /* 分页的样式 */

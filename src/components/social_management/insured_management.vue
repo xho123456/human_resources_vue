@@ -361,6 +361,7 @@ export default {
             type:'success',
             message:'新增成功'
           })
+          this.selectPaers()
           this.staffName=[]
         }else{
           ElMessage.error("新增失败")
@@ -373,6 +374,7 @@ export default {
      * 分页查询参保明细数据
      */
     selectPaers(){
+      alert(111)
       this.axios({
         method:'post',
         url:"http://localhost:8007/provider/insuredPayment/page",
@@ -380,7 +382,7 @@ export default {
         responseType:'json',
         responseEncoding:'utf-8',
       }).then((response)=>{
-        console.log(response)
+
         this.tableData = response.data.data.records
         this.pageInfo.total=response.data.data.total
 

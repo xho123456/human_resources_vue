@@ -451,6 +451,7 @@ export default {
             type:'success',
             message:'新增成功'
           })
+          this.pagingQuery()
         }else{
           ElMessage.error("新增失败")
         }
@@ -557,6 +558,7 @@ export default {
             })
           })
     },
+
     //批量删除
     deleteList(){
       this.id=[];
@@ -575,6 +577,7 @@ export default {
             type:'success',
             message:'删除成功'
           })
+          this.pagingQuery()
         }else{
           ElMessage.error("删除失败")
         }
@@ -594,6 +597,7 @@ export default {
             type:"success",
             message:"删除成功"
           });
+          this.pagingQuery()
         }else {
           ElMessage.error("删除失败")
         }
@@ -616,6 +620,7 @@ export default {
             type: "success",
             message: "修改成功",
           });
+          this.pagingQuery()
         } else if(response.data.data === "修改失败"){
           ElMessage.error("修改失败");
         }

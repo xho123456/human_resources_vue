@@ -227,85 +227,13 @@
           </el-table>
           <br/>
           <!-- 新增公积金缴纳项目 -->
-
         </div>
 
-        <!-- 标题 -->
-        <div class="big-title">&nbsp;&nbsp;&nbsp;计算验证</div>
-
-        <!-- 缴费计算表单 -->
-        <div class="inputs">
-          <el-input-number
-              v-model="security_cardinal"
-              size="mini"
-              :min="0"
-              controls-position="right"
-              placeholder="请输入社保基数"
-              style="width: 150px"
-          />
-          &nbsp;&nbsp;&nbsp;&nbsp;
-          <el-input-number
-              v-model="accumulation_cardinal"
-              size="mini"
-              :min="0"
-              controls-position="right"
-              placeholder="请输入公积金基数"
-              style="width: 150px"
-          />&nbsp;&nbsp;&nbsp;
-          <el-button type="primary" size="small" style="width: 80px">计算</el-button>
-
-          <!-- 弹出消息 -->
-          <el-popover
-              placement="right-start"
-              title="结果四舍五入到分"
-              :width="200"
-              trigger="hover"
-              content="如计算结果数额不对请检查以上基数比例及取整规则是否正确"
-          >
-            <template #reference>
-              <el-button type="text">
-                <i class="iconfont">&#xe600;</i>
-              </el-button
-              >
-            </template>
-          </el-popover>
-          <br/>
-          个人缴纳：<span style="color: #ff9515">0</span>元&nbsp;&nbsp;&nbsp;
-          公司缴纳：<span style="color: #ff9515">0</span>元
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <el-button type="text" @click="payment_detail=!payment_detail">缴纳明细表</el-button>
-
-          <br/><br/>
-
-          <!-- 缴纳明细表 -->
-          <el-table v-show="payment_detail" :data="payment_details_table" style="width: 99.1%">
-            <el-table-column prop="defSchemeType" label="缴纳项目"/>
-            <el-table-column prop="cardinal_number" label="基数"/>
-
-            <el-table-column label="公司缴纳">
-              <el-table-column prop="defSchemeFirmProp" label="缴纳比例"/>
-              <el-table-column prop="company_payment_money" label="缴纳金额"/>
-            </el-table-column>
-
-            <el-table-column prop="defSchemeFirmSum" label="公司固定金额"/>
-
-            <el-table-column label="个人缴纳">
-              <el-table-column prop="defSchemePersonProp" label="缴纳比例"/>
-              <el-table-column prop="personage_payment_money" label="缴纳金额"/>
-            </el-table-column>
-
-            <el-table-column prop="defSchemePersonSum" label="个人固定金额"/>
-
-            <el-table-column prop="date" label="小计"/>
-          </el-table>
-
-        </div>
         <div style="text-align: center">
           <router-link :to="{path:this.path,query:{path:this.$route.query.path}}">
             <el-button size="small">返回</el-button>
           </router-link>
           &nbsp;&nbsp;
-
           <el-button size="small" type="primary" @click="judges()">{{ this.$route.query.name}}</el-button>
         </div>
       </div>

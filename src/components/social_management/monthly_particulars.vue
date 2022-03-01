@@ -1,4 +1,5 @@
 <template>
+  <!--个人月度详情-->
   <div class="outer-div">
     <!-- 标题 -->
     <div class="big-title">&nbsp;&nbsp;&nbsp;参保明细</div>
@@ -11,20 +12,13 @@
           <el-image class="picture" :src="url"></el-image>
         </div>
         <div style="margin-top: 20px">
-          姓名：{{datas.staffName}} <br />
-          部门：{{datas.deptName}} <br />
-          职位：{{datas.postName}} <br /><br /><br />
-          参保方案：{{datas.defInsuredName}} <br />
-          社保基数：{{datas.insuredPaymentNumber}} <br />
-          社保参保月份：{{datas.insDetailInsuredMonth}} <br />
-          公积金基数：{{datas.insuredPaymentFund}} <br />
-          公积金参保月份： {{datas.insDetailInsuredMonth}}<br />
+          姓名：{{datas.insDetailStaffName}} <br />
+          部门：{{datas.insArchiveDeptName}} <br />
+          职位：{{datas.insArchivePostName}} <br /><br /><br />
+          参保方案：{{datas.insArchiveInsuredName}} <br />
+          社保参保月份：{{datas.insArchiveInsuredMonth}} <br />
+          公积金参保月份： {{datas.insArchiveInsuredMonth}}<br />
         </div>
-
-
-        <el-button size="mini" type="text" style="font-size: 14px;margin-top: 10px" @click="remove()" >
-          更改方案
-        </el-button>
 
       </div>
 
@@ -36,12 +30,6 @@
 
           <el-table-column label="基数">
             <el-table-column prop="basePay" label="缴纳基数" />
-              <el-table-column label="基数范围">
-                  <el-table-column prop="defSchemeMin" label="最低" />
-                  <el-table-column prop="defSchemeMax" label="最高" />
-              </el-table-column>
-            <el-table-column prop="defSchemeFloor" label="下限" />
-            <el-table-column prop="defSchemeUpper" label="上限" />
           </el-table-column>
 
           <el-table-column label="公司缴纳">
@@ -59,6 +47,7 @@
         </el-table>
       </div>
     </div>
+    {{this.$route.query.id}}
   </div>
 </template>
 
@@ -69,51 +58,16 @@ import {ElMessage, ElMessageBox} from "element-plus";
 // import { MoreFilled } from "@element-plus/icons-vue";
 
 export default {
-  setup() {
-    return {
-      // /* 时间线 */
-      activities: [
-        {
-          content: "Custom icon",
-          timestamp: "2018-04-12 20:46",
-          size: "large",
-          type: "primary",
-          //   icon: MoreFilled,
-        },
-        {
-          content: "Custom color",
-          timestamp: "2018-04-03 20:46",
-          color: "#0bbd87",
-        },
-        {
-          content: "Custom size",
-          timestamp: "2018-04-03 20:46",
-          size: "large",
-        },
-        {
-          content: "Custom hollow",
-          timestamp: "2018-04-03 20:46",
-          type: "primary",
-          hollow: true,
-        },
-        {
-          content: "Default node",
-          timestamp: "2018-04-03 20:46",
-        },
-      ],
-    };
-  },
+
   data() {
     return {
       datas:{
-        staffName:"",
-        deptName:"",
-        postName:"",
-        defInsuredName:"",
-        insuredPaymentNumber:"",
-        insDetailInsuredMonth:"",
-        insuredPaymentFund:"",
-        insuredPaymentId:'',
+        insArchiveStaffName:"",
+        insArchiveDeptName:"",
+        insArchivePostName:"",
+        insArchiveInsuredName:"",
+        insArchiveInsuredMonth:"",
+
       },
       tableData: [
 
@@ -125,53 +79,13 @@ export default {
     this.selectscheme()
   },
   methods:{
-    remove(){
-      ElMessageBox.confirm(
-          '是否确定更改方案！！！',
-          '友情提示',
-          {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: '友情提示',
-          }
-      )
-          .then(() => {
-            this.change();
-          })
-
-
-    },
-    /**
-     * 更改参保方案
-     */
-    change(){
-      this.axios({
-        method:'post',
-        url:"http://localhost:8007/provider/insuredPayment/change",
-        data:{
-          insuredPaymentId:this.datas.insuredPaymentId
-        },
-        responseType:'json',
-        responseEncoding:'utf-8',
-      }).then(response=>{
-        if(response.data.data === '更改成功'){
-          ElMessage({
-            type:'success',
-            message:'更改成功'
-          })
-          this.$router.push({path:'/social/social_management/insured_management'})
-        }else{
-          ElMessage.error("更改失败")
-        }
-      })
-    },
     /**
      * 查询个人的默认方案数据数据
      */
     selectscheme(){
       this.axios({
         method:'post',
-        url:"http://localhost:8007/provider/insuredDetail/scheme",
+        url:"http://localhost:8007/provider",
         data:{
           staffId:this.$route.query.id
         },
@@ -349,7 +263,7 @@ export default {
     selectPaers(){
       this.axios({
         method:'post',
-        url:"http://localhost:8007/provider/insuredDetail/datas",
+        url:"http://localhost:8007/provider/",
         data:{
           staffId:this.$route.query.id
         },
@@ -357,14 +271,12 @@ export default {
         responseEncoding:'utf-8',
       }).then((response)=>{
         console.error(response.data)
-        this.datas.staffName=response.data.data.staffName
-        this.datas.deptName=response.data.data.deptName
-        this.datas.postName=response.data.data.postName
-        this.datas.defInsuredName=response.data.data.defInsuredName
-        this.datas.insuredPaymentFund=response.data.data.insuredPaymentFund
-        this.datas.insuredPaymentNumber=response.data.data.insuredPaymentNumber
-        this.datas.insDetailInsuredMonth=response.data.data.insDetailInsuredMonth
-        this.datas.insuredPaymentId=response.data.data.insuredPaymentId
+        this.datas.insArchiveStaffName=response.data.data.insArchiveStaffName
+        this.datas.insArchiveDeptName=response.data.data.insArchiveDeptName
+        this.datas.insArchivePostName=response.data.data.insArchivePostName
+        this.datas.insArchiveInsuredName=response.data.data.insArchiveInsuredName
+        this.datas.insArchiveInsuredMonth=response.data.data.insArchiveInsuredMonth
+
       })
     },
 
