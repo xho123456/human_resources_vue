@@ -5,9 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7782e118-91e8-4d6c-900a-0a4856553f34" name="Changes" comment="完善">
-      <change afterPath="$PROJECT_DIR$/src/components/social_management/monthly_details.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/social_management/monthly_particulars.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/social_management/monthly_report_particulars.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/social_management/insurance_details.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/insurance_details.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/social_management/insurance_record .vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/insurance_record .vue" afterDir="false" />
@@ -15,21 +12,11 @@
       <change beforePath="$PROJECT_DIR$/src/components/social_management/monthly_report.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/monthly_report.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/social_management/new_amend_scheme.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/new_amend_scheme.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/social_management/payment_details.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/payment_details.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/social_management/someone_insured_particulars.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/someone_insured_particulars.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/system_management/system_notice.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/system_management/system_notice.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Vue Single File Component" />
-      </list>
-    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -54,11 +41,6 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="F:\VUE\nodejs\human_resources_vue\src\components\social_management" />
-    </key>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -76,14 +58,7 @@
       <option name="project" value="LOCAL" />
       <updated>1645277258669</updated>
     </task>
-    <task id="LOCAL-00002" summary="完善">
-      <created>1645898749930</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1645898749930</updated>
-    </task>
-    <option name="localTasksCounter" value="3" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -44,14 +44,14 @@
                 <div>
                   <div class="div-a3">
                     <div style="width: 100%">
-                      <div class="div-a4 ant-rows1">234</div>
+                      <div class="div-a4 ant-rows1">{{atttimedayx}}</div>
                       <div class="div-a4">
                         <span class="ant-rows-span1"></span>
                         <span style="font-size: 12px;color: black">实际出勤（天）</span>
                       </div>
                     </div>
                     <div style="width: 100%">
-                      <div class="div-a4 ant-rows2">234</div>
+                      <div class="div-a4 ant-rows2">{{atttimedays-atttimedayx}}</div>
                       <div class="div-a4">
                         <span class="ant-rows-span2"></span>
                         <span style="font-size: 12px;color: black">未出勤（天）</span>
@@ -82,7 +82,7 @@
                       </div>
                       <div class="show-dv1">
                         <div class="show-dv2">{{numbers.numberzt}}</div>
-                        <div class="show-dv3" title="早退(次)">早退(天)</div>
+                        <div class="show-dv3" title="早退(次)">早退(次)</div>
                       </div>
                     </div>
                     <div class="my-ant" @click="querykuang()">
@@ -91,7 +91,7 @@
                       </div>
                       <div class="show-dv1">
                         <div class="show-dv2">{{numbers.numberkg}}</div>
-                        <div class="show-dv3" title="旷工(次)">旷工(天)</div>
+                        <div class="show-dv3" title="旷工(次)">旷工(次)</div>
                       </div>
                     </div>
                     <div class="my-ant">
@@ -119,7 +119,7 @@
                         <i class="iconfont" style="font-size: 29px">&#xe69f;</i>
                       </div>
                       <div class="show-dv1">
-                        <div class="show-dv2">9</div>
+                        <div class="show-dv2">{{numbers.numberjab}}</div>
                         <div class="show-dv3" title="加班(天)">加班(天)</div>
                       </div>
                     </div>
@@ -174,8 +174,6 @@
               <el-table-column prop="zhaisLate" label="早退时长（小时）" width="140"/>
               <el-table-column prop="kangLate" label="旷工（次数）" width="140"/>
               <el-table-column prop="kangsLate" label="旷工时长（小时）" width="140"/>
-              <el-table-column prop="workYing" label="应工作时长" width="140"/>
-              <el-table-column prop="worksYing" label="实际工作时长" width="140"/>
             </el-table>
             <div class="demo-pagination-block" style="margin-top: 10px">
               <el-pagination
@@ -417,8 +415,6 @@
     </div>
   </el-dialog>
 
-
-
 </template>
 
 <script>
@@ -440,6 +436,7 @@ export default {
         numbercd:'', //迟到
         numberzt:'', //早退
         numberkg:'', //旷工
+        numberjab:'',//加班
       },
       tableData: [],
       //分页
@@ -509,6 +506,10 @@ export default {
         pagesize: 5,
         total: 0,
       },
+      //应出勤天数
+      atttimedays:'',
+      //实际出勤天数
+      atttimedayx:'',
     }
   },
   created() {
@@ -518,8 +519,40 @@ export default {
     this.querynumber();
     //当前登录用户考勤打卡记录查询（按照月份查询）
     this.querycdAlldk();
+    this.atttimes_y();
+
   },
   methods: {
+    atttimes_y(){ //应出勤天数
+      var today = new Date();
+      // 获取当月天数 curretMonthDayCount
+      var curretMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      var curretMonthDayCount = curretMonth.getDate();
+      this.atttimedays = curretMonthDayCount-((curretMonthDayCount/7)*2).toString().substring(0,1);
+      this.axios({
+        url: "http://localhost:8007/provider/leave/querydkcounts",
+        method: "post",
+        data: {
+          staffId: this.useralls.staffId,
+          dates:this.value1
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.atttimedayx = response.data.data
+        console.error(response.data.data)
+        //统计图
+        this.$nextTick(function () {
+          this.two("mains");
+        });
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    atttimes_x(){//实际出勤天数
+
+    },
     //获取当前月分
     getCurrentTime() {
       //获取当前时间并打印
@@ -555,8 +588,8 @@ export default {
               show: false
             },
             data: [
-              {value: 1048, name: 'Search Engine'},
-              {value: 735, name: 'Direct'}
+              {value: this.atttimedayx, name: '实际出勤天数'},
+              {value:this.atttimedays-this.atttimedayx, name: '未出勤天数'}
             ]
           }
         ]
@@ -584,6 +617,10 @@ export default {
         this.zaotnumbers();
         //旷工次数统计
         this.kgnumber();
+        //加班次数统计
+        this.jiabnumber();
+        this.atttimes_y();
+        this.atttimes_x();
       }).catch(function (error) {
         console.log('获取列表失败')
         console.log(error);
@@ -692,6 +729,25 @@ export default {
         console.log(error);
       })
     },
+    //迟到次数统计
+    jiabnumber() {
+      this.axios({
+        url: "http://localhost:8007/provider/clock/queryjabnumbers",
+        method: "post",
+        data: {
+          staffId:this.useralls.staffId,
+          dates:this.value1
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.error(response)
+        this.numbers.numberjab = response.data.data
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
     //当前登录用户考勤打卡早退记录查询
     queryzaot(){
       this.dialogTableVisible3 = true;
@@ -775,11 +831,6 @@ export default {
         console.log(error);
       })
     },
-  },
-  mounted() {
-    this.$nextTick(function () {
-      this.two("mains");
-    });
   },
 }
 
