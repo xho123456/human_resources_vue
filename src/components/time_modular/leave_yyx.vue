@@ -69,7 +69,11 @@
                 <el-table-column type="index" label="序号" width="50"/>
                 <el-table-column prop="staffName" label="姓名" width="140"/>
                 <el-table-column prop="depts.deptName" label="部门" width="140"/>
-                <el-table-column prop="clockRs.s1" label="应出勤天数" width="140"/>
+                <el-table-column label="应出勤天数" width="140">
+                  <template #default="scope">
+                     {{atttimedays1}}
+                  </template>
+                </el-table-column>
                 <el-table-column prop="clockRs.s1" label="实际出勤天数" width="140"/>
                 <el-table-column prop="clockRs.s2" label="迟到次数(次)" width="140"/>
                 <el-table-column prop="clockRs.s3" label="迟到总时长(小时)" width="140"/>
@@ -125,14 +129,26 @@ export default {
         classesName: ''
       },
       tableData: [],
-      ofdfdf:''
+      ofdfdf:'',
+      atttimedays1:'', //当前月份应出勤天数
     }
   },
   created() {
+    //获取系统当前时间
     this.getCurrentTime();
+    //考勤all打卡记录查询（按照天数查询）
     this.querycdAlls();
+    //应出勤天数
+    this.atttimes_x();
   },
   methods: {
+    atttimes_x() {//应出勤天数
+      var today = new Date();
+      // 获取当月天数 curretMonthDayCount
+      var curretMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      var curretMonthDayCount = curretMonth.getDate();
+      this.atttimedays1 = curretMonthDayCount - ((curretMonthDayCount / 7) * 2).toString().substring(0, 1);
+    },
     getCurrentTime() {
       //获取当前时间并打印
       var _this = this;
@@ -174,8 +190,6 @@ export default {
         responseType: 'json',
         responseEncoding: 'utf-8',
       }).then((response) => {
-        console.error(1)
-        console.error( response.data.data.records)
         this.tableData = response.data.data.records
         this.pageInfo.total = response.data.data.total
       }).catch(function (error) {
@@ -186,7 +200,7 @@ export default {
     //查询当前选择器月份是否有归档数据
     querygdall(){
       ElMessageBox.confirm(
-           '是否确定归档'+this.value1+'月份数据?',
+          '是否确定归档'+this.value1+'月份数据?',
           'Warning',
           {
             confirmButtonText: '确定',
@@ -194,29 +208,29 @@ export default {
             type: 'warning',
           }
       ).then(() => {
-            this.axios({
-              url: "http://localhost:8007/provider/Check/querygd",
-              method: "post",
-              data: {
-                currenPage: 1,
-                pagesize: 999,
-                datesgd: this.value1
-              },
-              responseType: 'json',
-              responseEncoding: 'utf-8',
-            }).then((response) => {
-              this.ofdfdf = response.data.data.records
-              this.addguid();
-            }).catch(function (error) {
-              console.log('获取列表失败')
-              console.log(error);
-            })
+        this.axios({
+          url: "http://localhost:8007/provider/Check/querygd",
+          method: "post",
+          data: {
+            currenPage: 1,
+            pagesize: 999,
+            datesgd: this.value1
+          },
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          this.ofdfdf = response.data.data.records
+          this.addguid();
+        }).catch(function (error) {
+          console.log('获取列表失败')
+          console.log(error);
+        })
       }).catch(() => {
-            ElMessage({
-              type: 'info',
-              message: '已取消操作',
-            })
-          })
+        ElMessage({
+          type: 'info',
+          message: '已取消操作',
+        })
+      })
     },
     //考勤数据归档
     addguid() {
@@ -233,10 +247,10 @@ export default {
           responseEncoding: 'utf-8',
         }).then((response) => {
           console.error(response.data.data)
-            ElMessage({
-              message: "归档成功",
-              type: "success",
-            });
+          ElMessage({
+            message: "归档成功",
+            type: "success",
+          });
         }).catch(function (error) {
           console.log('获取列表失败')
           console.log(error);

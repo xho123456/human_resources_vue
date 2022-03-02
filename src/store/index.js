@@ -9,7 +9,7 @@ const store = createStore({
                 MENU_ID: 1,//菜单编号
                 MENU_NAME: '工作台',//菜单名称Picture address
                 MENU_ROUTE: '/workbench',//路由地址,
-                PICTURE_ADDRESS: '&#xe64c;',//图片地址
+                PICTURE_ADDRESS: '&#xe605;',//图片地址
                 MENU_MODULE: 'components/workbench_management/workbench_main',//组件地址
                 MENU_STATE: 0,//是否启用 0启用 1禁用
                 MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮

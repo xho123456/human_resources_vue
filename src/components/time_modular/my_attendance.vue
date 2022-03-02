@@ -94,12 +94,12 @@
                         <div class="show-dv3" title="旷工(次)">旷工(次)</div>
                       </div>
                     </div>
-                    <div class="my-ant">
+                    <div class="my-ant" @click="querybuudks()">
                       <div class="my-ant-show" style="background-color: rgb(72, 198, 81);">
                         <i class="iconfont" style="font-size: 29px">&#xe61e;</i>
                       </div>
                       <div class="show-dv1">
-                        <div class="show-dv2">9</div>
+                        <div class="show-dv2">{{numbers.numberlq}}</div>
                         <div class="show-dv3" title="漏签(次)">漏签(天)</div>
                       </div>
                     </div>
@@ -415,6 +415,39 @@
     </div>
   </el-dialog>
 
+  <!-- 补打卡明细对话框 -->
+  <el-dialog v-model="dialogTableVisible5" title="漏签明细" destroy-on-close width="60%">
+    <div style="height: 350px">
+      <el-table :data="tableDatebudk" style="cursor: pointer" size="mini"
+                :header-cell-style="{color:'#606266',background:'rgb(234, 237, 241)',textAlign: 'center'}" :stripe=true>
+        <el-table-column align="center" prop="staffName" label="姓名"/>
+        <el-table-column align="center" prop="deptName" label="部门"/>
+        <el-table-column align="center" prop="cardType" label="补打卡类型" width="130px"/>
+        <el-table-column align="center" prop="cardDate" label="补打卡时间"/>
+        <el-table-column align="center" prop="cardRemarks" label="备注"/>
+      </el-table>
+    </div>
+    <template #footer>
+                  <span class="dialog-footer">
+                    <el-button size="mini" type="primary" @click="dialogTableVisible4=false">取消</el-button>
+                  </span>
+    </template>
+    <div class="demo-pagination-block">
+      <el-pagination
+          v-model:currentPage="pageInfocdkuang.currenPage"
+          :page-sizes="[5, 10, 30, 50]"
+          v-model:page-size="pageInfocdkuang.pagesize"
+          :default-page-size="pageInfocdkuang.pagesize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="pageInfocdkuang.total"
+          :pager-count="5"
+          background
+          @size-change="querycdAllcd()"
+          @current-change="querycdAllcd()">
+      </el-pagination>
+    </div>
+  </el-dialog>
+
 </template>
 
 <script>
@@ -437,6 +470,7 @@ export default {
         numberzt:'', //早退
         numberkg:'', //旷工
         numberjab:'',//加班
+        numberlq:'',//漏签
       },
       tableData: [],
       //分页
@@ -506,6 +540,18 @@ export default {
         pagesize: 5,
         total: 0,
       },
+
+      //补打卡明细对话框
+      dialogTableVisible5:false,
+      //补打卡数据
+      tableDatebudk: [],
+      //补打卡明细分页
+      pageInfocdbudks: {
+        currenPage: 1,
+        /* 当前的页 */
+        pagesize: 5,
+        total: 0,
+      },
       //应出勤天数
       atttimedays:'',
       //实际出勤天数
@@ -520,10 +566,11 @@ export default {
     //当前登录用户考勤打卡记录查询（按照月份查询）
     this.querycdAlldk();
     this.atttimes_y();
+    this.querybudkcun();
 
   },
   methods: {
-    atttimes_y(){ //应出勤天数
+    atttimes_y(){//应出勤天数
       var today = new Date();
       // 获取当月天数 curretMonthDayCount
       var curretMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
@@ -549,9 +596,6 @@ export default {
         console.log('获取列表失败')
         console.log(error);
       })
-    },
-    atttimes_x(){//实际出勤天数
-
     },
     //获取当前月分
     getCurrentTime() {
@@ -620,7 +664,6 @@ export default {
         //加班次数统计
         this.jiabnumber();
         this.atttimes_y();
-        this.atttimes_x();
       }).catch(function (error) {
         console.log('获取列表失败')
         console.log(error);
@@ -686,7 +729,6 @@ export default {
         console.log(error);
       })
     },
-
     //当前登录用户考勤打卡迟到记录查询
     querychid(){
       this.dialogTableVisible2 = true;
@@ -826,6 +868,47 @@ export default {
         responseEncoding: 'utf-8',
       }).then((response) => {
         this.numbers.numberkg = response.data.data
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    //当前登录用户考勤打卡旷工记录查询
+    querybuudks(){
+      this.dialogTableVisible5 = true;
+      this.axios({
+        url: "http://localhost:8007/provider/clock/querybudk",
+        method: "post",
+        data: {
+          currenPage: this.pageInfocdbudks.currenPage,
+          pagesize:this.pageInfocdbudks.pagesize,
+          staffId:this.useralls.staffId,
+          dates:this.value1
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.error(response)
+        this.tableDatebudk = response.data.data.records
+        this.pageInfocdbudks.total = response.data.data.total
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    //漏签次数统计
+    querybudkcun() {
+      this.axios({
+        url: "http://localhost:8007/provider/clock/querybudks",
+        method: "post",
+        data: {
+          staffId:this.useralls.staffId,
+          dates:this.value1
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.numbers.numberlq = response.data.data
       }).catch(function (error) {
         console.log('获取列表失败')
         console.log(error);
