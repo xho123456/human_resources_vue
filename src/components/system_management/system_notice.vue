@@ -129,10 +129,6 @@
                 </el-form-item>
 
 
-
-                <!--                <h1>dasjfashfkjasdfk{{$store.state.staffName}}</h1>-->
-
-
                 <el-form-item >
                   <template #default="scopes">
                     <div class="announcement-cz">
@@ -286,13 +282,7 @@
           >
           </el-pagination>
         </div>
-        <!--        {{examine}}-->
-        <!--        <br>-->
-        <!--        {{deptName}}-->
-<!--        {{affiche.deptName}}-->
-<!--        {{staffsName}}-->
-<!--        {{a}}-->
-        <!--        {{affiche.deptlist}}-->
+
       </div>
 
     </div>
@@ -445,7 +435,7 @@ export default {
         responseType:'json',
         responseEncoding:'utf-8',
       }).then(request=>{
-        console.log(request);
+
         if(request.data.data=='新增成功'){
           ElMessage({
             type:'success',
@@ -469,7 +459,6 @@ export default {
         responseType:'json',
         responseEncoding:'utf-8',
       }).then(request=>{
-        console.log(request.data.data.staffName+"asdkjfhjkasdf")
         this.unreadName=[]
         for(var i=0; i<request.data.data.length;i++){
           this.unreadName.push(request.data.data[i].staffName)
@@ -490,7 +479,6 @@ export default {
         responseEncoding:'utf-8',
       }).then(request=>{
         this.staffName=[]
-        console.log(request.data.data.staffName+"asdkjfhjkasdf")
         for(var i=0; i<request.data.data.length;i++){
           this.staffName.push(request.data.data[i].staffName)
         }
@@ -614,7 +602,6 @@ export default {
         responseType:'json',
         responseEncoding:'utf-8',
       }).then(response=>{
-        console.log(response)
         if (response.data.data === "修改成功") {
           ElMessage({
             type: "success",
@@ -651,10 +638,7 @@ export default {
       //获取所有选中的节点 start
       let res = this.$refs.tree.getCheckedNodes()
       res.forEach((item) => {
-        // this.affiche.deptId = item.deptId
         this.aa=item.deptName
-        //关闭Select选择器
-        // this.$refs.vueSelect.blur();
         this.affiche.deptName.push(this.aa)
       })
 
@@ -673,9 +657,7 @@ export default {
         responseEncoding:'utf-8',
       }).then(response=>{
         this.affiche.deptlist=response.data.data
-        // response.data.data.forEach(e=> {
-        //   this.deptName.push(e)
-        // })
+
       })
     },
 
@@ -696,7 +678,6 @@ export default {
       }
 
 
-      // this.$store.commit('add')
     },
 
     //点击修改获取表单里的值
@@ -719,11 +700,9 @@ export default {
         responseType:'json',
         responseEncoding:'utf-8',
       }).then((response)=>{
-        console.log(response+'akfjklsdfjlkasdfjlsadjflksdjflks');
         this.affiche.deptName=[]
         for (var i=0; i<response.data.data.length;i++){
           this.affiche.deptName.push(response.data.data[i].deptName);
-          console.log(this.affiche.deptName)
         }
       })
     },
@@ -737,12 +716,9 @@ export default {
         responseType:'json',
         responseEncoding:'utf-8',
       }).then((response)=>{
-        console.log(response);
+
         this.tableData = response.data.data.records
         this.pageInfo.total=response.data.data.total
-      }).catch(function (error){
-        console.log('获取表单失败')
-        console.log(error)
       })
       this.affiche={
         //发布人编号

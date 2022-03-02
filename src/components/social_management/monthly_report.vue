@@ -1,23 +1,20 @@
+
 <template>
 <!-- 月度报表 -->
   <div class="saas-main-content">
     <div class="j-card j-card-bordered mainContent">
       <div class="j-card-body">
-
+        <div class="my-cead">
+                    <div style="width:97%;padding-left: 20px;display: flex;align-items: center;justify-content: space-between;">
+                      <div style="display: flex;align-items: center;">
+                        <div class="my-span1" style="display: flex;">
+                          <i class="iconfont" style="font-size: 20px">&#xe7d9;</i>
+                        </div>
+                        <div class="my-span2">月度报表</div>
+                      </div>
+                    </div>
+                  </div>
         <!-- 搜索框 -->
-        <el-button style=" float: right;background-color: #cfe6ff" size="mini" @click="records()">确定</el-button>
-        <!-- 登录时间搜索 -->
-        <div style="float: right;margin-right: 10px;margin-bottom: 20px">
-          <el-date-picker
-              size="small"
-              v-model="pageInfo.createdTime"
-              type="daterange"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              :default-value="[new Date(2010, 9, 1), new Date(2010, 10, 1)]"
-          >
-          </el-date-picker>
-        </div>
         <!-- 单个 -->
         <div class="main_div" >
           <el-table
@@ -29,13 +26,14 @@
             <el-table-column
                 align="center"
                 label="归档时间"
-                prop="createdTime"
+                prop="dates"
                 width="210px">
+
             </el-table-column>
             <el-table-column
                 align="center"
                 label="参保人数"
-                prop="quantity "
+                prop="quantity"
                 width="280px">
             </el-table-column>
             <el-table-column
@@ -56,10 +54,11 @@
                 align="center"
                 label="操作"
                 width="210px">
-
-              <router-link :to="{path:this.paths,query:{path:this.$route.query.path}}">
-              <el-button type="text">归档详情</el-button>
-              </router-link>
+              <template #default="scope">
+                <router-link :to="{path:this.paths,query:{path:this.$route.query.path,ids:scope.row.dates}}">
+                  <el-button type="text">归档详情</el-button>
+                </router-link>
+              </template>
             </el-table-column>
 
           </el-table>
@@ -79,8 +78,8 @@
               :pager-count="4"
               layout="total, sizes, prev, pager, next, jumper"
               :total="pageInfo.total"
-              @size-change="records()"
-              @current-change="records()"
+              @size-change="monthlyReport()"
+              @current-change="monthlyReport()"
               prev-text="上一页"
               next-text="下一页"
               background
@@ -103,37 +102,42 @@ export default {
         pagesize: 3,
         total: 0,
         //社保归档时间
-        createdTime:[],
       },
-      tableData: [ {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }],
-
+      tableData: [],
+      person:[]
     };
   },
-  methods:{
-    records() {
-      this.axios({
-        method: 'post',
-        url: "http://localhost:8007/provider/insuredArchive/record",
-        data: {
-          startTime:this.pageInfo.createdTime[0],
-          endTime:this.pageInfo.createdTime[1],
-          currentPage:this.pageInfo.currentPage,
-          pagesize:this.pageInfo.pagesize,
-          total:this.pageInfo.total,
+  created() {
 
-        },
+    this.monthlyReport();
+
+
+  },
+  methods:{
+    monthlyReport(){
+      this.axios({
+        url: "http://localhost:8007/provider/insuredArchive/monthlyReport",
+        method: "post",
+        data: this.pageInfo,
         responseType: 'json',
         responseEncoding: 'utf-8',
       }).then((response) => {
-        this.tableData = response.data.data.records
-        this.pageInfo.total = response.data.data.total
 
+        this.tableData = response.data.data.records
+        for(let i=0;i<this.tableData.length;i++){
+         let enterprise=this.tableData[i].b+this.tableData[i].d
+          this.tableData[i].enterprise=enterprise.toFixed(2)
+          let person=this.tableData[i].a+this.tableData[i].c
+          this.tableData[i].person=person.toFixed(2)
+        }
+
+        this.pageInfo.total = response.data.data.total
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
       })
-    }
+    },
+
 
   }
 
@@ -142,13 +146,14 @@ export default {
 </script>
 
 <style scoped>
-
 @font-face {
-  font-family: 'iconfont';  /* Project id 2994452 */
-  src: url('//at.alicdn.com/t/font_2994452_cj8my5ezezl.woff2?t=1640705098291') format('woff2'),
-  url('//at.alicdn.com/t/font_2994452_cj8my5ezezl.woff?t=1640705098291') format('woff'),
-  url('//at.alicdn.com/t/font_2994452_cj8my5ezezl.ttf?t=1640705098291') format('truetype');
+  font-family: 'iconfont';  /* Project id 3164770 */
+  src: url('//at.alicdn.com/t/font_3164770_te5p4157fzj.woff2?t=1644419209354') format('woff2'),
+  url('//at.alicdn.com/t/font_3164770_te5p4157fzj.woff?t=1644419209354') format('woff'),
+  url('//at.alicdn.com/t/font_3164770_te5p4157fzj.ttf?t=1644419209354') format('truetype');
 }
+
+
 
 /* 分割线 */
 .cut_off {
@@ -236,5 +241,17 @@ export default {
 .j-card-body{
   padding:2%;
 }
+
+.my-span1 {
+     width: 35px;
+     height: 35px;
+     border-radius: 20px;
+      background-color: rgb(87, 153, 229) !important;
+}
+.my-span2 {
+      margin-left: 10px;
+      font-size: 18px;
+      color: black;
+    }
 
 </style>

@@ -560,6 +560,10 @@ const routes = [{
                                         path: '/social/social_payment/someone_insured_particulars/someone_insured_detailss',
                                         component: modules[`${'../components/social_management/monthly_particulars.vue'}`],
                                     },
+                                    {//参保记录
+                                        path: '/social/social_payment/someone_insured_particulars/someone_insured_record',
+                                        component: modules[`${'../components/social_management/insurance_record .vue'}`],
+                                    },
 
                                 ]
                             },
@@ -576,10 +580,7 @@ const routes = [{
                                         path: '/social/social_payment/someone_insured_particulars/someone_insured_details',
                                         component: modules[`${'../components/social_management/insurance_details.vue'}`],
                                     },
-                                    {//参保记录
-                                        path: '/social/social_payment/someone_insured_particulars/someone_insured_record',
-                                        component: modules[`${'../components/social_management/insurance_record .vue'}`],
-                                    },
+
                                 ]
                             },
                         ]

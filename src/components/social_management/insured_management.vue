@@ -225,10 +225,6 @@
     </div>
 
   </div>
-  {{this.defInsuredName === ''}}
-  {{this.table ==''}}
-  {{this.fund.insuredPaymentNumber ===''}}
-  {{this.insured.insuredPaymentNumber ===''}}
 </template>
 
 <script>
@@ -339,7 +335,6 @@ export default {
      * 提交
      */
     deleteList(){
-
       for (let i=0 ; i<this.table.length ; i++){
         this.staffName.push(this.table[i].staffName)
       }
@@ -374,7 +369,6 @@ export default {
      * 分页查询参保明细数据
      */
     selectPaers(){
-      alert(111)
       this.axios({
         method:'post',
         url:"http://localhost:8007/provider/insuredPayment/page",
@@ -414,8 +408,6 @@ export default {
         responseEncoding: 'utf-8',
       }).then((response) => {
         this.deptlists = response.data.data
-      }).catch(function (error) {
-        console.log('获取列表失败')
       })
     },
 

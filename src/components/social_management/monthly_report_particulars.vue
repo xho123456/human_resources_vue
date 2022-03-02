@@ -13,7 +13,7 @@
           </el-tab-pane>
           <el-tab-pane label="参保记录">
             <template #label>
-              <router-link :to="{path:this.path2,query:{path:this.$route.query.path}}" >参保记录</router-link>
+              <router-link :to="{path:this.path2,query:{path:this.$route.query.path,ids:this.idss}}" >参保记录</router-link>
             </template>
             <router-view />
           </el-tab-pane>
@@ -21,7 +21,6 @@
       </div>
     </div>
   </div>
-  &nbsp;{{this.$route.query.names}}
 </template>
 
 <script>
@@ -30,9 +29,8 @@ import { ref, defineComponent } from "vue";
 export default {
   data() {
     return {
-      id:this.$route.query.id,
       idss:this.$route.query.name,
-      paths:'/social/social_payment/monthly_report_particulars/someone_insured_detailss',
+      paths:'/social/social_payment/someone_insured_particulars/someone_insured_detailss',
       path2:"/social/social_payment/someone_insured_particulars/someone_insured_record",
       pageInfo: {
         // 分页参数
