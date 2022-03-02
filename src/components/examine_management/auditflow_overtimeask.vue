@@ -194,12 +194,12 @@
           <el-table-column prop="auditflowid" label="审批编号" width="100"/>
           <el-table-column prop="auditflowtype" label="流程" width="100"/>
           <el-table-column prop="staffname1" label="申请人" width="150"/>
-          <el-table-column prop="auditflowdetaistate" label="状态" width="100">
+          <el-table-column prop="auditflowState" label="状态" width="100">
             <template #default="scope">
-              <span v-if="scope.row.auditflowdetaistate==0">审批中</span>
-              <span v-if="scope.row.auditflowdetaistate==1">审批中</span>
-              <span v-if="scope.row.auditflowdetaistate==2">已审批</span>
-              <span v-if="scope.row.auditflowdetaistate==3">驳回</span>
+              <span v-if="scope.row.auditflowState==0">审批中</span>
+              <span v-if="scope.row.auditflowState==1">通过</span>
+              <span v-if="scope.row.auditflowState==2">驳回</span>
+              <span v-if="scope.row.auditflowState==3">撤销</span>
             </template>
           </el-table-column>
           <el-table-column prop="staffname2" label="历史审批人" width="150"/>
@@ -248,10 +248,6 @@
           </el-pagination>
         </div>
 
-        <!--   弹出抽屉 -->
-        <el-drawer v-model="drawer" title="I am the title" :with-header="false">
-          <span>臭傻逼啊看什么看</span>
-        </el-drawer>
 
       </el-tab-pane>
 
@@ -268,7 +264,7 @@
             <el-input v-model="staffName" disabled></el-input>
           </el-form-item>
         <el-form-item label="部门编号                  :">
-            <el-input v-model="postNmae" disabled></el-input>
+            <el-input v-model="postId" disabled></el-input>
           </el-form-item>
           <el-form-item label="转正类型 :">
             <el-input v-model="become_1.type_1" disabled></el-input>
@@ -297,7 +293,7 @@
                 <div class="block">
                   <el-avatar :size="50" :src="circleUrl"></el-avatar>
                   <div class="sub-title" style="line-height: 10px">
-                    审批专员1
+                    刘金科1
                   </div>
                 </div>
               </div>
@@ -308,7 +304,7 @@
                   <el-avatar :size="50" :src="circleUrl"></el-avatar>
                 </div>
                 <div class="sub-title" style="line-height: 10px">
-                  审批专员2
+                  刘金科2
                 </div>
               </div>
             </el-col>
@@ -318,7 +314,7 @@
                   <el-avatar :size="50" :src="circleUrl"></el-avatar>
                 </div>
                 <div class="sub-title" style="line-height: 10px">
-                  审批专员3
+                  刘金科3
                 </div>
               </div>
             </el-col>
@@ -362,9 +358,10 @@ export default {
   },
   data() {
     return {
-      postNmae:this.$store.state.userall.deptPostId,
+      postId:this.$store.state.userall.deptPostId,
       staffId:this.$store.state.userall.staffId,
       staffName:this.$store.state.userall.staffName,
+      deptId: this.$store.state.userall.deptId,
 
 
       become_1: {
@@ -488,8 +485,8 @@ export default {
             staffId: this.staffId,
             // 申请人
             staffName: this.staffName,
-            // 部门名称
-            deptId: this.postNmae,
+            // 部门编号
+            deptId: this.deptId,
             // 转正类型
             workertype: this.become_1.type_1,
             // 转正备注
@@ -497,11 +494,11 @@ export default {
             // 转正日期
             workerdate: this.become_1.date1,
             // 审批人1
-            staffName1: "审批专员1",
+            staffName1: "刘金科1",
             // 审批人2
-            staffName2: "审批专员2",
+            staffName2: "刘金科2",
             // 审批人3
-            staffName3: "审批专员3",
+            staffName3: "刘金科3",
             // 审批类型
             auditflowType: "转正",
             // 审批标题
@@ -516,12 +513,12 @@ export default {
               type: "success",
               message: "申请成功",
             });
-           // this.resetDateFilter();
+            this.resetDateFilter();
             this.cancel_1();
           } else {
             ElMessage.error("你已申请转正");
             this.cancel_1();
-          //  this.resetDateFilter();
+            this.resetDateFilter();
           }
         }).catch(function (error){
           console.log('获取表单失败')
@@ -588,11 +585,11 @@ export default {
     },
     // 点击通过确认按钮触发
     through1(){
-      if (this.postNmae==16){
+      if (this.postId==16){
         alert("审批1")
-      }else if (this.postNmae==17){
+      }else if (this.postId==17){
         alert("审批2")
-      }else if (this.postNmae==18){
+      }else if (this.postId==18){
         alert("审批3")
       }else {
         ElMessage({

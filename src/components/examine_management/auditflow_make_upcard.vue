@@ -3,9 +3,8 @@
   <div class="body_1">
     <el-tabs type="border-card">
       <!-- 待办申请页面 -->
-	  
       <el-tab-pane label="待办申请">
-        <el-button @click="resetDateFilter1">重置日期过滤</el-button>
+        <el-button @click="upcardMe(null)">重置日期过滤</el-button>
         &nbsp;
         <el-input
             v-model="input"
@@ -13,7 +12,7 @@
             style="width: 130px"
         />
         &nbsp;
-        <el-button type="success" plain>搜索</el-button>
+        <el-button type="success" @click="upcardMe(input)">搜索</el-button>
         <!--  表格 -->
         <el-table
             ref="filterTable1"
@@ -22,7 +21,7 @@
             style="width: 100%"
         >
           <el-table-column
-              prop="date1"
+              prop="auditflowdetaiDate"
               label="日期"
               sortable
               width="140"
@@ -35,13 +34,20 @@
             ]"
               :filter-method="filterHandler"
           />
-          <el-table-column prop="AUDITFLOW_ID" label="审批编号" width="100"/>
-          <el-table-column prop="AUDITFLOW_TYPE" label="流程" width="100"/>
-          <el-table-column prop="STAFF_ID" label="申请人" width="150"/>
-          <!-- <el-table-column prop="name" label="操作人" width="100" /> -->
-          <el-table-column prop="AUDITFLOW_STATE" label="状态" width="100"/>
-          <el-table-column prop="STAFF_NAME" label="当前审批人" width="150"/>
-          <el-table-column prop="UPDATED_TIME" label="最近处理" width="150"/>
+          <el-table-column prop="auditflowId" label="审批编号" width="100"/>
+          <el-table-column prop="auditflowType" label="流程" width="100"/>
+          <el-table-column prop="staffName" label="申请人" width="150"/>
+          <el-table-column prop="auditflowdetaiState" label="状态" width="100">
+            <template #default="scope">
+              <span v-if="scope.row.auditflowdetaiState==0">审批中</span>
+              <span v-if="scope.row.auditflowdetaiState==1">待我审批</span>
+              <span v-if="scope.row.auditflowdetaiState==2">已审批</span>
+              <span v-if="scope.row.auditflowdetaiState==3">驳回</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="staffName2" label="历史审批人" width="150"/>
+          <el-table-column prop="createdTime" label="最近处理" width="140"/>
+
           <el-table-column label="操作">
             <template #default="scope">
               <el-popconfirm
@@ -88,6 +94,10 @@
               layout="total, sizes, prev, pager, next, jumper"
               :total="pageInfo.total"
               :pager-count="5"
+              @size-change="upcardMe(input)"
+              @current-change="upcardMe(input)"
+              prev-text="上一页"
+              next-text="下一页"
               background
           >
             <!--  @size-change="selectUsers" @current-change="selectUsers" -->
@@ -100,15 +110,15 @@
       </el-drawer>
       <!-- 已办申请页面 -->
       <el-tab-pane label="已办申请">
-        <el-button @click="resetDateFilter">重置日期过滤</el-button>
+        <el-button @click="upcarded(null)">重置日期过滤</el-button>
         &nbsp;
         <el-input
-            v-model="input"
+            v-model="input1"
             placeholder="输入名称搜索nima"
             style="width: 130px"
         />
         &nbsp;
-        <el-button type="success" plain>搜索</el-button>
+        <el-button type="success" @click="upcarded(input1)">搜索</el-button>
 
         <el-table
             ref="filterTable"
@@ -117,7 +127,7 @@
             style="width: 100%"
         >
           <el-table-column
-              prop="date"
+              prop="auditflowdetaiDate"
               label="日期"
               sortable
               width="140"
@@ -130,13 +140,19 @@
             ]"
               :filter-method="filterHandler"
           />
-          <el-table-column prop="AUDITFLOW_ID" label="审批编号" width="100"/>
-          <el-table-column prop="AUDITFLOW_TYPE" label="流程" width="100"/>
-          <el-table-column prop="STAFF_ID" label="申请人" width="150"/>
-          <!-- <el-table-column prop="name" label="操作人" width="100" /> -->
-          <el-table-column prop="AUDITFLOW_STATE" label="状态" width="100"/>
-          <el-table-column prop="STAFF_NAME" label="历史审批人" width="150"/>
-          <el-table-column prop="UPDATED_TIME" label="最近处理" width="140"/>
+          <el-table-column prop="auditflowId" label="审批编号" width="100"/>
+          <el-table-column prop="auditflowType" label="流程" width="100"/>
+          <el-table-column prop="staffName" label="申请人" width="150"/>
+          <el-table-column prop="auditflowdetaiState" label="状态" width="100">
+            <template #default="scope">
+              <span v-if="scope.row.auditflowdetaiState==0">审批中</span>
+              <span v-if="scope.row.auditflowdetaiState==1">待我审批</span>
+              <span v-if="scope.row.auditflowdetaiState==2">已审批</span>
+              <span v-if="scope.row.auditflowdetaiState==3">驳回</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="staffName2" label="历史审批人" width="150"/>
+          <el-table-column prop="createdTime" label="最近处理" width="140"/>
 
           <el-table-column label="操作">
             <template #default="scope">
@@ -160,6 +176,10 @@
               layout="total, sizes, prev, pager, next, jumper"
               :total="pageInfo.total"
               :pager-count="5"
+              @size-change="upcarded(input1)"
+              @current-change="upcarded(input1)"
+              prev-text="上一页"
+              next-text="下一页"
               background
           >
           </el-pagination>
@@ -168,7 +188,7 @@
 	  <!-- 我的申请页面：补打卡 -->
 	  <el-tab-pane label="我的申请">
 	  	  
-	          <el-button @click="resetDateFilter">重置日期过滤</el-button>
+	          <el-button @click="upcardmy">重置日期过滤</el-button>
 	          <el-button   @click="punch = true" >发起申请</el-button>
 	          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -182,18 +202,18 @@
 	          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	  	  
 	  	  
-	          <el-input
-	              v-model="input"
-	              placeholder="输入名称搜索"
-	              style="width: 130px"
-	          />
-	          &nbsp;
-	          <el-button type="success" plain>搜索</el-button>
+<!--	          <el-input-->
+<!--	              v-model="input"-->
+<!--	              placeholder="输入名称搜索"-->
+<!--	              style="width: 130px"-->
+<!--	          />-->
+<!--	          &nbsp;-->
+<!--	          <el-button type="success" plain>搜索</el-button>-->
 	          <!-- 表格   -->
 	          <el-table
 	              ref="filterTable"
 	              row-key="date"
-	              :data="tableData"
+	              :data="tableData2"
 	              style="width: 100%"
 	          >
 	            <el-table-column
@@ -251,15 +271,15 @@
 	                layout="total, sizes, prev, pager, next, jumper"
 	                :total="pageInfo.total"
 	                :pager-count="5"
+                  @size-change="upcardmy()"
+                  @current-change="upcardmy()"
+                  prev-text="上一页"
+                  next-text="下一页"
 	                background
 	            >
 	            </el-pagination>
 	          </div>
-	  	  
-	      <!--   弹出抽屉 -->
-	      <el-drawer v-model="drawer" title="I am the title" :with-header="false">
-	        <span>臭傻逼啊看什么看</span>
-	      </el-drawer>	  
+
 	  </el-tab-pane>
 	  
 	  <!-- 补打卡弹出框 -->
@@ -359,11 +379,17 @@ export default {
     return {
       drawer: ref(false),
       input: ref(""),
+      input1:ref(""),
 	    punch,
     };
   },
   data() {
     return {
+      staffName:this.$store.state.userall.staffName,
+      deptPostId:this.$store.state.userall.deptPostId,
+      staffId:this.$store.state.userall.staffId,
+      deptId: this.$store.state.userall.deptId,
+
 		//补打卡表单
 		punch_1: {
 		  //名称
@@ -502,15 +528,122 @@ export default {
         },
       ],
 
+      tableData2:[],
+
       pageInfo: {
         // 分页参数
         currentPage: 1, //当前页
-        pagesize: 3, // 页大小
+        pageSize: 3, // 页大小
         total: 0, // 总页数
+
+        staffName:"",
+        staffName1: "",
+        auditflowdetaiState:0,
       },
     };
   },
+  mounted() {
+    this.upcardMe(null);
+    this.upcarded(null);
+    this.upcardmy();
+  },
   methods: {
+    upcardMe(like){
+      if (Object.prototype.toString.call(like)===Object.prototype.toString.call(null)) {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.auditflowdetaiState=1;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/fillclock/fillclockMe",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }else {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.auditflowdetaiState=1;
+        this.pageInfo.staffName1 = like;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/fillclock/LikeName",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }
+    },
+
+    upcarded(like){
+      if (Object.prototype.toString.call(like)===Object.prototype.toString.call(null)) {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.auditflowdetaiState=2;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/fillclock/fillclockMe",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData1 = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }else {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.staffName1 = like;
+        this.pageInfo.auditflowdetaiState=2;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/fillclock/LikeName",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData1 = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }
+    },
+    upcardmy(){
+      this.pageInfo.staffName = this.staffName;
+      this.axios({
+        method: 'post',
+        url: "http://localhost:8007/provider/fillclock/fillclockMy",
+        data: this.pageInfo,
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.log(response);
+        this.tableData1 = response.data.data.records
+        this.pageInfo.total = response.data.data.total
+      }).catch(function (error) {
+        console.log('获取表单失败')
+        console.log(error)
+      })
+    },
+
+
 	  // 提交补打卡
 	  submitForm_6() {
 	    if (this.punch_1.type_1.length === 0) {
@@ -520,9 +653,56 @@ export default {
 	    } else if (this.punch_1.remarks_1.length === 0) {
 	      ElMessage("请输入补打卡备注");
 	    } else {
-	      alert(1);
-	    }
-	  },
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/fillclock/add",
+          data:{
+            staffId: this.staffId,
+            // 申请人
+            staffName: this.staffName,
+            // 部门编号
+            deptId: this.deptId,
+
+            // 补打卡类型
+            cardType: this.punch_1.type_1,
+            // 备注
+            cardRemarks: this.punch_1.remarks_1,
+            // 补卡时间
+            cardDate: this.punch_1.date1,
+
+            // 审批人1
+            staffName1: "刘金科1",
+            // 审批人2
+            staffName2: "刘金科2",
+            // 审批人3
+            staffName3: "刘金科3",
+            // 审批类型
+            auditflowType: "补打卡",
+            // 审批标题
+            auditflowTitle: this.staffName + "的" + this.punch_1.type_1
+          },
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then((response)=>{
+          console.log(response);
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "申请成功",
+            });
+            this.upcardmy();
+            this.cancel_6();
+          } else {
+            ElMessage.error("申请失败");
+            this.cancel_6();
+            this.upcardmy();
+          }
+        }).catch(function (error){
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }
+    },
 	  // 取消补打卡
 	  cancel_6() {
 	    this.punch_1 = {

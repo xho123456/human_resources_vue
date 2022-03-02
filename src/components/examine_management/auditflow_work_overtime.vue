@@ -4,7 +4,7 @@
     <el-tabs type="border-card">
       <!-- 待办申请页面 -->
       <el-tab-pane label="待办申请">
-        <el-button @click="resetDateFilter1">重置日期过滤</el-button>
+        <el-button @click="WorkoverMe(null)">重置</el-button>
         &nbsp;
         &nbsp;
         <el-input
@@ -13,7 +13,7 @@
           style="width: 130px"
         />
         &nbsp;
-        <el-button type="success" plain>搜索</el-button>
+        <el-button type="success" @click="WorkoverMe(null)">搜索</el-button>
         <!--  表格 -->
         <el-table
           ref="filterTable1"
@@ -22,31 +22,25 @@
           style="width: 100%"
         >
           <el-table-column
-            prop="date1"
+            prop="auditflowdetaiDate"
             label="日期"
-            sortable
             width="140"
-            column-key="date1"
-            :filters="[
-              { text: '2016-05-01', value: '2016-05-01' },
-              { text: '2016-05-02', value: '2016-05-02' },
-              { text: '2016-05-03', value: '2016-05-03' },
-              { text: '2016-05-04', value: '2016-05-04' },
-            ]"
-            :filter-method="filterHandler"
           />
-          <el-table-column prop="AUDITFLOW_ID" label="审批编号" width="100" />
-          <el-table-column prop="AUDITFLOW_TYPE" label="流程" width="100" />
-          <el-table-column prop="STAFF_ID" label="申请人" width="150" />
-          <!-- <el-table-column prop="name" label="操作人" width="100" /> -->
-          <el-table-column prop="AUDITFLOW_STATE" label="状态" width="100" />
-          <el-table-column prop="STAFF_NAME" label="当前审批人" width="150" />
-          <el-table-column prop="UPDATED_TIME" label="最近处理" width="150" />
+          <el-table-column prop="auditflowId" label="审批编号" width="100"/>
+          <el-table-column prop="auditflowType" label="流程" width="100"/>
+          <el-table-column prop="staffName" label="申请人" width="150"/>
+          <el-table-column prop="auditflowdetaiState" label="状态" width="100">
+            <template #default="scope">
+              <span v-if="scope.row.auditflowdetaiState==0">审批中</span>
+              <span v-if="scope.row.auditflowdetaiState==1">待我审批</span>
+              <span v-if="scope.row.auditflowdetaiState==2">已审批</span>
+              <span v-if="scope.row.auditflowdetaiState==3">驳回</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="staffName2" label="历史审批人" width="150"/>
+          <el-table-column prop="createdTime" label="最近处理" width="140"/>
 
-          <!-- <el-table-column prop="tag" label="操作" width="100">
-						<el-button type="success" plain>通过</el-button>
-						<el-button type="danger" plain>驳回</el-button>
-					</el-table-column> -->
+
           <el-table-column label="操作">
             <template #default="scope">
               <el-popconfirm
@@ -74,9 +68,9 @@
                 </template>
               </el-popconfirm>
               <el-button
-                type="primary"
-                style="margin-left: 16px"
-                @click="drawer = true"
+                  type="primary"
+                  style="margin-left: 16px"
+                  @click="drawer = true"
               >
                 详情
               </el-button>
@@ -93,6 +87,10 @@
             layout="total, sizes, prev, pager, next, jumper"
             :total="pageInfo.total"
             :pager-count="5"
+            @size-change="WorkoverMe(input)"
+            @current-change="WorkoverMe(input)"
+            prev-text="上一页"
+            next-text="下一页"
             background
           >
             <!--  @size-change="selectUsers" @current-change="selectUsers" -->
@@ -101,27 +99,86 @@
       </el-tab-pane>
       <!-- 点击详情，弹出抽屉-->
       <el-drawer v-model="drawer" title="I am the title" :with-header="false">
-        <span>Hi there!</span>
+        <el-form-item label="标题：">
+          <el-input v-model="details[0].auditflowTitle" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="申请人：">
+          <el-input v-model="details[0].staffName1" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="当前审核状态：" v-if="details[0].auditflowstate != null">
+          <el-input v-if="details[0].auditflowstate===0" v-model="state.pending" disabled></el-input>
+          <el-input v-if="details[0].auditflowstate===1" v-model="state.through" disabled></el-input>
+          <el-input v-if="details[0].auditflowstate===2" v-model="state.rejected" disabled></el-input>
+          <el-input v-if="details[0].auditflowstate===3" v-model="state.undo" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="审批人：" v-if="details[0].staffName2 != null">
+          <el-input v-model="details[0].staffName2" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="申请状态：" v-if="details[0].auditflowdetaiState!= null">
+          <el-input v-if="details[0].auditflowdetaiState===0" v-model="state.ongoing" disabled></el-input>
+          <el-input v-if="details[0].auditflowdetaiState===1" v-model="state.approval" disabled></el-input>
+          <el-input v-if="details[0].auditflowdetaiState===2" v-model="state.through" disabled></el-input>
+          <el-input v-if="details[0].auditflowdetaiState===3" v-model="state.rejected" disabled></el-input>
+          <el-input v-if="details[0].auditflowdetaiState===4" v-model="state.undo1" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="审批备注：" v-if="details[0].auditflowdetaiRemarks != null">
+          <el-input v-model="details[0].auditflowdetaiRemarks" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="审核时间：" v-if="details[0].auditflowdetaiRemarks != null">
+          <el-input v-model="details[0].auditflowdetaiDate" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="审批人：" v-if="details[1].staffName2 != null">
+          <el-input v-model="details[1].staffName2" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="申请状态：" v-if="details[1].auditflowdetaiState!= null">
+          <el-input v-if="details[1].auditflowdetaiState===0" v-model="state.ongoing" disabled></el-input>
+          <el-input v-if="details[1].auditflowdetaiState===1" v-model="state.approval" disabled></el-input>
+          <el-input v-if="details[1].auditflowdetaiState===2" v-model="state.through" disabled></el-input>
+          <el-input v-if="details[1].auditflowdetaiState===3" v-model="state.rejected" disabled></el-input>
+          <el-input v-if="details[1].auditflowdetaiState===4" v-model="state.undo1" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="审批备注：" v-if="details[1].auditflowdetaiRemarks != null">
+          <el-input v-model="details[1].auditflowdetaiRemarks" disabled ellipsis></el-input>
+        </el-form-item>
+        <el-form-item label="审核时间：" v-if="details[1].auditflowdetaiRemarks != null">
+          <el-input v-model="details[1].auditflowdetaiDate" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="审批人：" v-if="details[2].staffName2 != null">
+          <el-input v-model="details[2].staffName2" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="申请状态：" v-if="details[2].auditflowdetaiState!= null">
+          <el-input v-if="details[2].auditflowdetaiState===0" v-model="state.ongoing" disabled></el-input>
+          <el-input v-if="details[2].auditflowdetaiState===1" v-model="state.approval" disabled></el-input>
+          <el-input v-if="details[2].auditflowdetaiState===2" v-model="state.through" disabled></el-input>
+          <el-input v-if="details[2].auditflowdetaiState===3" v-model="state.rejected" disabled></el-input>
+          <el-input v-if="details[2].auditflowdetaiState===4" v-model="state.undo1" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="审批备注：" v-if="details[2].auditflowdetaiRemarks != null">
+          <el-input v-model="details[2].auditflowdetaiRemarks" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="审核时间：" v-if="details[2].auditflowdetaiRemarks != null">
+          <el-input v-model="details[2].auditflowdetaiDate" disabled></el-input>
+        </el-form-item>
       </el-drawer>
       <!-- 已办申请页面 -->
       <el-tab-pane label="已办申请">
-        <el-button @click="resetDateFilter">重置日期过滤</el-button>
+        <el-button @click="Workovered(null)">重置</el-button>
         &nbsp;
         <el-input
-          v-model="input"
-          placeholder="输入名称搜索nima"
+          v-model="input1"
+          placeholder="输入名称搜索"
           style="width: 130px"
         />
         &nbsp;
-        <el-button type="success" plain>搜索</el-button>
+        <el-button type="success" @click="Workovered(input1)">搜索</el-button>
         <el-table
           ref="filterTable"
           row-key="date"
-          :data="tableData"
+          :data="tableData1"
           style="width: 100%"
         >
           <el-table-column
-            prop="date"
+            prop="auditflowdetaiDate"
             label="日期"
             sortable
             width="140"
@@ -134,13 +191,19 @@
             ]"
             :filter-method="filterHandler"
           />
-          <el-table-column prop="AUDITFLOW_ID" label="审批编号" width="100" />
-          <el-table-column prop="AUDITFLOW_TYPE" label="流程" width="100" />
-          <el-table-column prop="STAFF_ID" label="申请人" width="150" />
-          <!-- <el-table-column prop="name" label="操作人" width="100" /> -->
-          <el-table-column prop="AUDITFLOW_STATE" label="状态" width="100" />
-          <el-table-column prop="STAFF_NAME" label="历史审批人" width="150" />
-          <el-table-column prop="UPDATED_TIME" label="最近处理" width="140" />
+          <el-table-column prop="auditflowId" label="审批编号" width="100"/>
+          <el-table-column prop="auditflowType" label="流程" width="100"/>
+          <el-table-column prop="staffName" label="申请人" width="150"/>
+          <el-table-column prop="auditflowdetaiState" label="状态" width="100">
+            <template #default="scope">
+              <span v-if="scope.row.auditflowdetaiState==0">审批中</span>
+              <span v-if="scope.row.auditflowdetaiState==1">待我审批</span>
+              <span v-if="scope.row.auditflowdetaiState==2">已审批</span>
+              <span v-if="scope.row.auditflowdetaiState==3">驳回</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="staffName2" label="历史审批人" width="150"/>
+          <el-table-column prop="createdTime" label="最近处理" width="140"/>
           <el-table-column label="操作">
             <template #default="scope">
               <el-button
@@ -164,6 +227,10 @@
             layout="total, sizes, prev, pager, next, jumper"
             :total="pageInfo.total"
             :pager-count="5"
+            @size-change="Workovered(input1)"
+            @current-change="Workovered(input1)"
+            prev-text="上一页"
+            next-text="下一页"
             background
           >
             <!--  @size-change="selectUsers"
@@ -175,7 +242,7 @@
 	  <!--       我的申请页面:加班 -->
 	        <el-tab-pane label="我的申请">
 	  
-	                <el-button @click="resetDateFilter">重置日期过滤</el-button>
+	                <el-button @click="Workovermy">重置日期过滤</el-button>
 	                <el-button  @click="overtime = true" >发起申请</el-button>
 	                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -258,15 +325,15 @@
 	                      layout="total, sizes, prev, pager, next, jumper"
 	                      :total="pageInfo.total"
 	                      :pager-count="5"
+                        @size-change="Workovermy()"
+                        @current-change="Workovermy()"
+                        prev-text="上一页"
+                        next-text="下一页"
 	                      background
 	                  >
 	                  </el-pagination>
 	                </div>
-	  
-	            <!--   弹出抽屉 -->
-	            <el-drawer v-model="drawer" title="I am the title" :with-header="false">
-	              <span>臭傻逼啊看什么看</span>
-	            </el-drawer>	  
+
 	        </el-tab-pane>
 	  
 	  <!-- 加班弹出框 -->
@@ -382,11 +449,17 @@ export default {
     return {
       drawer: ref(false),
       input: ref(""),
+      input1: ref(""),
 	   overtime,
     };
   },
   data() {
     return {
+      staffName:this.$store.state.userall.staffName,
+      deptPostId:this.$store.state.userall.deptPostId,
+      staffId:this.$store.state.userall.staffId,
+      deptId: this.$store.state.userall.deptId,
+
 		//加班表单
 		overtime_1: {
 		  //名称
@@ -531,16 +604,126 @@ export default {
           UPDATED_TIME: "2020-01-01",
         },
       ],
+
+      tableData2:[],
+
       // 分页
       pageInfo: {
         // 分页参数
         currentPage: 1, //当前页
-        pagesize: 3, // 页大小
+        pageSize: 3, // 页大小
         total: 0, // 总页数
+
+        staffName:"",
+        staffName1: "",
+        auditflowdetaiState:0,
       },
     };
   },
+  mounted() {
+    this.WorkoverMe(null);
+    this.Workovered(null);
+    this.Workovermy();
+  },
   methods: {
+    WorkoverMe(like){
+      if (Object.prototype.toString.call(like)===Object.prototype.toString.call(null)) {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.auditflowdetaiState=1;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/workover/workoverMe",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }else {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.auditflowdetaiState=1;
+        this.pageInfo.staffName1 = like;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/workover/LikeName",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }
+    },
+
+    Workovered(like){
+      if (Object.prototype.toString.call(like)===Object.prototype.toString.call(null)) {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.auditflowdetaiState=2;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/workover/workoverMe",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData1 = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }else {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.staffName1 = like;
+        this.pageInfo.auditflowdetaiState=2;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/workover/LikeName",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData1 = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }
+    },
+
+    Workovermy(){
+      this.pageInfo.staffName = this.staffName;
+      this.axios({
+        method: 'post',
+        url: "http://localhost:8007/provider/workover/workoverMy",
+        data: this.pageInfo,
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.log(response);
+        this.tableData2 = response.data.data.records
+        this.pageInfo.total = response.data.data.total
+      }).catch(function (error) {
+        console.log('获取表单失败')
+        console.log(error)
+      })
+    },
+
+
+
 	  // 提交加班
 	  submitForm_5() {
 	    if (this.overtime_1.type_1.length === 0) {
@@ -552,7 +735,58 @@ export default {
 	    } else if (this.overtime_1.remarks_1.length === 0) {
 	      ElMessage("请输入加班事由");
 	    } else {
-	      alert(1);
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/workover/add",
+          data:{
+            staffId: this.staffId,
+            // 申请人
+            staffName: this.staffName,
+            // 部门编号
+            deptId: this.deptId,
+
+            // 加班类型
+            overtimeaskType: this.overtime_1.type_1,
+            // 备注
+            overtimeaskMatter: this.overtime_1.remarks_1,
+            // 加班开始日期
+            overtimeaskSDate: this.overtime_1.date1,
+            //加班结束日期
+            overtimeaskEDate:this.overtime_1.date2,
+            //加班总小时
+            overtimeaskTotalDate:this.overtime_1.date2,
+
+            // 审批人1
+            staffName1: "刘金科1",
+            // 审批人2
+            staffName2: "刘金科2",
+            // 审批人3
+            staffName3: "刘金科3",
+            // 审批类型
+            auditflowType: "出差",
+            // 审批标题
+            auditflowTitle: this.staffName + "的" + this.overtime_1.type_1
+          },
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then((response)=>{
+          console.log(response);
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "申请成功",
+            });
+            this.Workovermy();
+            this.cancel_5();
+          } else {
+            ElMessage.error("申请失败");
+            this.cancel_5();
+            this.Workovermy();
+          }
+        }).catch(function (error){
+          console.log('获取表单失败')
+          console.log(error)
+        })
 	    }
 	  },
 	  // 取消加班

@@ -1,19 +1,19 @@
 <template>
 
-<!-- 参保明细 -->
+  <!-- 月度参保明细 -->
   <div class="saas-main-content">
     <div class="j-card j-card-bordered mainContent">
       <div class="j-card-body">
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane>
             <template #label>
-              <router-link :to="{path:this.path1,query:{path:this.$route.query.path,id:this.id}}" >参保明细</router-link>
+              <router-link :to="{path:this.paths,query:{path:this.$route.query.path}}" >参保明细</router-link>
             </template>
             <router-view ></router-view>
           </el-tab-pane>
           <el-tab-pane label="参保记录">
             <template #label>
-              <router-link :to="{path:this.path2,query:{path:this.$route.query.path,ids:this.idss}}" >参保记录</router-link>
+              <router-link :to="{path:this.path2,query:{path:this.$route.query.path}}" >参保记录</router-link>
             </template>
             <router-view />
           </el-tab-pane>
@@ -32,7 +32,7 @@ export default {
     return {
       id:this.$route.query.id,
       idss:this.$route.query.name,
-      path1:"/social/social_payment/someone_insured_particulars/someone_insured_details",
+      paths:'/social/social_payment/monthly_report_particulars/someone_insured_detailss',
       path2:"/social/social_payment/someone_insured_particulars/someone_insured_record",
       pageInfo: {
         // 分页参数

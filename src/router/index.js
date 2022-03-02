@@ -548,6 +548,22 @@ const routes = [{
                                 component: modules[`${'../components/social_management/monthly_report.vue'}`],
                             },
                             {//社保缴费明细
+                                path: '/social/social_payment/payment_details',
+                                component: modules[`${'../components/social_management/monthly_details.vue'}`],
+                            },
+                            {// 查看月度参保详情
+                                path: '/social/social_payment/someone_insured_particularss',
+                                redirect: "/social/social_payment/someone_insured_particulars/someone_insured_detailss",
+                                component: modules[`${'../components/social_management/monthly_report_particulars.vue'}`],
+                                children: [
+                                    {//参保明细
+                                        path: '/social/social_payment/someone_insured_particulars/someone_insured_detailss',
+                                        component: modules[`${'../components/social_management/monthly_particulars.vue'}`],
+                                    },
+
+                                ]
+                            },
+                            {//社保缴费明细
                                 path: '/social/social_payment/payment_detail',
                                 component: modules[`${'../components/social_management/payment_details.vue'}`],
                             },
