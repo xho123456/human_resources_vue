@@ -80,7 +80,7 @@ const store = createStore({
                         MENU_ID: 3.11,//菜单编号
                         MENU_NAME: '员工花名册',//菜单名称
                         PICTURE_ADDRESS: '&#xe64c;',//图片地址
-                        MENU_ROUTE: '/employee/message/employee_roster',//路由地址
+                        MENU_ROUTE: '/employee/message/employee_roster/book',//路由地址
                         MENU_MODULE: 'employee_management/employee_staff_one',//组件地址
                         MENU_STATE: 0,//是否启用 0启用 1禁用
                         MENU_TYPE: 0,//菜单类型 0:菜单 1:按钮
