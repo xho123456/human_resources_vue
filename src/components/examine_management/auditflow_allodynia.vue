@@ -23,18 +23,18 @@
               label="日期"
               width="140"
           />
-          <el-table-column prop="auditflowid" label="审批编号" width="100"/>
-          <el-table-column prop="auditflowtype" label="流程" width="100"/>
-          <el-table-column prop="staffname1" label="申请人" width="150"/>
-          <el-table-column prop="auditflowdetaistate" label="状态" width="100">
+          <el-table-column prop="auditflowId" label="审批编号" width="100"/>
+          <el-table-column prop="auditflowType" label="流程" width="100"/>
+          <el-table-column prop="staffName" label="申请人" width="150"/>
+          <el-table-column prop="auditflowdetaiState" label="状态" width="100">
             <template #default="scope">
-              <span v-if="scope.row.auditflowdetaistate==0">审批中</span>
-              <span v-if="scope.row.auditflowdetaistate==1">待我审批</span>
-              <span v-if="scope.row.auditflowdetaistate==2">已审批</span>
+              <span v-if="scope.row.auditflowdetaiState==0">审批中</span>
+              <span v-if="scope.row.auditflowdetaiState==1">待我审批</span>
+              <span v-if="scope.row.auditflowdetaiState==2">已审批</span>
             </template>
           </el-table-column>
-          <el-table-column prop="staffname2" label="当前审批人" width="150"/>
-          <el-table-column prop="createdtime" label="最近处理" width="150"/>
+          <el-table-column prop="staffName2" label="当前审批人" width="150"/>
+          <el-table-column prop="createdTime" label="最近处理" width="150"/>
 
           <el-table-column label="操作">
             <template #default="scope">
@@ -44,7 +44,7 @@
                   :icon="InfoFilled"
                   icon-color="red"
                   title="确定通过吗?"
-                  @confirm="through1()"
+                  @confirm="through1(scope.row)"
               >
                 <template #reference>
                   <el-button type="success" plain>通过</el-button>
@@ -56,7 +56,7 @@
                   :icon="InfoFilled"
                   icon-color="red"
                   title="确定驳回吗?"
-                  @confirm="through2()"
+                  @confirm="through2(scope.row)"
               >
                 <template #reference>
                   <el-button type="danger" plain>驳回</el-button>>
@@ -65,7 +65,7 @@
               <el-button
                   type="primary"
                   style="margin-left: 16px"
-                  @click="drawer = true"
+                  @click="popup1(scope.row.staffName)"
               >
                 详情
               </el-button>
@@ -93,7 +93,68 @@
       </el-tab-pane>
       <!-- 点击详情，弹出抽屉-->
       <el-drawer v-model="drawer" title="I am the title" :with-header="false">
-        <span>Hi there!</span>
+        <el-form ref="form" :model="details">
+          <el-form-item label="标题：">
+            <el-input v-model="details[0].auditflowTitle" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="申请人：">
+            <el-input v-model="details[0].staffName1" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="当前审核状态：" v-if="details[0].auditflowstate != null">
+            <el-input v-if="details[0].auditflowstate===0" v-model="state.pending" disabled></el-input>
+            <el-input v-if="details[0].auditflowstate===1" v-model="state.through" disabled></el-input>
+            <el-input v-if="details[0].auditflowstate===2" v-model="state.rejected" disabled></el-input>
+            <el-input v-if="details[0].auditflowstate===3" v-model="state.undo" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="审批人：" v-if="details[0].staffName2 != null">
+            <el-input v-model="details[0].staffName2" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="申请状态：" v-if="details[0].auditflowdetaiState!= null">
+            <el-input v-if="details[0].auditflowdetaiState===0" v-model="state.ongoing" disabled></el-input>
+            <el-input v-if="details[0].auditflowdetaiState===1" v-model="state.approval" disabled></el-input>
+            <el-input v-if="details[0].auditflowdetaiState===2" v-model="state.through" disabled></el-input>
+            <el-input v-if="details[0].auditflowdetaiState===3" v-model="state.rejected" disabled></el-input>
+            <el-input v-if="details[0].auditflowdetaiState===4" v-model="state.undo1" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="审批备注：" v-if="details[0].auditflowdetaiRemarks != null">
+            <el-input v-model="details[0].auditflowdetaiRemarks" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="审核时间：" v-if="details[0].auditflowdetaiRemarks != null">
+            <el-input v-model="details[0].auditflowdetaiDate" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="审批人：" v-if="details[1].staffName2 != null">
+            <el-input v-model="details[1].staffName2" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="申请状态：" v-if="details[1].auditflowdetaiState!= null">
+            <el-input v-if="details[1].auditflowdetaiState===0" v-model="state.ongoing" disabled></el-input>
+            <el-input v-if="details[1].auditflowdetaiState===1" v-model="state.approval" disabled></el-input>
+            <el-input v-if="details[1].auditflowdetaiState===2" v-model="state.through" disabled></el-input>
+            <el-input v-if="details[1].auditflowdetaiState===3" v-model="state.rejected" disabled></el-input>
+            <el-input v-if="details[1].auditflowdetaiState===4" v-model="state.undo1" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="审批备注：" v-if="details[1].auditflowdetaiRemarks != null">
+            <el-input v-model="details[1].auditflowdetaiRemarks" disabled ellipsis></el-input>
+          </el-form-item>
+          <el-form-item label="审核时间：" v-if="details[1].auditflowdetaiRemarks != null">
+            <el-input v-model="details[1].auditflowdetaiDate" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="审批人：" v-if="details[2].staffName2 != null">
+            <el-input v-model="details[2].staffName2" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="申请状态：" v-if="details[2].auditflowdetaiState!= null">
+            <el-input v-if="details[2].auditflowdetaiState===0" v-model="state.ongoing" disabled></el-input>
+            <el-input v-if="details[2].auditflowdetaiState===1" v-model="state.approval" disabled></el-input>
+            <el-input v-if="details[2].auditflowdetaiState===2" v-model="state.through" disabled></el-input>
+            <el-input v-if="details[2].auditflowdetaiState===3" v-model="state.rejected" disabled></el-input>
+            <el-input v-if="details[2].auditflowdetaiState===4" v-model="state.undo1" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="审批备注：" v-if="details[2].auditflowdetaiRemarks != null">
+            <el-input v-model="details[2].auditflowdetaiRemarks" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="审核时间：" v-if="details[2].auditflowdetaiRemarks != null">
+            <el-input v-model="details[2].auditflowdetaiDate" disabled></el-input>
+          </el-form-item>
+        </el-form>
       </el-drawer>
       <!-- 已办申请页面 -->
       <el-tab-pane label="已办申请">
@@ -134,7 +195,7 @@
               <el-button
                   type="primary"
                   style="margin-left: 5px"
-                  @click="drawer = true"
+                  @click="popup1(scope.row.staffName)"
               >
                 详情
               </el-button>
@@ -166,7 +227,7 @@
       <!--       我的申请页面:异动 -->
       <el-tab-pane label="我的申请">
 
-        <el-button @click="Movemy">重置日期过滤</el-button>
+        <el-button @click="Movemy">重置</el-button>
         <el-button @click="fqsq" v-on:click="this.Change_1.type_1 = '调岗'">发起申请</el-button>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -194,26 +255,21 @@
             :data="tableData"
             style="width: 100%"
         >
-          <el-table-column
-              prop="date"
-              label="日期"
-              sortable
-              width="140"
-              column-key="date"
-              :filters="[
-              { text: '2016-05-01', value: '2016-05-01' },
-              { text: '2016-05-02', value: '2016-05-02' },
-              { text: '2016-05-03', value: '2016-05-03' },
-              { text: '2016-05-04', value: '2016-05-04' },
-            ]"
-              :filter-method="filterHandler"
-          />
-          <el-table-column prop="name" label="审批编号" width="150"/>
-          <el-table-column prop="name" label="流程" width="150"/>
-          <el-table-column prop="name" label="申请人" width="150"/>
-          <el-table-column prop="name" label="状态" width="150"/>
-          <el-table-column prop="name" label="当前审批人" width="150"/>
-          <el-table-column prop="name" label="最近处理" width="150"/>
+         <el-table-column prop="auditflowdetaiDate" label="日期" width="140"/>
+          <el-table-column prop="auditflowId" label="审批编号" width="100"/>
+          <el-table-column prop="auditflowType" label="流程" width="100"/>
+          <el-table-column prop="staffName" label="申请人" width="150"/>
+          <el-table-column prop="auditflowState" label="状态" width="100">
+            <template #default="scope">
+              <span v-if="scope.row.auditflowState===0">审批中</span>
+              <span v-if="scope.row.auditflowState===1">通过</span>
+              <span v-if="scope.row.auditflowState===2">驳回</span>
+              <span v-if="scope.row.auditflowState===3">撤销</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="staffName2" label="历史审批人" width="150"/>
+          <el-table-column prop="createdTime" label="最近处理" width="140"/>
+
           <el-table-column label="操作" >
             <template #default="scope" >
               <el-popconfirm
@@ -222,7 +278,7 @@
                   :icon="InfoFilled"
                   icon-color="red"
                   title="确定撤销吗?"
-                  @confirm="through1()"
+                  @confirm="through3(scope.row.auditflowId)"
               >
                 <template #reference>
                   <el-button type="success" plain>撤销</el-button>
@@ -231,7 +287,7 @@
               <el-button
                   type="primary"
                   style="margin-left: 16px"
-                  @click="drawer = true"
+                  @click="popup1(scope.row.staffName)"
               >
                 详情
               </el-button>
@@ -269,7 +325,7 @@
       >
         <el-form ref="form_2" :model="Change_1" label-width="120px">
           <el-form-item label="员工名称">
-            <el-input v-model="Change_1.name" disabled></el-input>
+            <el-input v-model="this.staffName" disabled></el-input>
           </el-form-item>
           <el-form-item label="异动类型">
             <el-input v-model="Change_1.type_1" disabled></el-input>
@@ -359,7 +415,7 @@ export default {
       staffId:this.$store.state.userall.staffId,
       deptId: this.$store.state.userall.deptId,
 
-
+      details:{},
 
       //异动表单
       Change_1: {
@@ -600,6 +656,25 @@ export default {
       this.Change = false;
     },
 
+    //弹出抽屉
+    popup1(like){
+      this.drawer=true;
+      this.pageInfo.staffName = like;
+      this.axios({
+        method: 'post',
+        url: "http://localhost:8007/provider/move/movemy",
+        data: this.pageInfo,
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.log(response);
+        this.details = response.data.data.records
+      }).catch(function (error) {
+        console.log('获取表单失败')
+        console.log(error)
+      })
+    },
+
     // 重置日期过滤
     resetDateFilter1() {
       this.$refs.filterTable1.clearFilter("date1");
@@ -617,12 +692,156 @@ export default {
       return row[property] === value;
     },
     // 点击通过确认按钮触发
-    through1() {
-      alert(1)
+    through1(row){
+      if (this.postId==16){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/positive",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "通过成功",
+            });
+          } else{
+            ElMessage.error("通过失败");
+          }
+        })
+      }else if (this.postId==17){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/positive",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "通过成功",
+            });
+          } else {
+            ElMessage.error("通过失败");
+          }
+        })
+      }else if (this.postId==18){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/positiveend",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "通过成功",
+            });
+          } else {
+            ElMessage.error("通过失败");
+          }
+        })
+      }else {
+        ElMessage({
+          message: "权限不够",
+          type: "warning"
+        })
+      }
     },
     // 点击驳回确认按钮触发
-    through2() {
-      alert(1)
+    through2(row){
+      if (this.postId==16){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/rejected",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "驳回成功",
+            });
+          } else{
+            ElMessage.error("驳回失败");
+          }
+        })
+      }else if (this.postId==17){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/rejected",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "驳回成功",
+            });
+          } else {
+            ElMessage.error("驳回失败");
+          }
+        })
+      }else if (this.postId==18){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/rejected",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "驳回成功",
+            });
+          } else {
+            ElMessage.error("驳回失败");
+          }
+        })
+      }else {
+        ElMessage({
+          message: "权限不够",
+          type: "warning"
+        })
+      }
+    },
+
+    through3(id) {
+      this.pageInfo.auditFlowId = id;
+      this.axios({
+        method: 'post',
+        url: "http://localhost:8007/provider/undo",
+        data: this.pageInfo,
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.log(response);
+        if (response.data.info === 1111) {
+          ElMessage({
+            type: "success",
+            message: "撤销成功",
+          });
+          this.Movemy();
+        } else {
+          ElMessage.error("撤销失败");
+          this.Movemy();
+        }
+      }).catch(function (error) {
+        console.log('获取表单失败')
+        console.log(error)
+      })
     }
   },
 };

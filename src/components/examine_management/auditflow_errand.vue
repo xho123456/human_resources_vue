@@ -43,7 +43,7 @@
                   :icon="InfoFilled"
                   icon-color="red"
                   title="确定通过吗?"
-                  @confirm="through1()"
+                  @confirm="through1(scope.row)"
               >
                 <template #reference>
                   <el-button type="success" plain>通过</el-button>
@@ -55,7 +55,7 @@
                   :icon="InfoFilled"
                   icon-color="red"
                   title="确定驳回吗?"
-                  @confirm="through2()"
+                  @confirm="through2(scope.row)"
               >
                 <template #reference>
                   <el-button type="danger" plain>驳回</el-button>
@@ -198,7 +198,7 @@
 	                    :icon="InfoFilled"
 	                    icon-color="red"
 	                    title="确定撤销吗?"
-	                    @confirm="through1()"
+	                    @confirm="through3(scope.row.auditflowId)"
 	                >
 	                  <template #reference>
 	                    <el-button type="success" plain>撤销</el-button>
@@ -787,14 +787,160 @@ export default {
       return row[property] === value;
     },
     // 点击通过确认按钮触发
-    through1(){
-      alert(1)
+    through1(row){
+      if (this.postId==16){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/positive",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "通过成功",
+            });
+          } else{
+            ElMessage.error("通过失败");
+          }
+        })
+      }else if (this.postId==17){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/positive",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "通过成功",
+            });
+          } else {
+            ElMessage.error("通过失败");
+          }
+        })
+      }else if (this.postId==18){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/positiveend",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "通过成功",
+            });
+          } else {
+            ElMessage.error("通过失败");
+          }
+        })
+      }else {
+        ElMessage({
+          message: "权限不够",
+          type: "warning"
+        })
+      }
     },
     // 点击驳回确认按钮触发
-    through2(){
-      alert(1)
+    through2(row){
+      if (this.postId==16){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/rejected",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "驳回成功",
+            });
+          } else{
+            ElMessage.error("驳回失败");
+          }
+        })
+      }else if (this.postId==17){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/rejected",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "驳回成功",
+            });
+          } else {
+            ElMessage.error("驳回失败");
+          }
+        })
+      }else if (this.postId==18){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/rejected",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "驳回成功",
+            });
+          } else {
+            ElMessage.error("驳回失败");
+          }
+        })
+      }else {
+        ElMessage({
+          message: "权限不够",
+          type: "warning"
+        })
+      }
+    },
+
+    through3(id) {
+      this.pageInfo.auditFlowId = id;
+      this.axios({
+        method: 'post',
+        url: "http://localhost:8007/provider/undo",
+        data: this.pageInfo,
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.log(response);
+        if (response.data.info === 1111) {
+          ElMessage({
+            type: "success",
+            message: "撤销成功",
+          });
+          this.Movemy();
+        } else {
+          ElMessage.error("撤销失败");
+          this.Movemy();
+        }
+      }).catch(function (error) {
+        console.log('获取表单失败')
+        console.log(error)
+      })
     }
-  },
+
+
+    },
 };
 </script>
 

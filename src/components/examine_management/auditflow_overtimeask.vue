@@ -44,7 +44,7 @@
                   :icon="InfoFilled"
                   icon-color="red"
                   title="确定通过吗?"
-                  @confirm="through1()"
+                  @confirm="through1(scope.row)"
               >
                 <template #reference>
                   <el-button type="success" plain>通过</el-button>
@@ -56,7 +56,7 @@
                   :icon="InfoFilled"
                   icon-color="red"
                   title="确定驳回吗?"
-                  @confirm="through2()"
+                  @confirm="through2(scope.row)"
               >
                 <template #reference>
                   <el-button type="danger" plain>驳回</el-button>
@@ -212,7 +212,7 @@
                   :icon="InfoFilled"
                   icon-color="red"
                   title="确定撤销吗?"
-                  @confirm="through3()"
+                  @confirm="through3(scope.row.auditflowId)"
               >
                 <template #reference>
                   <el-button type="success" plain>撤销</el-button>
@@ -408,8 +408,8 @@ export default {
     this.resetDateFilter();
   },
   methods: {
-    positveme(like){
-      if(Object.prototype.toString.call(like)===Object.prototype.toString.call(null)) {
+    positveme(like) {
+      if (Object.prototype.toString.call(like) === Object.prototype.toString.call(null)) {
         var _this = this;
         _this.axios.get(
             "http://localhost:8007/provider/worker", {
@@ -420,27 +420,27 @@ export default {
           _this.tableData = response.data.data.records
           _this.pageInfo.total = response.data.data.total
         })
-      }else {
-        this.pageInfo.staffname1=like;
+      } else {
+        this.pageInfo.staffname1 = like;
         //alert(this.pageInfo.staffname1);
         this.axios({
-          method:'post',
-          url:"http://localhost:8007/provider/worker/likename",
-          data:this.pageInfo,
-          responseType:'json',
-          responseEncoding:'utf-8',
-        }).then((response)=>{
+          method: 'post',
+          url: "http://localhost:8007/provider/worker/likename",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
           console.log(response);
           this.tableData = response.data.data.records
-          this.pageInfo.total=response.data.data.total
-        }).catch(function (error){
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
           console.log('获取表单失败')
           console.log(error)
         })
       }
     },
-    positveed(like){
-      if(Object.prototype.toString.call(like)===Object.prototype.toString.call(null)) {
+    positveed(like) {
+      if (Object.prototype.toString.call(like) === Object.prototype.toString.call(null)) {
         var _this = this;
         _this.axios.get(
             "http://localhost:8007/provider/worker/positveed", {
@@ -452,19 +452,19 @@ export default {
             _this.pageInfo.total = response.data.data.total
           }
         })
-      }else {
-        this.pageInfo.staffname1=like;
+      } else {
+        this.pageInfo.staffname1 = like;
         this.axios({
-          method:'post',
-          url:"http://localhost:8007/provider/positveed/likename",
-          data:this.pageInfo,
-          responseType:'json',
-          responseEncoding:'utf-8',
-        }).then((response)=>{
+          method: 'post',
+          url: "http://localhost:8007/provider/positveed/likename",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
           console.log(response);
           this.tableData1 = response.data.data.records
-          this.pageInfo.total=response.data.data.total
-        }).catch(function (error){
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
           console.log('获取表单失败')
           console.log(error)
         })
@@ -479,9 +479,9 @@ export default {
         ElMessage("日期不能为空");
       } else {
         this.axios({
-          method:'post',
-          url:"http://localhost:8007/provider/worker/add",
-          data:{
+          method: 'post',
+          url: "http://localhost:8007/provider/worker/add",
+          data: {
             staffId: this.staffId,
             // 申请人
             staffName: this.staffName,
@@ -504,9 +504,9 @@ export default {
             // 审批标题
             auditflowTitle: this.staffName + "的" + this.become_1.type_1
           },
-          responseType:'json',
-          responseEncoding:'utf-8',
-        }).then((response)=>{
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
           console.log(response);
           if (response.data.info === 1111) {
             ElMessage({
@@ -520,7 +520,7 @@ export default {
             this.cancel_1();
             this.resetDateFilter();
           }
-        }).catch(function (error){
+        }).catch(function (error) {
           console.log('获取表单失败')
           console.log(error)
         })
@@ -559,18 +559,18 @@ export default {
     },
     // 我的申请
     resetDateFilter() {
-      this.pageInfo.staffid=this.staffId;
+      this.pageInfo.staffid = this.staffId;
       this.axios({
-        method:'post',
-        url:"http://localhost:8007/provider/worker/myid",
-        data:this.pageInfo,
-        responseType:'json',
-        responseEncoding:'utf-8',
-      }).then((response)=>{
+        method: 'post',
+        url: "http://localhost:8007/provider/worker/myid",
+        data: this.pageInfo,
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
         console.log(response);
         this.tableData2 = response.data.data.records
-        this.pageInfo.total=response.data.data.total
-      }).catch(function (error){
+        this.pageInfo.total = response.data.data.total
+      }).catch(function (error) {
         console.log('获取表单失败')
         console.log(error)
       })
@@ -584,50 +584,157 @@ export default {
       return row[property] === value;
     },
     // 点击通过确认按钮触发
-    through1(){
+    through1(row){
       if (this.postId==16){
-        alert("审批1")
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/positive",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "通过成功",
+            });
+          } else{
+            ElMessage.error("通过失败");
+          }
+        })
       }else if (this.postId==17){
-        alert("审批2")
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/positive",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "通过成功",
+            });
+          } else {
+            ElMessage.error("通过失败");
+          }
+        })
       }else if (this.postId==18){
-        alert("审批3")
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/positiveend",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "通过成功",
+            });
+          } else {
+            ElMessage.error("通过失败");
+          }
+        })
       }else {
         ElMessage({
-          message:"权限不够",
-          type:"warning"
+          message: "权限不够",
+          type: "warning"
         })
       }
-
     },
     // 点击驳回确认按钮触发
-    through2(){
-      if (this.postNmae==16){
-        alert("审批1")
-      }else if (this.postNmae==17){
-        alert("审批2")
-      }else if (this.postNmae==18){
-        alert("审批3")
+    through2(row){
+      if (this.postId==16){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/rejected",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "驳回成功",
+            });
+          } else{
+            ElMessage.error("驳回失败");
+          }
+        })
+      }else if (this.postId==17){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/rejected",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "驳回成功",
+            });
+          } else {
+            ElMessage.error("驳回失败");
+          }
+        })
+      }else if (this.postId==18){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/rejected",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "驳回成功",
+            });
+          } else {
+            ElMessage.error("驳回失败");
+          }
+        })
       }else {
         ElMessage({
-          message:"权限不够",
-          type:"warning"
+          message: "权限不够",
+          type: "warning"
         })
       }
     },
+
     // 点击撤销确认按钮触发
-    through3(){
-      if (this.postNmae==16){
-        alert("审批1"+this.staffId)
-      }else if (this.postNmae==17){
-        alert("审批2"+this.staffId)
-      }else if (this.postNmae==18){
-        alert("审批3"+this.staffId)
-      }else {
-        ElMessage({
-          message:"权限不够",
-          type:"warning"
-        })
-      }
+    through3(id) {
+      this.pageInfo.auditFlowId = id;
+      this.axios({
+        method: 'post',
+        url: "http://localhost:8007/provider/undo",
+        data: this.pageInfo,
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.log(response);
+        if (response.data.info === 1111) {
+          ElMessage({
+            type: "success",
+            message: "撤销成功",
+          });
+          this.salarymy();
+        } else {
+          ElMessage.error("撤销失败");
+          this.salarymy();
+        }
+      }).catch(function (error) {
+        console.log('获取表单失败')
+        console.log(error)
+      })
     }
   }
 };
