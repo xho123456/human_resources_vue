@@ -133,8 +133,9 @@
               <template #title>
                 <!--图标-->
                 <el-icon>
-                  <i-location/>
+                  <i-menu />
                 </el-icon>
+
                 <span>{{ item.MENU_NAME }}</span>
               </template>
 
@@ -167,9 +168,7 @@
             <el-menu-item :index="item.MENU_ROUTE +'' " :key="item.MENU_ID" v-if="item.MENU_LEAF==1"
                           @click="saveNavState(item.MENU_ROUTE)">
               <!--一级菜单模板区域-->
-              <el-icon>
-                <i-location/>
-              </el-icon>
+              <i class="iconfont" style="font-size: 21px">&#xe605;</i>
               <template #title>
                 <span>{{ item.MENU_NAME }}</span>
               </template>
@@ -322,6 +321,8 @@ export default {
         responseType: 'json',
         responseEncoding: 'utf-8',
       }).then((response) => {
+        console.error(1)
+        console.error(this.useralls.staffId)
         //查询当前新增的打卡记录
         this.querydkday();
       }).catch(function (error) {
@@ -332,7 +333,7 @@ export default {
     //打卡记录表新增一条数据后获取该数据的编号
     querydkday() {
       this.axios.get('http://localhost:8007/provider/works/querydkday?id=' + this.useralls.staffId, {}).then((res) => {
-        this.clockrecordId = res.data.data
+        this.clockrecordId= res.data.data
         this.addshens(); //考勤表数据添加
       }).catch(function (error) {
         console.log('获取列表失败')
@@ -568,9 +569,9 @@ a{
 <style scoped>
 @font-face {
   font-family: 'iconfont';  /* Project id 3164770 */
-  src: url('//at.alicdn.com/t/font_3164770_a73knuzzd3a.woff2?t=1645532288933') format('woff2'),
-  url('//at.alicdn.com/t/font_3164770_a73knuzzd3a.woff?t=1645532288933') format('woff'),
-  url('//at.alicdn.com/t/font_3164770_a73knuzzd3a.ttf?t=1645532288933') format('truetype');
+  src: url('//at.alicdn.com/t/font_3164770_64uqvrklcok.woff2?t=1646119318727') format('woff2'),
+  url('//at.alicdn.com/t/font_3164770_64uqvrklcok.woff?t=1646119318727') format('woff'),
+  url('//at.alicdn.com/t/font_3164770_64uqvrklcok.ttf?t=1646119318727') format('truetype');
 }
 
 .iconfont {
