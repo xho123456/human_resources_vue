@@ -436,7 +436,6 @@ created() {
           responseType:'json',
           responseEncoding:'utf-8',
         }).then(request=>{
-          console.log(request)
           if(request.data.data ==='该参保名称已存在'){
             ElMessage({
               type:'error',
@@ -474,7 +473,6 @@ created() {
           responseType:'json',
           responseEncoding:'utf-8',
         }).then(request=>{
-          console.log(request);
           if(request.data.data==='新增成功'){
             ElMessage({
               type:'success',

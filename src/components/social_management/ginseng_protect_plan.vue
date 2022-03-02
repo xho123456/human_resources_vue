@@ -209,7 +209,6 @@ export default {
         responseType:'json',
         responseEncoding:'utf-8',
       }).then((response)=>{
-        console.log(response)
         this.tableData = response.data.data.records
         this.pageInfo.total=response.data.data.total
       })

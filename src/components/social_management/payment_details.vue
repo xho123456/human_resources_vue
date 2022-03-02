@@ -40,9 +40,10 @@
           <el-button size="small"
             ><i class="iconfont">&#xe639;</i>批量导入</el-button
           >
-          <el-button size="small" type="danger" plain
-            ><i class="iconfont">&#xe608;</i>批量删除</el-button
-          >
+          <el-button size="small" type="danger" @click="deleteList()" plain v-bind:disabled="disableds">
+            <i class="iconfont">&#xe608;</i>
+            批量删除
+          </el-button>
 
           <!-- 搜索按钮 -->
           <div style="width: 68px;margin-top: 1px;" class="resume-operation">
@@ -144,7 +145,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -158,6 +158,15 @@ export default {
       label: 'deptName',
     }
     return {
+
+      //批量删除按钮是否被禁用
+      disableds:true,
+
+      //接收表格数据`
+      table:[],
+      //存放全选id
+      id:[],
+
       defaultProps,
       deptlists:[],
 
@@ -207,7 +216,51 @@ export default {
     this.getCurrentTime()
     this.detail()
   },
+
   methods:{
+    /**
+     * 批量删除
+     * @param val
+     */
+    deleteList(){
+      this.id=[];
+      for (let i=0 ; i<this.table.length ; i++){
+        this.id.push(this.table[i].insuredPaymentId)
+      }
+      this.axios({
+        method:'post',
+        url:"http://localhost:8007/provider/insuredPayment/delete",
+        data:{
+          insuredPaymentId:this.id,
+        },
+        responseType:'json',
+        responseEncoding:'utf-8',
+      }).then(response=>{
+        if(response.data.data === '删除成功'){
+          ElMessage({
+            type:'success',
+            message:'删除成功'
+          })
+          this.selectPaers()
+        }else{
+          ElMessage.error("删除失败")
+        }
+      })
+    },
+
+    //判断删除按钮是否可用
+    deletepl(val){
+      this.table=val
+      if(this.table != ''){
+        this.disableds=false
+      }else {
+        this.disableds=true
+      }
+    },
+
+    /**
+     * 是否要归档操作
+     */
     remove(){
       ElMessageBox.confirm(
           '是否将本月社保归档！！！',
@@ -287,10 +340,8 @@ export default {
         responseType:'json',
         responseEncoding:'utf-8',
       }).then((response)=>{
-
         this.tableData = response.data.data.records
         this.pageInfo.total=response.data.data.total
-
       })
     },
 
@@ -365,6 +416,7 @@ export default {
   margin-left: 80px;
   margin-bottom: -157px;
   float: left;
+  margin-top: 68px;
 
 }
 
