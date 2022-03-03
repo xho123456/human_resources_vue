@@ -411,7 +411,6 @@ export default ({
               this.dyccrs1=0
             }else {
               for (var i = 0; i < response.data.length; i++) {
-
                 this.dyccrs1 = response.data[0].time
 
               }
