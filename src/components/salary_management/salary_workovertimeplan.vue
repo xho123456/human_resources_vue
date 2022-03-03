@@ -7,7 +7,6 @@
 
           <el-tabs v-model="activeName" @tab-click="handleClick">
 
-            <!--  定薪 -->
             <el-drawer v-model="drawer" title="I am the title" :with-header="false">
               <h3 style="margin-top:1px;">加班方案编辑</h3><br/>
               <el-form :inline="true" ref="formInline" :model="formInline" :rules="rules" class="demo-form-inline">
@@ -53,8 +52,22 @@
                   </el-radio-group>
                 </el-form-item><br>
 
+                <el-form-item>
+                  <template #label>
+                    <div class="el-form-item__label">适用部门</div>
+                  </template>
+                  <el-select v-model="workscheme.deptId" placeholder="请选择部门">
+                    <el-option
+                        v-for="item in deptname"
+                        :key="item"
+                        :label="item.deptName"
+                        :value="item.deptId"
+                    >
 
+                    </el-option>
 
+                  </el-select>
+                </el-form-item>
 
 
                 <br>
@@ -96,6 +109,22 @@
                 <el-form-item label="备注：">
                   <el-input v-model="workscheme1.workschemeRemark"></el-input>
                 </el-form-item>
+                <el-form-item>
+                  <template #label>
+                    <div class="el-form-item__label">适用部门</div>
+                  </template>
+                  <el-select v-model="workscheme1.deptId" placeholder="请选择部门">
+                    <el-option
+                        v-for="item in deptname"
+                        :key="item"
+                        :label="item.deptName"
+                        :value="item.deptId"
+                    >
+
+                    </el-option>
+
+                  </el-select>
+                </el-form-item>
               </el-form>
               <template #footer>
       <span class="dialog-footer">
@@ -116,10 +145,10 @@
             <br />
             <br />
             <el-table :data="tableData" style="width: 100%">
-              <el-table-column fixed prop="workschemeId" label="加班方案编号" width="150" />
+              <el-table-column fixed prop="workschemeId" label="加班方案编号" width="120" />
               <el-table-column prop="workschemeName" label="加班方案名称" width="120" />
               <el-table-column prop="workschemeHolidayratio" label="节假日加班工资" width="120" />
-              <el-table-column prop="workschemeDayoffratio" label="休息日加班比例" width="150" />
+              <el-table-column prop="workschemeDayoffratio" label="休息日加班比例" width="120" />
               <el-table-column prop="workschemeWorkratio" label="工作日加班比例" width="120" />
 
               <el-table-column label="状态"   >
@@ -129,11 +158,12 @@
                 </template>
               </el-table-column>
               <el-table-column prop="workschemeRemark" label="备注" width="120" />
+
               <el-table-column prop="createdTime" label="创建时间" width="120" />
               <el-table-column prop="updatedTime" label="修改时间" width="120" />
               <el-table-column fixed="right" label="操作" width="120">
                 <template #default="scope">
-                  <el-button type="text" size="small" @click="drawer = true,workscheme={workschemeId:tableData[scope.$index].workschemeId,workschemeName:tableData[scope.$index].workschemeName,workschemeHolidayratio:tableData[scope.$index].workschemeHolidayratio,workschemeDayoffratio:tableData[scope.$index].workschemeDayoffratio,workschemeWorkratio:tableData[scope.$index].workschemeWorkratio,workschemeRemark:tableData[scope.$index].workschemeRemark,workschemeState:tableData[scope.$index].workschemeState},yz={Officialmoney:tableData[scope.$index].fixedwageOfficialmoney}">编辑 </el-button>
+                  <el-button type="text" size="small" @click="drawer = true,workscheme={workschemeId:tableData[scope.$index].workschemeId,workschemeName:tableData[scope.$index].workschemeName,workschemeHolidayratio:tableData[scope.$index].workschemeHolidayratio,workschemeDayoffratio:tableData[scope.$index].workschemeDayoffratio,workschemeWorkratio:tableData[scope.$index].workschemeWorkratio,deptId:tableData[scope.$index].deptId,workschemeRemark:tableData[scope.$index].workschemeRemark,workschemeState:tableData[scope.$index].workschemeState},yz={Officialmoney:tableData[scope.$index].fixedwageOfficialmoney}">编辑 </el-button>
                   <el-popconfirm @confirm="deleteworkscheme(tableData[scope.$index].workschemeId)"
                                  title="确认要删除此方案吗?">
                     <template #reference>
@@ -168,7 +198,6 @@
 
 
             <!-- 调薪查询 -->
-
 
 
           </el-tabs>
@@ -240,6 +269,7 @@ export default {
         workschemeWorkratio:"",//工作日加班比例
         workschemeState:"",//状态;0：启用，1：禁用
         workschemeRemark:"",//备注
+        deptId:"",
       },
       workscheme1:{
         workschemeId:"",//加班方案编号
@@ -249,6 +279,7 @@ export default {
         workschemeWorkratio:"",//工作日加班比例
         workschemeState:0,//状态;0：启用，1：禁用
         workschemeRemark:"",//备注
+        deptId:"",
       },
       options:[
         {
@@ -267,9 +298,33 @@ export default {
         takeEffectDate:'',//生效日期
         salaryState:0,//默认为不同意 0
       },
+      deptname:[
+
+      ],
     }
   },
   methods: {
+    //查询部门有那些
+    selectDept() {
+      this.axios
+          .get("http://localhost:8007/provider/chapost", {
+            params:this.options,
+          })
+          .then((response) => {
+            console.log("查询cao");
+            console.log(response.data);
+
+
+            this.deptname=response.data;
+            console.log(this.options);
+
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
     selectEndAuditflow1() {
       this.axios({
         method:'post',
@@ -324,7 +379,7 @@ export default {
       }).then(response=>{
         console.log(response)
         if(response.data==="成功"){
-          ElMessage.error("修改失败")
+          ElMessage.error("修改成功")
         }else{
           ElMessage({
             type:"success",
@@ -458,7 +513,7 @@ export default {
   },created() {
     this.selectEndAuditflow();
     this.selectEndAuditflow1();
-
+this.selectDept();
 
   },watch:{
     pageInfo:{
