@@ -300,19 +300,7 @@ export default {
       accumulation_tableData: [
 
       ],
-      //缴纳明细表数据
-      payment_details_table: [
-        {
-          defSchemeType: "养老保险", // 缴纳项目
-          cardinal_number: 999, // 基数
-          defSchemeFirmProp: "11%", // 公司缴纳比例
-          company_payment_money: 100, // 公司缴纳金额
-          defSchemeFirmSum: 200, // 公司固定金额
-          defSchemePersonProp: "6%", // 个人缴纳比例
-          personage_payment_money: 66, // 个人缴纳金额
-          defSchemePersonSum: 50, // 个人固定金额
-        },
-      ]
+
     };
   },
 created() {
@@ -353,6 +341,8 @@ created() {
               type:'success',
               message:'修改成功'
             })
+            this.$router.push({path:'/social/basic_setup/insured_scheme'})
+
           }else{
             ElMessage.error("修改失败")
           }
@@ -478,6 +468,7 @@ created() {
               type:'success',
               message:'新增成功'
             })
+            this.$router.push({path:'/social/basic_setup/insured_scheme'})
           }else{
             ElMessage.error("新增失败")
           }

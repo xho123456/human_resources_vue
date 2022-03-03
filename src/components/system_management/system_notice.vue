@@ -329,6 +329,7 @@ export default {
     //表格批量删除
     return {
       a:this.$store.state.userall,
+      noticePost:this.$store.state.userall.deptPostId,
       staffsId:this.$store.state.userall.staffId,
       staffsName:this.$store.state.userall.staffName,
       postName:this.$store.state.userall.postName,
@@ -425,7 +426,7 @@ export default {
         data:{
           staffId:this.staffsId,
           noticePeople:this.staffsName,
-          noticePost:this.postName,
+          noticePost:this.noticePost,
           noticeTitle:this.affiche.noticeTitle,
           noticeType:this.affiche.noticeType,
           noticeState:this.affiche.noticeState,

@@ -10,7 +10,7 @@
         <div class="inputs">
           <span style="margin-left: 23px">参保方案：</span>
           <el-select
-              @change="operation(),deletepl()"
+              @change="operation()"
               v-model="defInsuredName"
               style="width: 325px"
               size="small"
@@ -50,17 +50,17 @@
             <!-- 社保 -->
             <div class="form-div">
               <el-switch
-                  @change="adds(),deletepl()"
+                  @change="adds()"
                   v-model="valued"
                   class="form-seitch"
                   inline-prompt
                   active-text="开"
                   inactive-text="关"/>
-              <el-form :rules="rules">
-                <el-form-item prop="name">
+              <el-form>
+                <el-form-item prop="insuredPaymentNumber">
                   <span>社保基数：</span>
                   <el-input
-                      @input="deletepl()"
+
                       :disabled="open"
                       v-model="insured.insuredPaymentNumber"
                       size="small"
@@ -96,7 +96,7 @@
             <!-- 公积金 -->
             <div class="form-div">
               <el-switch
-                  @change="add(),deletepl()"
+                  @change="add()"
                   v-model="valueb"
                   class="form-seitch"
                   inline-prompt
@@ -104,11 +104,11 @@
                   inactive-text="关"
               />
 
-              <el-form :rules="rules">
+              <el-form >
                 <el-form-item prop="name">
                   公积金基数：
                   <el-input
-                      @input="deletepl()"
+
                       :disabled="enable"
                       v-model="fund.insuredPaymentNumber"
                       style="width: 244px"
@@ -148,8 +148,9 @@
         <!-- 表格按钮部分 -->
         <div class="mt-20 ml-20 mr-20" style="margin-bottom: 20px;">
           <!-- 提交按钮 -->
-          <el-button style="width: 80px" size="small" @click="deleteList()" type="primary" v-bind:disabled="submit">提交</el-button>
-
+          <el-button style="width: 80px" size="small" @click="deleteList()" type="primary"
+                     :disabled="this.defInsuredName !== '' & this.table.length>0 & this.insured.insuredPaymentNumber !=='' || this.table.length>0 & this.fund.insuredPaymentNumber !==''?'true':'disabled'">提交</el-button>
+          {{this.table.length}}
           <!-- 搜索按钮 -->
           <div style="width: 68px;margin-top: 1px;" class="resume-operation">
               <el-button size="mini" style="width: 68px;height: 29px" type="primary" @click="selectPaers()">
@@ -225,6 +226,9 @@
     </div>
 
   </div>
+
+
+
 </template>
 
 <script>
@@ -295,13 +299,7 @@ export default {
       //员工编号
       staffName:[],
 
-      // 表单验证
-      rules: {
-        name: [
-          {required: true, message: '请输入活动名称', trigger: 'blur'},
-          {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
-        ],
-      }
+
 
     };
   },
@@ -319,17 +317,17 @@ export default {
      * 判断提交按钮是否可用
      */
     deletepl(){
-      if(this.defInsuredName === ''|| this.table =='' || this.insured.insuredPaymentNumber ==='' && this.fund.insuredPaymentNumber ===''){
-          this.submit=true
-      }else if(this.defInsuredName !== '' && this.table !='' && this.insured.insuredPaymentNumber !=='' && this.fund.insuredPaymentNumber !==''){
-          this.submit=false
-      }else if(this.defInsuredName !== '' && this.table !='' && this.insured.insuredPaymentNumber !=='' || this.fund.insuredPaymentNumber ===''){
-          this.submit=false
-      }else if(this.defInsuredName !== '' && this.table !='' && this.fund.insuredPaymentNumber !=='' || this.insured.insuredPaymentNumber ===''){
-          this.submit=false
-      }else {
-          this.submit=true
-      }
+      // if(this.defInsuredName === ''|| this.table =='' || this.insured.insuredPaymentNumber ==='' && this.fund.insuredPaymentNumber ===''){
+      //     this.submit=true
+      // }else if(this.defInsuredName !== '' && this.table !='' && this.insured.insuredPaymentNumber !=='' && this.fund.insuredPaymentNumber !==''){
+      //     this.submit=false
+      // }else if(this.defInsuredName !== '' && this.table !='' && this.insured.insuredPaymentNumber !=='' || this.fund.insuredPaymentNumber ===''){
+      //     this.submit=false
+      // }else if(this.defInsuredName !== '' && this.table !='' && this.fund.insuredPaymentNumber !=='' || this.insured.insuredPaymentNumber ===''){
+      //     this.submit=false
+      // }else {
+      //     this.submit=true
+      // }
     },
     /**
      * 提交
@@ -358,6 +356,10 @@ export default {
           })
           this.selectPaers()
           this.staffName=[]
+          this.insured.insuredPaymentNumber=''
+          this.fund.insuredPaymentNumber=''
+          this.defInsuredName=''
+          // this.deletepl()
         }else{
           ElMessage.error("新增失败")
           this.staffName=[]
