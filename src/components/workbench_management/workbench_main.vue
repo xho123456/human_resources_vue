@@ -265,7 +265,7 @@
                       <div style="display: flex;justify-content: space-between;height: 28px;margin-top: 5px">
                         <span style="font-size: 12px">{{ scope.row.createdTime }}</span>
                         <el-button type="text" size="small"
-                                   @click="querygg(scope.row.noticeStaffId,scope.row.noticeMatter)">查看
+                                   @click="querygg(scope.row.noticeStaffId,scope.row.noticeMatter,scope.row.noticeTitle)">查看
                         </el-button>
                       </div>
                     </div>
@@ -277,12 +277,13 @@
                       <div style="display: flex;justify-content: space-between;height: 28px;margin-top: 5px">
                         <span style="font-size: 12px">{{ scope.row.createdTime }}</span>
                         <el-button type="text" size="small"
-                                   @click="querygg(scope.row.noticeStaffId,scope.row.noticeMatter)">查看
+                                   @click="querygg(scope.row.noticeStaffId,scope.row.noticeMatter,scope.row.noticeTitle)">查看
                         </el-button>
                       </div>
                     </div>
                   </template>
                 </el-table-column>
+
               </el-table>
             </div>
             <div class="demo-pagination-block">
@@ -304,7 +305,6 @@
       </div>
     </div>
   </div>
-
   <el-dialog
       v-model="dialogVisible"
       title="公告"
@@ -313,7 +313,7 @@
 
 
     <div style="min-height: 200px;border: 1px solid black">
-      <div style="text-align: center">公告标题</div>
+      <div style="text-align: center">{{content1}}</div>
       <div style="margin-top: 5px;padding: 10px"><span style="margin-left: 30px"></span>
         {{ content }}
       </div>
@@ -325,6 +325,7 @@
       </span>
     </template>
   </el-dialog>
+
 </template>
 
 <script>
@@ -376,6 +377,7 @@ export default {
       dialogVisible: false,
       //公告对话框详情
       content: '',
+      content1:'',
     }
   },
   created() {
@@ -537,7 +539,7 @@ export default {
     },
 
     //公告修改
-    querygg(id, row) {
+    querygg(id, row ,items) {
       this.axios({
         url: "http://localhost:8007/provider/workno/updatedno",
         method: "post",
@@ -550,6 +552,7 @@ export default {
       }).then((response) => {
         this.selectNumbero();//修改公告状态为已读
         this.content = row;
+        this.content1 =items;
         this.dialogVisible = true;//打开对话框
       }).catch(function (error) {
         console.log('获取列表失败')

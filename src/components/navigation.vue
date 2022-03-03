@@ -40,7 +40,7 @@
                           <div v-if="querydays.xafternoonClock!=null">
                             <span style="font-size: 12px;padding-right: 10px;">打卡时间</span>
                             <span style="font-size: 12px">{{ querydays.xafternoonClock }}</span>
-                            <p style="font-size: 12px">更新打卡时间</p>
+                            <p style="font-size: 12px"></p>
                           </div>
                           <div v-if="querydays!='' && querydays.smornResult!=null && querydays.xafternoonClock==null">
                             <el-button size="mini" type="primary" @click="isupdateddkx()">打卡</el-button>

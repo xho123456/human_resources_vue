@@ -133,7 +133,7 @@
                 </span>
                     <template #dropdown>
                       <el-dropdown-menu>
-                        <el-dropdown-item @click="opendrawly(scope.row.employmentId)">放弃录用</el-dropdown-item>
+<!--                        <el-dropdown-item @click="opendrawly(scope.row.employmentId)">放弃录用</el-dropdown-item>-->
                         <router-link :to="{path:this.biliz,query:{path:this.$route.query.path}}">
                             <el-dropdown-item >办理入职</el-dropdown-item>
                         </router-link>
@@ -461,6 +461,7 @@ export default {
             employmentId: this.ruleForm.ids,
             waiveReason: this.ruleForm.yuanying
       }).then((response) => {
+        console.error("来了1")
         console.log(response);
       }).catch(function (error) {
         console.log(error);
@@ -474,6 +475,7 @@ export default {
             remarks: this.ruleForm.figbz,
             resumeZt:11
           }).then((response) => {
+        console.error("来了")
         if (response.data.data === "成功") {
           ElMessage({
             message: "操作成功",
