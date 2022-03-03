@@ -6,10 +6,9 @@
 
       <!--月份选择框·-->
 
-
-        <el-button type="primary" style="margin-left: 16px" @click="insertStaffWag()"
-        >生成员工工资表
-        </el-button>
+      <el-button type="primary" style="margin-left: 16px" @click="insertStaffWag()"
+      >生成员工工资表
+      </el-button>
 
 
       <el-tab-pane label="未归档">
@@ -215,7 +214,6 @@ rs:'',
               } else {
            if(response.data[i].zt==1){
              this.zsgz.push(response.data[i].fixedwageOfficialmoney)
-             alert(response.data[0].zt)
            } else {
              this.zsgz.push(response.data[i].fixedwagePeriodmoney)
 
@@ -339,7 +337,6 @@ rs:'',
     //工资归档
     addguidan() {
       this.guidan.createdTime=this.nogz
-      alert(this.guidan.createdTime)
       this.axios.post("http://localhost:8007/provider/guidanwag", this.guidan)
           .then(response => {
             this.guidan.moneypigeonholeId = null

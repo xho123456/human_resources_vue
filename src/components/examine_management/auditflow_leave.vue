@@ -100,7 +100,7 @@
         &nbsp;
         <el-input
             v-model="input1"
-            placeholder="输入名称搜索nima"
+            placeholder="输入名称搜索"
             style="width: 130px"
         />
         &nbsp;
@@ -186,12 +186,6 @@
 	              :data="tableData2"
 	              style="width: 100%"
 	          >
-              <el-table
-                  ref="filterTable"
-                  row-key="date"
-                  :data="tableData2"
-                  style="width: 100%"
-              >
                 <el-table-column prop="auditflowdetaiDate" label="日期" width="140"/>
                 <el-table-column prop="auditflowId" label="审批编号" width="100"/>
                 <el-table-column prop="auditflowType" label="流程" width="100"/>
@@ -267,10 +261,10 @@
 	  >
 	    <el-form ref="form" :model="sick_1" label-width="120px">
 	      <el-form-item label="员工名称">
-	        <el-input v-model="sick_1.name" disabled></el-input>
+	        <el-input v-model="this.staffName" disabled></el-input>
 	      </el-form-item>
-	      <el-form-item label="部门名称">
-	        <el-input v-model="sick_1.dept" disabled></el-input>
+	      <el-form-item label="部门编号">
+	        <el-input v-model="this.deptId" disabled></el-input>
 	      </el-form-item>
 	  
 	      <el-form-item label="请假类型" >
@@ -328,7 +322,7 @@
 	            <div class="block">
 	              <el-avatar :size="50" :src="circleUrl"></el-avatar>
 	              <div class="sub-title" style="line-height: 10px">
-	                管理一号
+	                刘金科1
 	              </div>
 	            </div>
 	          </div>
@@ -338,7 +332,7 @@
 	            <div class="block">
 	              <el-avatar :size="50" :src="circleUrl"></el-avatar>
 	            </div>
-	            <div class="sub-title" style="line-height: 10px">管理二号</div>
+	            <div class="sub-title" style="line-height: 10px">刘金科2</div>
 	          </div>
 	        </el-col>
 	        <el-col :span="12">
@@ -346,7 +340,7 @@
 	            <div class="block">
 	              <el-avatar :size="50" :src="circleUrl"></el-avatar>
 	            </div>
-	            <div class="sub-title" style="line-height: 10px">管理三号</div>
+	            <div class="sub-title" style="line-height: 10px">刘金科3</div>
 	          </div>
 	        </el-col>
 	      </el-form-item>

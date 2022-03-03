@@ -13,13 +13,7 @@
         <br/>
 
 
-        <div class="container" >
-          <div class="block" style="margin-left: 1095px">
-            <span class="demonstration"></span>
 
-            <el-date-picker v-model="pageInfo.createdTime" type="month" placeholder="选择日" @change="jobSearch" value-format="YYYY-MM" format="YYYY-MM"></el-date-picker>
-          </div>
-          </div>
           <br/>
         <el-table :data="tableData" style="width: 100%">
           <el-table-column fixed prop="createdTime" label="月份" width="185" />
