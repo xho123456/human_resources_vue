@@ -244,11 +244,7 @@
 	            >
 	            </el-pagination>
 	          </div>
-	  	  
-	      <!--   弹出抽屉 -->
-	      <el-drawer v-model="drawer" title="I am the title" :with-header="false">
-	        <span>臭傻逼啊看什么看</span>
-	      </el-drawer>	  
+
 	  </el-tab-pane>
 	  
 	  <!-- 请假弹出框 -->
@@ -693,7 +689,7 @@ export default {
 	    } else {
         this.axios({
           method:'post',
-          url:"http://localhost:8007/provider/erection/add",
+          url:"http://localhost:8007/provider/leaver/add",
           data:{
             staffId: this.staffId,
             // 申请人
@@ -706,11 +702,11 @@ export default {
             // 请假事由
             leaveMatter: this.sick_1.remarks_1,
             // 请假开始日期
-            travelSDate: this.sick_1.date1,
+            leaveSDate: this.sick_1.date1,
             //请假结束日期
-            travelEDate:this.sick_1.date2,
+            leaveEDate:this.sick_1.date2,
             //请假总小时
-            travelTotalDate:this.sick_1.date2,
+            leaveTotalDate:this.sick_1.date3,
 
             // 审批人1
             staffName1: "刘金科1",
@@ -806,7 +802,7 @@ export default {
 	        });
 	        this.cancel_date3();
 	      } else {
-	        this.sick_1.date3 = hours + "小时";
+	        this.sick_1.date3 = hours;
 	      }
 	    }
 	  },

@@ -28,6 +28,7 @@
               controls-position="right"
               placeholder="最少基数"
               style="width: 100px"
+              onkeyup="this.value= this.value.match(/\d+(\.\d{0,2})?/) ? this.value.match(/\d+(\.\d{0,2})?/)[0] : ''"
           />
           &nbsp; ~ &nbsp;
           <el-input-number
@@ -145,8 +146,8 @@
         <div class="big-title">&nbsp;&nbsp;&nbsp;公积金方案设置</div>
 
         <!-- 公积金方案设置，表单 -->
-        <div class="input" style="margin-bottom: 22px;margin-left: 35px;">
-          <el-table :data="accumulation_tableData" max-height="236" style="width: 100%">
+        <div class="input" style="margin-bottom: 22px;margin-left: 51px;">
+          <el-table :data="accumulation_tableData" max-height="236" style="width: 93.7%">
             <!-- 缴纳项目 -->
             <el-table-column  label="缴纳项目" width="150">
               <template #default="scope">

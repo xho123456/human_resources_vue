@@ -614,7 +614,7 @@ export default {
         responseEncoding: 'utf-8',
       }).then((response) => {
         console.log(response);
-        this.tableData1 = response.data.data.records
+        this.tableData2 = response.data.data.records
         this.pageInfo.total = response.data.data.total
       }).catch(function (error) {
         console.log('获取表单失败')

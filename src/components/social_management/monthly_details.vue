@@ -31,18 +31,15 @@
         <!-- 表格按钮部分 -->
         <div class="mt-20 ml-20 mr-20">
           <!-- 按钮 -->
-          <el-button size="small"
-          ><i class="iconfont">&#xe6a2;</i>批量导出</el-button
-          >
-          <el-button size="small"
-          ><i class="iconfont">&#xe639;</i>批量导入</el-button
-          >
+          <el-button style="margin-left: 8px;" size="small" @click="derive()">
+            <i class="iconfont">&#xe6a2;</i>批量导出</el-button>
+
           <el-button size="small" type="danger" plain
           ><i class="iconfont">&#xe608;</i>批量删除</el-button>
 
           <!-- 搜索按钮 -->
-          <div style="width: 68px;margin-top: 1px;" class="resume-operation">
-            <el-button size="mini" style="width: 68px;height: 29px" type="primary" @click="pageInsuredArchive()">
+          <div style="width: 68px;margin-top: 1px;margin-right: 10px;" class="resume-operation">
+            <el-button size="mini" style="width: 68px;height: 29px;" type="primary" @click="pageInsuredArchive()">
               搜索
             </el-button>
           </div>
@@ -73,7 +70,7 @@
 
         <!-- 表格内容部分 -->
         <div class="sub-Content__primary">
-          <el-table :data="tableData" style="width: 100%;margin-top: 10px "
+          <el-table :data="tableData" style="width: 98.7%;margin-top: 10px;margin-left: 7px "
                     :header-cell-style="{textAlign: 'center',background:'#F0F0F0',color:'#6C6C6C'}"
                     :cell-style="{ textAlign: 'center' }"
                     :default-sort="{ prop: 'date', order: 'descending' }"
@@ -127,12 +124,12 @@
       </div>
     </div>
   </div>
-{{tableDatas}}
 </template>
 
 <script>
 import { ref, defineComponent } from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
+import {export_json_to_excel} from "../../excal/Export2Excel";
 
 export default {
   data() {
@@ -183,6 +180,51 @@ export default {
     this.detail()
   },
   methods:{
+    // 归档导出操作
+    derive() {
+      ElMessageBox.confirm(
+          '此操作将导出excel文件, 是否继续?',
+          '提示',
+          {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+          }
+      ).then(() => {
+        this.deriveExcel();
+      }).catch(() => {
+        ElMessage({
+          type: 'info',
+          message: '取消成功',
+        })
+      })
+    },
+    // 导出方法
+    deriveExcel() {
+      var _this = this;
+      let tHeader = ["姓名","参保方案","缴纳月份","社保个人缴费","社保企业缴费","公积金个人缴费","公积金企业缴费"]; // 导出的表头名
+      let filterVal = ["insArchiveStaffName", "insArchiveInsuredName", "resumeSex", "insArchiveSocialPersonPay", "insArchiveSocialFirmPay", "insArchiveFundPersonPay","insArchiveFundFirmPay"];//导出其prop属性
+      ElMessageBox.prompt('请输入文件名', '提示', {
+        confirmButtonText: '生成',
+        cancelButtonText: '取消',
+      }).then(({value}) => {
+        let data = _this.formatJson(filterVal, _this.tableData);
+        export_json_to_excel(tHeader, data, value);
+        ElMessage({
+          type: 'success',
+          message: `生成成功`,
+        })
+      })
+          .catch(() => {
+            ElMessage({
+              type: 'info',
+              message: '取消成功',
+            })
+          })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map((v) => filterVal.map((j) => v[j]));
+    },
 
     /**
      * 参保明细金额数据
@@ -288,7 +330,7 @@ export default {
 /* 月金额统计 */
 .month_sum {
   display: inline-block;
-  margin-left: 402px;
+  margin-left: 393px;
   width: 861px;
   height: 159px;
   margin-top: 32px;
