@@ -151,7 +151,7 @@
           <!-- 提交按钮 -->
           <el-button style="width: 80px" size="small" @click="deleteList()" type="primary"
                      :disabled="this.defInsuredName !== '' & this.table.length>0 & this.insured.insuredPaymentNumber !=='' || this.table.length>0 & this.fund.insuredPaymentNumber !==''?'true':'disabled'">提交</el-button>
-          {{this.table.length}}
+
           <!-- 搜索按钮 -->
           <div style="width: 68px;margin-top: 1px;" class="resume-operation">
               <el-button size="mini" style="width: 68px;height: 29px" type="primary" @click="selectPaers()">

@@ -162,7 +162,7 @@
       </el-drawer>
       <!-- 已办申请页面 -->
       <el-tab-pane label="已办申请">
-        <el-button @click="quited(null)">重置日期过滤</el-button>
+        <el-button @click="quited(null)">重置</el-button>
         &nbsp;
         <el-input
           v-model="input1"
@@ -231,7 +231,7 @@
 	  <!--       我的申请页面:离职 -->
 	        <el-tab-pane label="我的申请">
 	  
-	                <el-button @click="quitmy()">重置日期过滤</el-button>
+	                <el-button @click="quitmy()">重置</el-button>
 	                <el-button @click="quit = true" >发起申请</el-button>
 	                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

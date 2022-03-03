@@ -117,8 +117,7 @@
       </el-pagination>
     </div>
 
-{{sum}}
-    {{sum1}}
+
   </div>
 <!--  </div>-->
 </template>

@@ -5,17 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7782e118-91e8-4d6c-900a-0a4856553f34" name="Changes" comment="完善">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2022_2_24_21_28_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2022_2_24_21_28__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/begin/rest/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/begin/rest/Login.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/social_management/insurance_details.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/insurance_details.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/social_management/insurance_record .vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/insurance_record .vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/social_management/insured_management.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/insured_management.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/social_management/monthly_details.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/monthly_details.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/social_management/monthly_report.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/monthly_report.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/social_management/new_amend_scheme.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/new_amend_scheme.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/social_management/payment_details.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/payment_details.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/system_management/system_notice.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/system_management/system_notice.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,14 +58,7 @@
       <option name="project" value="LOCAL" />
       <updated>1645277258669</updated>
     </task>
-    <task id="LOCAL-00002" summary="完善">
-      <created>1646279090124</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1646279090124</updated>
-    </task>
-    <option name="localTasksCounter" value="3" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
