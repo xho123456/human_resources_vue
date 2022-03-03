@@ -193,12 +193,6 @@
 <!--	          &nbsp;-->
 <!--	          <el-button type="success" plain>搜索</el-button>-->
 	          <!-- 表格   -->
-	          <el-table
-	              ref="filterTable"
-	              row-key="date"
-	              :data="tableData2"
-	              style="width: 100%"
-	          >
               <el-table
                   ref="filterTable"
                   row-key="date"
@@ -277,7 +271,7 @@
 	  >
 	    <el-form ref="form" :model="punch_1" label-width="120px">
 	      <el-form-item label="员工名称">
-	        <el-input v-model="punch_1.name" disabled></el-input>
+	        <el-input v-model="this.staffName" disabled></el-input>
 	      </el-form-item>
 	      <el-form-item label="补打卡类型">
 	        <el-select v-model="punch_1.type_1" placeholder="选择类型">
@@ -310,7 +304,7 @@
 	            <div class="block">
 	              <el-avatar :size="50" :src="circleUrl"></el-avatar>
 	              <div class="sub-title" style="line-height: 10px">
-	                管理一号
+	                刘金科1
 	              </div>
 	            </div>
 	          </div>
@@ -320,7 +314,7 @@
 	            <div class="block">
 	              <el-avatar :size="50" :src="circleUrl"></el-avatar>
 	            </div>
-	            <div class="sub-title" style="line-height: 10px">管理二号</div>
+	            <div class="sub-title" style="line-height: 10px">刘金科2</div>
 	          </div>
 	        </el-col>
 	        <el-col :span="12">
@@ -328,7 +322,7 @@
 	            <div class="block">
 	              <el-avatar :size="50" :src="circleUrl"></el-avatar>
 	            </div>
-	            <div class="sub-title" style="line-height: 10px">管理三号</div>
+	            <div class="sub-title" style="line-height: 10px">刘金科3</div>
 	          </div>
 	        </el-col>
 	      </el-form-item>

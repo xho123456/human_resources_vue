@@ -248,10 +248,10 @@
 	  >
 	    <el-form ref="form" :model="travel_1" label-width="120px">
 	      <el-form-item label="员工名称">
-	        <el-input v-model="travel_1.name" disabled></el-input>
+	        <el-input v-model="this.staffName" disabled></el-input>
 	      </el-form-item>
-	      <el-form-item label="部门名称">
-	        <el-input v-model="travel_1.dept" disabled></el-input>
+	      <el-form-item label="部门编号">
+	        <el-input v-model="this.deptId" disabled></el-input>
 	      </el-form-item>
 	      <!-- 出差地址选择器 -->
 	      <el-form-item label="出差地址">
@@ -304,7 +304,7 @@
 	            <div class="block">
 	              <el-avatar :size="50" :src="circleUrl"></el-avatar>
 	              <div class="sub-title" style="line-height: 10px">
-	                管理一号
+	                刘金科1
 	              </div>
 	            </div>
 	          </div>
@@ -314,7 +314,7 @@
 	            <div class="block">
 	              <el-avatar :size="50" :src="circleUrl"></el-avatar>
 	            </div>
-	            <div class="sub-title" style="line-height: 10px">管理二号</div>
+	            <div class="sub-title" style="line-height: 10px">刘金科2</div>
 	          </div>
 	        </el-col>
 	        <el-col :span="12">
@@ -322,7 +322,7 @@
 	            <div class="block">
 	              <el-avatar :size="50" :src="circleUrl"></el-avatar>
 	            </div>
-	            <div class="sub-title" style="line-height: 10px">管理三号</div>
+	            <div class="sub-title" style="line-height: 10px">刘金科3</div>
 	          </div>
 	        </el-col>
 	      </el-form-item>
