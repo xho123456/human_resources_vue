@@ -8,7 +8,7 @@
       <div class="payment_details">
         <!-- 个人信息 -->
         <div style="float: left">
-          <el-image class="picture" :src="url"></el-image>
+          <el-image class="picture" :src="useralls.staffPicture"></el-image>
         </div>
         <div style="margin-top: 20px">
           姓名：{{datas.staffName}} <br />
@@ -76,6 +76,7 @@ import {ElMessage, ElMessageBox} from "element-plus";
 export default {
   setup() {
     return {
+
       // /* 时间线 */
       activities: [
         {
@@ -110,6 +111,8 @@ export default {
   },
   data() {
     return {
+      //当前登录用户消息
+      useralls: this.$store.state.userall,
       datas:{
         staffName:"",
         deptName:"",
