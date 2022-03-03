@@ -400,8 +400,8 @@ export default ({
           type: 'value',
 
           min: 0,
-          max: 250,
-          interval: 50,
+          max: 25000,
+          interval: 5000,
           axisLabel: {
             formatter: '{value} 元'
           }
@@ -716,7 +716,33 @@ export default ({
 
         this.drawLine();
         this.drawLine1();
+
+
+      },
+      deep: true,
+    },
+    qjrs1: {
+      //对于深层对象的属性，watch不可达，因此对数组监控需要将数组先清空，再添加数据
+      handler: function () {
+
+        this.drawLine1();
+
+
+      },
+      deep: true,
+    },
+    qjrs2: {
+      //对于深层对象的属性，watch不可达，因此对数组监控需要将数组先清空，再添加数据
+      handler: function () {
+
         this.drawLine2();
+      },
+      deep: true,
+    },
+    qjrs3: {
+      //对于深层对象的属性，watch不可达，因此对数组监控需要将数组先清空，再添加数据
+      handler: function () {
+
         this.drawLine3();
       },
       deep: true,

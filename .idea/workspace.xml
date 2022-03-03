@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="7782e118-91e8-4d6c-900a-0a4856553f34" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/salary_management/salary_workovertimeplan.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/salary_management/salary_workovertimeplan.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/statistics_management/statistics_analysis2.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/statistics_management/statistics_analysis2.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/statistics_management/statistics_analysis3.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/statistics_management/statistics_analysis3.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
