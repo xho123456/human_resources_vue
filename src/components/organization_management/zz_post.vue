@@ -141,8 +141,10 @@
                   background
               >
               </el-pagination>
+              {{options}}
             </div>
           </div>
+
         </div>
 
       </div>
@@ -241,7 +243,7 @@ export default {
     },//查询部门有那些
     selectDeptPost() {
       this.axios
-          .get("http://localhost:8007/provider/chapost", {
+          .get("http://localhost:8007/provider/chabudept", {
             params:this.options,
           })
           .then((response) => {

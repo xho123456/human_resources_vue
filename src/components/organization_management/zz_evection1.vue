@@ -137,8 +137,7 @@
           </el-select>
 
         </el-form-item>
-        部门号{{this.dept.menuPid}}
-       员工 {{this.dept.staffId }}
+
       </el-form>
       <template #footer>
       <span class="dialog-footer">
