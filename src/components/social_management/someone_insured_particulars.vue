@@ -11,12 +11,7 @@
             </template>
             <router-view ></router-view>
           </el-tab-pane>
-          <el-tab-pane label="参保记录">
-            <template #label>
-              <router-link :to="{path:this.path2,query:{path:this.$route.query.path,ids:this.idss}}" >参保记录</router-link>
-            </template>
-            <router-view />
-          </el-tab-pane>
+
         </el-tabs>
       </div>
     </div>
@@ -31,9 +26,9 @@ export default {
   data() {
     return {
       id:this.$route.query.id,
-      idss:this.$route.query.name,
+
       path1:"/social/social_payment/someone_insured_particulars/someone_insured_details",
-      path2:"/social/social_payment/someone_insured_particulars/someone_insured_record",
+
       pageInfo: {
         // 分页参数
         currentPage: 1, //当前页

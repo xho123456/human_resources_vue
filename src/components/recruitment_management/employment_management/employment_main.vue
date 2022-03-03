@@ -14,7 +14,7 @@
         </div>
       </div>
       <!--内容-->
-      <div class="j-card-body ">
+      <div class="j-card-body " style="min-height: 590px">
         <div class="j-tabs">
           <ul>
             <li @click="liback(1)">

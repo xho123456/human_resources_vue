@@ -15,49 +15,49 @@
         </div>
         <div style="width: 100%;">
           <div class="day-div1">
-             <ul style="margin-top: 20px">
-               <li v-for="items in daytimes">
-                 <div style="display: flex;align-items: center">
-                   <div style="width: 80%;">
-                     <div style="height: 45px;font-weight: bold;font-size: 20px">
-                       {{items.years}}出勤统计
-<!--                       <el-tag class="ml-2" type="danger" size="small">已归档</el-tag>-->
-                     </div>
-                     <div style="padding-bottom: 5px;">
-                       <el-tag class="ml-2" type="danger" size="small">已归档</el-tag>
-<!--                       <el-row :gutter="20">-->
-<!--                         <el-col :span="3">-->
-<!--                           <span>全勤员工：0</span>-->
-<!--                         </el-col>-->
-<!--                         <el-col :span="3">-->
-<!--                           <span>迟到率：0%</span>-->
-<!--                         </el-col>-->
-<!--                         <el-col :span="3">-->
-<!--                           <span>早退率：0%</span>-->
-<!--                         </el-col>-->
-<!--                         <el-col :span="3">-->
-<!--                           <span>缺勤率：0%</span>-->
-<!--                         </el-col>-->
-<!--                         <el-col :span="4">-->
-<!--                           <span>总请假天数：0</span>-->
-<!--                         </el-col>-->
-<!--                         <el-col :span="3">-->
-<!--                           <span>总加班小时：0</span>-->
-<!--                         </el-col>-->
-<!--                       </el-row>-->
-                     </div>
-                   </div>
-                   <div style="width: 20%;text-align: center">
+            <ul style="margin-top: 20px">
+              <li v-for="items in daytimes">
+                <div style="display: flex;align-items: center">
+                  <div style="width: 80%;">
+                    <div style="height: 45px;font-weight: bold;font-size: 20px">
+                      {{items.years}}出勤统计
+                      <!--                       <el-tag class="ml-2" type="danger" size="small">已归档</el-tag>-->
+                    </div>
+                    <div style="padding-bottom: 5px;">
+                      <el-tag class="ml-2" type="danger" size="small">已归档</el-tag>
+                      <!--                       <el-row :gutter="20">-->
+                      <!--                         <el-col :span="3">-->
+                      <!--                           <span>全勤员工：0</span>-->
+                      <!--                         </el-col>-->
+                      <!--                         <el-col :span="3">-->
+                      <!--                           <span>迟到率：0%</span>-->
+                      <!--                         </el-col>-->
+                      <!--                         <el-col :span="3">-->
+                      <!--                           <span>早退率：0%</span>-->
+                      <!--                         </el-col>-->
+                      <!--                         <el-col :span="3">-->
+                      <!--                           <span>缺勤率：0%</span>-->
+                      <!--                         </el-col>-->
+                      <!--                         <el-col :span="4">-->
+                      <!--                           <span>总请假天数：0</span>-->
+                      <!--                         </el-col>-->
+                      <!--                         <el-col :span="3">-->
+                      <!--                           <span>总加班小时：0</span>-->
+                      <!--                         </el-col>-->
+                      <!--                       </el-row>-->
+                    </div>
+                  </div>
+                  <div style="width: 20%;text-align: center">
                      <span>
                        <router-link :to="{path:this.guidang,query:{path:this.$route.query.path,daymoth:items.years}}">
                           <el-button type="primary" style="font-size: 15px" size="small">查看</el-button>
                        </router-link>
                      </span>
-                   </div>
-                 </div>
+                  </div>
+                </div>
 
-               </li>
-             </ul>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -89,7 +89,7 @@ export default {
         responseEncoding: 'utf-8',
       }).then((response) => {
         console.error(response.data.data)
-         this.daytimes = response.data.data;
+        this.daytimes = response.data.data;
       }).catch(function (error) {
         console.log('获取列表失败')
         console.log(error);

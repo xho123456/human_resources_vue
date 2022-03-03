@@ -83,7 +83,7 @@
 					</span>
           <span>
 						<span><i class="iconfont sass-iconfont">&#xe632;</i></span>
-						<span class="span-tims">王鑫科技股份有限公司</span>
+						<span class="span-tims">人力资源管理系统</span>
 					</span>
         </div>
       </div>
@@ -133,7 +133,7 @@
               <template #title>
                 <!--图标-->
                 <el-icon>
-                  <i-menu />
+                  <i-menu/>
                 </el-icon>
 
                 <span>{{ item.MENU_NAME }}</span>
@@ -168,7 +168,7 @@
             <el-menu-item :index="item.MENU_ROUTE +'' " :key="item.MENU_ID" v-if="item.MENU_LEAF==1"
                           @click="saveNavState(item.MENU_ROUTE)">
               <!--一级菜单模板区域-->
-              <i class="iconfont" style="font-size: 21px">&#xe605;</i>
+              <el-icon><i-fold /></el-icon>
               <template #title>
                 <span>{{ item.MENU_NAME }}</span>
               </template>
@@ -638,7 +638,7 @@ a{
 
 .span-tims {
   margin-left: 10px;
-  font-size: 22px;
+  font-size: 18px;
 }
 
 img {

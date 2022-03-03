@@ -31,7 +31,12 @@
       <!-- 右 -->
       <div class="payment_project">
         <!-- 缴纳明细表 -->
-        <el-table :data="tableData" size="mini">
+        <el-table :data="tableData" size="mini"
+                  :header-cell-style="{textAlign: 'center',background:'#F0F0F0',color:'#6C6C6C'}"
+                  :cell-style="{ textAlign: 'center' }"
+                  :default-sort="{ prop: 'date', order: 'descending' }"
+                  @selection-change="deletepl"
+        >
           <el-table-column prop="defSchemeType" label="缴纳项目" />
 
           <el-table-column label="基数">
@@ -78,7 +83,7 @@ export default {
           timestamp: "2018-04-12 20:46",
           size: "large",
           type: "primary",
-          //   icon: MoreFilled,
+
         },
         {
           content: "Custom color",
@@ -356,7 +361,7 @@ export default {
         responseType:'json',
         responseEncoding:'utf-8',
       }).then((response)=>{
-        console.error(response.data)
+
         this.datas.staffName=response.data.data.staffName
         this.datas.deptName=response.data.data.deptName
         this.datas.postName=response.data.data.postName

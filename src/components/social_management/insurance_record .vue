@@ -40,7 +40,7 @@
         <el-table-column prop="insArchiveFundNumber" label="公积金基数" />
         <el-table-column prop="cz" label="操作">
           <template #default="scope">
-            <router-link :to="{path:this.paths,query:{path:this.$route.query.path}}" >
+            <router-link :to="{path:this.paths,query:{path:this.$route.query.path,ids:scope.row.insArchiveId}}" >
               <el-button type="text" size="small">查看 </el-button>
             </router-link>
           </template>

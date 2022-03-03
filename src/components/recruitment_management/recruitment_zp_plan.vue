@@ -14,7 +14,7 @@
         </div>
       </div>
       <!--内容-->
-			<div class="j-card-body ">
+			<div class="j-card-body" style="min-height: 570px;">
 
 				<!-- 表格按钮部分 -->
 				<div class="mt-20 ml-20 mr-20">
@@ -245,16 +245,17 @@
 						</el-table-column>
 					</el-table>
 				</div>
+        <!-- 分页插件 -->
+        <div class="demo-pagination-block">
+          <!-- <span class="demonstration">All combined</span> -->
+          <el-pagination v-model:currentPage="pageInfo.currenPage" :page-sizes="[1,5,7]"
+                         v-model:page-size="pageInfo.pagesize" :default-page-size="pageInfo.pagesize"
+                         layout="total, sizes, prev, pager, next, jumper" :total="pageInfo.total" :pager-count="5" background
+                         @size-change="getrecrselectAll" @current-change="getrecrselectAll" prev-text="上一页" next-text="下一页">
+          </el-pagination>
+        </div>
 			</div>
-			<!-- 分页插件 -->
-			<div class="demo-pagination-block">
-				<!-- <span class="demonstration">All combined</span> -->
-				<el-pagination v-model:currentPage="pageInfo.currenPage" :page-sizes="[1,5,7]"
-					v-model:page-size="pageInfo.pagesize" :default-page-size="pageInfo.pagesize"
-					layout="total, sizes, prev, pager, next, jumper" :total="pageInfo.total" :pager-count="5" background
-					@size-change="getrecrselectAll" @current-change="getrecrselectAll" prev-text="上一页" next-text="下一页">
-				</el-pagination>
-			</div>
+
 		</div>
 	</div>
 
