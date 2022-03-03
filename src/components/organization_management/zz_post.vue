@@ -141,7 +141,7 @@
                   background
               >
               </el-pagination>
-              {{options}}
+
             </div>
           </div>
 

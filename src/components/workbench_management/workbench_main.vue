@@ -15,7 +15,7 @@
 							|
 							王鑫科技
 							-
-							市场部</span>
+							{{useralls.deptName}}</span>
           </div>
         </div>
       </div>
@@ -324,7 +324,7 @@
         <el-button size="small" @click="dialogVisible = false">关闭</el-button>
       </span>
     </template>
-  </el-dialog>{{useralls}}
+  </el-dialog>
 </template>
 
 <script>
