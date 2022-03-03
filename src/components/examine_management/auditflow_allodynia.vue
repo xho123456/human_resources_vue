@@ -237,18 +237,18 @@
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
-        <el-input
-            v-model="input"
-            placeholder="输入名称搜索"
-            style="width: 130px"
-        />
-        &nbsp;
-        <el-button type="success" plain>搜索</el-button>
+<!--        <el-input-->
+<!--            v-model="input"-->
+<!--            placeholder="输入名称搜索"-->
+<!--            style="width: 130px"-->
+<!--        />-->
+<!--        &nbsp;-->
+<!--        <el-button type="success" plain>搜索</el-button>-->
         <!-- 表格   -->
         <el-table
             ref="filterTable"
             row-key="date"
-            :data="tableData"
+            :data="tableData2"
             style="width: 100%"
         >
          <el-table-column prop="auditflowdetaiDate" label="日期" width="140"/>

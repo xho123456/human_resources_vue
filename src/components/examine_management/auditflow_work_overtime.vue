@@ -256,13 +256,13 @@
 	                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	  
 	  
-	                <el-input
-	                    v-model="input"
-	                    placeholder="输入名称搜索"
-	                    style="width: 130px"
-	                />
-	                &nbsp;
-	                <el-button type="success" plain>搜索</el-button>
+<!--	                <el-input-->
+<!--	                    v-model="input"-->
+<!--	                    placeholder="输入名称搜索"-->
+<!--	                    style="width: 130px"-->
+<!--	                />-->
+<!--	                &nbsp;-->
+<!--	                <el-button type="success" plain>搜索</el-button>-->
 	                <!-- 表格   -->
 	                <el-table
 	                    ref="filterTable"
@@ -750,7 +750,7 @@ export default {
             //加班结束日期
             overtimeaskEDate:this.overtime_1.date2,
             //加班总小时
-            overtimeaskTotalDate:this.overtime_1.date2,
+            overtimeaskTotalDate:this.overtime_1.date3,
 
             // 审批人1
             staffName1: "刘金科1",
@@ -759,7 +759,7 @@ export default {
             // 审批人3
             staffName3: "刘金科3",
             // 审批类型
-            auditflowType: "出差",
+            auditflowType: "加班",
             // 审批标题
             auditflowTitle: this.staffName + "的" + this.overtime_1.type_1
           },
@@ -877,7 +877,7 @@ export default {
 	          });
 	          this.cancel_date();
 	        } else {
-	          this.overtime_1.date3 = hours + "小时";
+	          this.overtime_1.date3 = hours ;
 	        }
 	      } else if (jbtype === "节假日加班") {
 	        if (hours > 8) {
