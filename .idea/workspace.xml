@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7782e118-91e8-4d6c-900a-0a4856553f34" name="Changes" comment="Changes" />
+    <list default="true" id="7782e118-91e8-4d6c-900a-0a4856553f34" name="Changes" comment="Changes">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/statistics_management/statistics_analysis1.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/statistics_management/statistics_analysis1.vue" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -78,14 +81,7 @@
       <option name="project" value="LOCAL" />
       <updated>1646273348336</updated>
     </task>
-    <task id="LOCAL-00004" summary="Changes">
-      <created>1646278719823</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1646278719823</updated>
-    </task>
-    <option name="localTasksCounter" value="5" />
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
