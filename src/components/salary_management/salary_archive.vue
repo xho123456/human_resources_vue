@@ -7,6 +7,9 @@
       <!--月份选择框·-->
 
 
+        <el-button type="primary" style="margin-left: 16px" @click="insertStaffWag()"
+        >生成员工工资表
+        </el-button>
 
 
       <el-tab-pane label="未归档">
