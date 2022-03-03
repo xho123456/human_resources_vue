@@ -9,118 +9,184 @@
             <div class="my-span1" style="display: flex;">
               <i class="iconfont" style="font-size: 20px">&#xe7d9;</i>
             </div>
-            <div class="my-span2">班次设置</div>
+            <div class="my-span2">部门详情</div>
           </div>
         </div>
 
         <div style="width: 100%;">
           <div style="padding: 10px 20px;min-height: 570px;">
             <div style="display: flex; justify-content: space-between;padding-left: 0;">
-              <router-link :to="{path:this.addclass,query:{path:this.$route.query.path}}">
-                <el-button type="primary" size="small">
-                  <i class="iconfont" style="font-size: 12px">&#xe62d;</i>
-                  新增
-                </el-button>
-              </router-link>
+
+              <el-button type="primary" style="margin-left: 16px" @click="dialogVisible=true"
+              >新增
+              </el-button>
+
               <el-input
-                  v-model="pageInfo.classesName"
+                  v-model="pageInfo.deptName"
                   placeholder="搜索"
                   class="input-with-select"
                   size="small"
-                  style="width: 300px; float: right"
+                  style="width: 250px; float: right;height: 40px;"
               >
                 <template #append>
-                  <el-button @click="queryAllPage()">搜索</el-button>
+                  <el-button style="height: 40px;" @click="selectEndAuditflow111() ">搜索</el-button>
+                  <el-button style="height: 40px;" @click="selectEndAuditflow() "></el-button>
                 </template>
+
               </el-input>
             </div>
-            <div style="margin-top: 10px">
-              <el-table :data="tableData" :border="true" style="width: 100%; font-size: 12px;"
-                        :header-cell-style="{background:'#eef1f6',color:'#606266',textAlign: 'center'}">
-                <el-table-column prop="classesName" label="班次名称" width="150"/>
-                <el-table-column prop="classesSd" label="班次时段" width="150"/>
-                <el-table-column label="工作时间范围(早)">
-                  <template #default="scope">
-                    上班{{ scope.row.classesTimeones }} - 下班{{ scope.row.classesTimeonex }}
-                  </template>
-                </el-table-column>
-                <el-table-column label="工作时间范围(午)">
-                  <template #default="scope">
-                    上班{{ scope.row.classesTimetwos }} - 下班{{ scope.row.classesTimetwox }}
-                  </template>
-                </el-table-column>
-                <el-table-column label="休息时间范围">
-                  <template #default="scope">
-                    {{ scope.row.classesXxtimeState }} - {{ scope.row.classesXxtimeEnd }}
-                  </template>
-                </el-table-column>
-                <el-table-column label="打卡时间范围" width="150">
-                  <template #default="scope">
-                    {{ scope.row.dkState }} - {{ scope.row.dkEnd }}
-                  </template>
-                </el-table-column>
+            <div class="y">
+              <el-table :data="tableData"
+                        v-if="refreshTable"
+                        row-key="deptId"
+                        :default-expand-all="expands"
+                        @expand-change="expands=true"
+                        stripe style="width: 100% ;"
+                        :header-cell-style="{textAlign: 'center',background:'#f8f8f9',color:'#6C6C6C'}"
+                        :cell-style="{textAlign: 'center'}"
+              >
+                <el-table-column prop="deptName" label="部门名称"/>
+                <el-table-column prop="staffName" label="部门负责人"/>
+                <el-table-column prop="createdTime" label="创建时间"/>
+                <el-table-column prop="updatedTime" label="修改时间"/>
+                <el-table-column prop="deptState" label="状态">
 
-                <el-table-column label="状态" width="70">
                   <template #default="scope">
-                    <el-switch
-                        v-model="ants1"
-                        class="ml-2"
-                        active-color="#13ce66"
-                        inactive-color="#ff4949"
-                        :disabled="true"
-                        v-if="scope.row.classesstate==1"
-                    />
-                    <el-switch
-                        v-model="ants2"
-                        class="ml-2"
-                        active-color="#13ce66"
-                        inactive-color="#ff4949"
-                        :disabled="true"
-                        v-if="scope.row.classesstate==0"
-                    />
+
+                    <el-button v-if="scope.row.deptState==0" size="mini" round type="primary" plain>启用</el-button>
+
+                    <el-button v-if="scope.row.deptState==1" size="mini" round type="danger" plain>禁用</el-button>
                   </template>
                 </el-table-column>
 
-                <el-table-column label="操作" width="200px">
+<!--                <el-table-column prop="createdTime" label="详情">
+
+                  <el-popover
+                      placement="bottom"
+                      title="部门信息"
+                      :width="100"
+                      trigger="click"
+                  >
+                    <span>部门负责人:微信</span><br><br>
+                    <span>部门总人数:18</span>
+                    <template #reference>
+                      <span style="color:#409eff">查看详情</span>
+                    </template>
+
+                  </el-popover>
+
+                </el-table-column>-->
+
+                <el-table-column prop="operate" label="操作" >
                   <template #default="scope">
-                    <router-link
-                        :to="{path:this.updateclass,query:{path:this.$route.query.path,id:scope.row.classesId}}">
-                      <el-button type="text" size="mini" style="font-size: 11px;padding-right: 10px">编辑</el-button>
-                    </router-link>
-
-                    <el-button type="text" size="mini" style="font-size: 11px;" @click="opens(scope.row.classesId)" v-if="scope.row.classesstate==0">启用</el-button>
-                    <el-button type="text" size="mini" style="font-size: 11px;" @click="endopen(scope.row.classesstate)" v-if="scope.row.classesstate==1">关闭</el-button>
-
-
-                    <el-popconfirm title="是否确定删除?" @confirm="isdeleted(scope.row.classesId)"
-                                   @cancel="isdeletedbiz()">
+                    <el-popconfirm @confirm="nm(scope.row)"
+                                   title="确认要删除此方案吗?">
                       <template #reference>
-                        <el-button type="text" size="small"><span style="color: #ff4949">删除</span></el-button>
+                        <el-button type="text" size="small" style="color:darkorange" >删除 </el-button>
                       </template>
                     </el-popconfirm>
+                    <el-button type="text" size="small" style="color:darkorange" @click="dialogVisible11=true,this.dept11={},yy1(scope.row)">修改
+                    </el-button>
+
                   </template>
                 </el-table-column>
               </el-table>
-              <div class="demo-pagination-block">
-                <el-pagination
-                    v-model:currentPage="pageInfo.currenPage"
-                    :page-sizes="[5, 10, 30, 50]"
-                    v-model:page-size="pageInfo.pagesize"
-                    :default-page-size="pageInfo.pagesize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="pageInfo.total"
-                    :pager-count="5"
-                    background
-                    @size-change="queryAllPage()"
-                    @current-change="queryAllPage()"
-                >
-                </el-pagination>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+
+
+  <div class="head">
+    <el-dialog
+        v-model="dialogVisible"
+        title="新增"
+        width="30%"
+        :before-close="handleClose"
+    >
+
+      <el-form ref="form" :model="dept" label-width="120px">
+        <el-form-item label="部门名称1：">
+          <el-input v-model="dept.deptName"></el-input>
+        </el-form-item>
+
+        <el-form-item label="部门名称：">
+
+          <el-select v-model="dept.staffId" placeholder="请选择部门负责人">
+            <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.staffName"
+                :value="item.staffId"
+            >
+            </el-option>
+          </el-select>
+
+
+
+          <el-select v-model="dept.menuPid" placeholder="上级部门">
+            <el-option
+                v-for="item in bumen"
+                :key="item.value"
+                :label="item.deptName"
+                :value="item.deptId"
+            >
+            </el-option>
+          </el-select>
+
+        </el-form-item>
+
+      </el-form>
+      <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="dialogVisible = false,addDept()"
+        >确定</el-button
+        >
+      </span>
+      </template>
+    </el-dialog>
+
+<!--///////////////////////////////////////////////////////////////////////////////////////////////-->
+
+    <el-drawer v-model="dialogVisible11" title="I am the title" :with-header="false">
+      <el-form ref="form" :model="dept12" label-width="120px">
+        <el-form-item label="部门名称：">
+          <el-input v-model="dept12.deptName"></el-input>
+        </el-form-item>
+        <el-form-item label="部门负责人：">
+
+          <el-select v-model="dept12.staffId" placeholder="请选择部门负责人1">
+            <el-option
+                v-for="item in ygname"
+                :key="item"
+                :label="item.staffName"
+                :value="item.staffId"
+            >
+
+            </el-option>
+
+          </el-select>
+
+        </el-form-item>
+        <el-form-item label="部门状态：  ">
+          <el-radio-group v-model="dept12.deptState">
+            <el-radio :label="0">启用</el-radio>
+            <el-radio :label="1">禁用</el-radio>
+          </el-radio-group>
+
+        </el-form-item>
+        <span class="dialog-footer">
+        <el-button @click="dialogVisible11 = false">取消</el-button>
+        <el-button type="primary" @click="dialogVisible11 = false,updatedept()"
+        >确定</el-button
+        >
+      </span>
+      </el-form>
+    </el-drawer>
+
   </div>
 </template>
 
@@ -132,131 +198,252 @@ export default {
     return {
       addclass: '/yyx/dacard',
       updateclass: '/yyx/repaircard',
-      //分页、模糊查询数据
-      pageInfo: {
-        currenPage: 1,
-        pagesize: 5,
-        total: 0,
-        classesName: ''
+      user:{
+        id:"",
+        name:"",
+        pass:"",
+        phone:'',
+        birthday:'',
+        loc:''
       },
-      tableData: [],
-      //状态按钮
-      ants1: true,
-      ants2: false,
+      refreshTable:true,
+      expands:false,
+      deptStaff:{
+        deptId:"",
+        deptName:"",
+        staffId: "",
+      },
+     bumen :{
+        menuPid11:0,
+      },
+    ygname:[
+
+      ],
+      dept: {
+        deptState:0,
+        deptId:'',
+        menuPid:'',
+        menuLeaf:'',
+        staffId:'',
+        deptName:'',
+      },
+      pageInfo: {
+        currentPage: 1,
+        /* 当前的页 */
+        pageSize: 3,
+        total: 0,
+        deptName:'',
+      },
+      dept11:{
+        deptId:'',
+        menuPid:'',
+        menuLeaf:'',
+        staffName:'',
+        deptState:'',
+        deptName:'',
+        staffId:'',
+      },
+      dept12:{
+        deptId:'',
+        menuPid:'',
+        menuLeaf:'',
+
+        deptState:'',
+        deptName:'',
+        staffId:'',
+      },
+      dialogVisible11:false,
+      dialogVisible:false,
+      dialogVisible1:false,
+      radio1:"",
+
+      tableData: [
+
+      ],
+      options:[
+        {
+          value: '',
+          label: '',
+        },
+
+      ],
+      options1:[
+        {
+          value: '',
+          label: '',
+        },
+
+      ]
     }
   },
-  created() {
-    this.queryAllPage();
-  },
   methods: {
-    queryAllPage() {
-      this.axios({
-        url: "http://localhost:8007/provider/Classes/pageall",
-        method: "post",
-        data: {
-          currenPage: this.pageInfo.currenPage,
-          pagesize: this.pageInfo.pagesize,
-          classesName: this.pageInfo.classesName,
-        },
-        responseType: 'json',
-        responseEncoding: 'utf-8',
-      }).then((response) => {
-        console.log(response);
-        this.tableData = response.data.data.records
-        this.pageInfo.total = response.data.data.total
-      }).catch(function (error) {
-        console.log('获取列表失败')
-        console.log(error);
-      })
+    nm(row){
+      this.deleteUser(row)
     },
-    //删除班次
-    isdeleted(row) {
-      this.axios({
-        url: "http://localhost:8007/provider/Classes/isdeleteds",
-        method: "post",
-        data: [row],
-        responseType: 'json',
-        responseEncoding: 'utf-8',
-      }).then((response) => {
-        if (response.data.data === "成功") {
-          ElMessage({
-            message: "删除成功",
-            type: "success",
-          });
-        }
-        this.queryAllPage();
-      }).catch(function (error) {
-        console.log(error);
-      })
+    yy1(row){
+      this.dept11.deptName=row.deptName
+      this.dept11.staffName=row.staffName
+      this.dept11.staffId=row.staffId
+      this.dept11.deptState=row.deptState
+      this.dept12.deptName=row.deptName
+      this.dept12.deptId=row.deptId
+      this.dept12.staffId=row.staffId
+      this.dept12.deptState=row.deptState
     },
-    //禁用全部班次
-    opens(row) {
-
-      ElMessageBox.confirm(
-          '是否确定开启当前班次?',
-          {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-          }
-      ).then(() => {
-        this.axios({
-          url: "http://localhost:8007/provider/Classes/upclasesall",
-          method: "post",
-          data: {},
-          responseType: 'json',
-          responseEncoding: 'utf-8',
-        }).then((response) => {
-          this.isupdated(row);
-        }).catch(function (error) {
-          console.log(error);
-        })
-      }).catch(() => {
-        ElMessage({
-          type: 'info',
-          message: 'Delete canceled',
-        })
-      })
-    },
-    //开启当前班次
-    isupdated(row) {
+    //修改部门
+    updatedept(){
       this.axios({
-        url: "http://localhost:8007/provider/Classes/isupdatebyentity",
-        method: "post",
-        data: {
-          classesId:row,
-          classesstate:1
-        },
-        responseType: 'json',
-        responseEncoding: 'utf-8',
-      }).then((response) => {
+        method:"put",
+        url:"http://localhost:8007/provider/updateDept/dept",
+        data:this.dept12,
+        responseType:'json',
+        responseEncoding:"utf-8"
+      }).then(response=>{
         console.log(response)
-        ElMessage({
-          message: '操作成功！',
-          type: 'success',
-        })
-        this.queryAllPage();
-      }).catch(function (error) {
+        if(response.data==="失败"){
+          ElMessage.error("修改失败")
+        }else{
+          ElMessage({
+            type:"success",
+            message:"修改成功"
+          })
+          this.selectEndAuditflow();
+        }
+      })
+    },//查询员工有哪些
+    selectStaff() {
+      this.axios
+          .get("http://localhost:8007/provider/cha", {
+            params:this.options,
+          })
+          .then((response) => {
+
+            console.log("查询cao");
+            console.log(response.data);
+            /* alert(this.pageInfo.currentPage+"this.pageInfo.currentPage")*/
+            /* alert(response.data.size+"response.data.size")*/
+            this.options=response.data;
+            this.options1=response.data;
+            this.ygname=response.data;
+
+
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },//查询部门有哪些
+    selectdept() {
+      this.axios
+          .get("http://localhost:8007/provider/chabudept", {
+            params:this.options,
+          })
+          .then((response) => {
+
+            console.log("查询cao");
+            console.log(response.data);
+
+            this.bumen=response.data;
+
+console.error(this.bumen)
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+
+      addDept(){
+        if (this.dept.menuPid == '') {
+          this.dept.menuPid = 0
+
+        }
+        this.axios.post("http://localhost:8007/provider/addDept",this.dept)
+            .then(response => {
+              this.dept.deptId = null
+              if (response.data === "失败") {
+                ElMessage.error('添加失败')
+              } else {
+                ElMessage({
+                  message: '添加成功',
+                  type: 'success',
+                })
+                this.selectEndAuditflow();
+              }
+
+            }).catch(function (error) {
+          console.log(error);
+        });
+
+
+
+      },
+    deleteUser(row) {
+      this.axios({
+        url: "http://localhost:8007/provider/deleteUser",
+        method: "post",
+        data: [row.deptId],
+        responseType:'json',
+        responseEncoding:'utf-8'
+      })
+          .then((response) => {
+            if (response.data === "失败") {
+
+              ElMessage.error("删除失败");
+
+            } else {
+              this.selectEndAuditflow();
+              ElMessage({
+                type: "success",
+                message: "删除成功",
+
+              });
+              console.log(response.data[0]+"ashdja")
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    },
+     //主查询
+   selectEndAuditflow111() {
+     this.axios({
+       method:'post',
+       url:"http://localhost:8007/provider/home/a",
+       data:this.pageInfo,
+       responseType:'json',
+       responseEncoding:'utf-8'
+     })  .then((response) => {
+       console.log("查询giao111");
+       console.log( response);
+       this.tableData = response.data.data.records;
+       this.pageInfo.total = response.data.data.total;
+     })
+         .catch(function (error) {
+           console.log("失败")
+           console.log(error);
+
+         });
+
+
+   },
+    selectEndAuditflow(){
+      this.axios.get("http://localhost:8007/provider/chadeptt").then((rersponse)=>{
+        this.tableData=rersponse.data.data;
+        console.log(rersponse.data.data[0].children)
+        console.error(rersponse.data.data)
+      }).catch(function (error){
         console.log(error);
       })
     },
 
-    //班次关闭
-    endopen(row){
-      if (row==1){
-        ElMessage({
-          message: '须保留一个班次安排',
-          type: 'warning',
-        })
-      }
-    },
-    //消息提示框取消按钮事件
-    isdeletedbiz() {
-      ElMessage({
-        message: '已取消该操作',
-        type: 'warning',
-      })
-    },
+  }, created() {
+    this.selectEndAuditflow();
+
+    this.selectStaff();
+    this.selectdept();
   }
 }
 </script>
@@ -352,6 +539,10 @@ a {
   background-color: #e9f7ff;
 }
 
+/deep/.el-input__inner {
+  height: 40px;
+}
+
 /deep/ .el-table .el-table__cell {
   padding: 10px 0;
   min-width: 0;
@@ -361,4 +552,5 @@ a {
   position: relative;
   text-align: left;
 }
+
 </style>

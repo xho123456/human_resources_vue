@@ -1,19 +1,5 @@
 <!--核算方案 -->
 <template>
-  <!-- 选择部门的下拉框-->
-      <div style="width: 100%;height: 22px; ">
-        <el-form>
-          <el-form-item label="1、选择一个部门：" prop="dept" style="margin-left: 40px">
-            <el-select v-model="ruleForm.dept" placeholder="请选择部门" style="width:240px;">
-              <el-option label="asd" value="dept1" style="margin-left: 20px;"></el-option>
-              <el-option label="asddd" value="dept2" style="margin-left: 20px;"></el-option>
-              <el-option label="asddd" value="dept3" style="margin-left: 20px;"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-form><br/>
-      <span style="font-size: 14px;margin-left: 40px;margin-top: 10px">2、针对各薪资项设置核算方案</span>
-      </div>
-
        <!-- 四个方案导航 -->
        <div style="width: 100%;">
 

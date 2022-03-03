@@ -1,25 +1,6 @@
 <template>
 
   <div class="demo-date-picker" style="width: 100%;height: 49px;">
-    <div class="" style="width: 850px;height: 49px; float: right;">
-      <span class="demonstration" style="position: relative;top: -1px;">时间范围：</span>
-
-      <el-date-picker v-model="value1" type="daterange" range-separator="到"
-                      start-placeholder="开始时间" end-placeholder="结束时间" style="position: relative;top: 0px;">
-      </el-date-picker>
-      <span class="demonstration" style="position: relative;top: -1px;left: 3px;">组织范围：</span>
-      <el-select v-model="valuee" placeholder="请选择">
-        <el-option
-            v-for="item in optionss"
-            :key="item.valuee"
-            :label="item.labell"
-            :value="item.valuee"
-            style="position: relative;top: -1px;"
-        >
-        </el-option>
-      </el-select>
-      <el-button type="primary" style="position: relative;top: -2px;">搜索</el-button>
-    </div>
 
   </div>
 
@@ -268,19 +249,10 @@ export default ({
           max: 250,
           interval: 50,
           axisLabel: {
-            formatter: '{value} 小时'
+            formatter: '{value} 人'
           }
         },
-          {
-            type: 'value',
-            name: '增长律（%）',
-            min: 0,
-            max: 100,
-            interval: 10,
-            axisLabel: {
-              formatter: '{value} %'
-            }
-          },
+
 
         ],
         series: [{
@@ -358,16 +330,6 @@ export default ({
             formatter: '{value} 元'
           }
         },
-          {
-            type: 'value',
-            name: '增长律（%）',
-            min: 0,
-            max: 100,
-            interval: 10,
-            axisLabel: {
-              formatter: '{value} %'
-            }
-          },
 
         ],
         series: [{
@@ -444,16 +406,7 @@ export default ({
             formatter: '{value} 元'
           }
         },
-          {
-            type: 'value',
-            name: '增长律（%）',
-            min: 0,
-            max: 100,
-            interval: 10,
-            axisLabel: {
-              formatter: '{value} %'
-            }
-          },
+
 
         ],
         series: [{
@@ -530,16 +483,6 @@ export default ({
             formatter: '{value} 元'
           }
         },
-          {
-            type: 'value',
-            name: '增长律（%）',
-            min: 0,
-            max: 100,
-            interval: 10,
-            axisLabel: {
-              formatter: '{value} %'
-            }
-          },
 
         ],
         series: [{

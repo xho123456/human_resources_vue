@@ -324,7 +324,7 @@
         <el-button size="small" @click="dialogVisible = false">关闭</el-button>
       </span>
     </template>
-  </el-dialog>
+  </el-dialog>{{useralls}}
 </template>
 
 <script>
