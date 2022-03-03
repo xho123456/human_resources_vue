@@ -214,7 +214,6 @@ rs:'',
               } else {
            if(response.data[i].zt==1){
              this.zsgz.push(response.data[i].fixedwageOfficialmoney)
-             alert(response.data[0].zt)
            } else {
              this.zsgz.push(response.data[i].fixedwagePeriodmoney)
 
@@ -338,7 +337,6 @@ rs:'',
     //工资归档
     addguidan() {
       this.guidan.createdTime=this.nogz
-      alert(this.guidan.createdTime)
       this.axios.post("http://localhost:8007/provider/guidanwag", this.guidan)
           .then(response => {
             this.guidan.moneypigeonholeId = null
