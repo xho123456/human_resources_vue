@@ -1,17 +1,14 @@
 <template>
 
-<!-- 社保缴费明细-->
+  <!-- 社保月度缴费明细-->
 
   <div class="saas-main-content">
     <div class="j-card j-card-bordered mainContent">
       <div class="j-card-body">
         <!-- 计薪月份 -->
         <div class="month-div">
-          <span class="month_span">{{time}}</span><br />
+          <span class="month_span">{{this.$route.query.ids}}</span><br />
           <span class="times">计薪月份</span><br><br />
-          <el-button type="primary" size="small" @click="remove()" style="width: 80px;margin-left: 40px">
-            归档
-          </el-button>
 
         </div>
         <!-- 月金额统计 -->
@@ -35,38 +32,23 @@
         <div class="mt-20 ml-20 mr-20">
           <!-- 按钮 -->
           <el-button size="small"
-            ><i class="iconfont">&#xe6a2;</i>批量导出</el-button
+          ><i class="iconfont">&#xe6a2;</i>批量导出</el-button
           >
           <el-button size="small"
-            ><i class="iconfont">&#xe639;</i>批量导入</el-button
+          ><i class="iconfont">&#xe639;</i>批量导入</el-button
           >
-          <el-button size="small" type="danger" @click="deleteList()" plain v-bind:disabled="disableds">
-            <i class="iconfont">&#xe608;</i>
-            批量删除
-          </el-button>
+          <el-button size="small" type="danger" plain
+          ><i class="iconfont">&#xe608;</i>批量删除</el-button>
 
           <!-- 搜索按钮 -->
           <div style="width: 68px;margin-top: 1px;" class="resume-operation">
-            <el-button size="mini" style="width: 68px;height: 29px" type="primary" @click="selectPaers()">
+            <el-button size="mini" style="width: 68px;height: 29px" type="primary" @click="pageInsuredArchive()">
               搜索
             </el-button>
           </div>
           <!-- 输入框 -->
           <div class="resume-operation" style="width: 95px">
-            <el-input v-model="pageInfo.staffName" placeholder="员工姓名"/>
-          </div>
-
-          <!-- 下拉选择器 -->
-          <div class="resume-operation">
-            <el-select clearable size="small" v-model="pageInfo.staffState" placeholder="员工状态">
-              <el-option
-                v-for="item in empState_options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
-              </el-option>
-            </el-select>
+            <el-input v-model="pageInfo.insArchiveStaffName" placeholder="员工姓名"/>
           </div>
 
           <!-- 部门树形选择框 -->
@@ -80,7 +62,7 @@
                   :default-expand-all=true
                   :check-on-click-node=true
                   :check-strictly=true
-                  node-key="deptId"
+                  node-key="deptName"
                   :props="defaultProps"
                   ref="tree"
                   @check-change="handleCheckChangesx()"
@@ -99,21 +81,21 @@
           >
             <el-table-column type="selection" width="55" />
             <el-table-column type="index" label="编号" width="100"/>
-            <el-table-column prop="staffName" label="姓名" width="100"/>
-            <el-table-column prop="insDetailInsuredName"  label="参保方案" width="120"/>
-            <el-table-column prop="insDetailInsuredMonth" label="社保缴纳月份" width="130" />
-            <el-table-column prop="insDetailSocialPersonPay" label="社保个人缴费"  width="130" />
-            <el-table-column prop="insDetailSocialFirmPay" label="社保企业缴费" width="130" />
-            <el-table-column prop="insDetailInsuredMonth" label="公积金缴纳月份" width="130" />
+            <el-table-column prop="insArchiveStaffName" label="姓名" width="100"/>
+            <el-table-column prop="insArchiveInsuredName"  label="参保方案" width="120"/>
+            <el-table-column prop="createdTime" label="缴纳月份" width="130" />
+            <el-table-column prop="insArchiveSocialPersonPay" label="社保个人缴费"  width="140" />
+            <el-table-column prop="insArchiveSocialFirmPay" label="社保企业缴费" width="150" />
+
             <el-table-column
-              prop="insDetailFundPersonPay"
-              label="公积金个人缴费"
-              width="130"
+                prop="insArchiveFundPersonPay"
+                label="公积金个人缴费"
+                width="160"
             />
-            <el-table-column prop="insDetailFundFirmPay" label="公积金企业缴费" width="130" />
-            <el-table-column prop="state" label="操作" width="110">
+            <el-table-column prop="insArchiveFundFirmPay" label="公积金企业缴费" width="160" />
+            <el-table-column prop="state" label="操作" width="130">
               <template #default="scope">
-                <router-link :to="{path:this.path,query:{path:this.$route.query.path,id:scope.row.staffId,name:scope.row.staffName}}">
+                <router-link :to="{path:this.paths,query:{path:this.$route.query.paths,ids:scope.row.insArchiveId,name:scope.row.insArchiveStaffName}}">
                   <el-button type="text" size="small">查看 </el-button>
                 </router-link>
               </template>
@@ -134,8 +116,8 @@
               :pager-count="4"
               layout="total, sizes, prev, pager, next, jumper"
               :total="pageInfo.total"
-              @size-change="selectPaers()"
-              @current-change="selectPaers()"
+              @size-change="pageInsuredArchive()"
+              @current-change="pageInsuredArchive()"
               prev-text="上一页"
               next-text="下一页"
               background
@@ -145,6 +127,7 @@
       </div>
     </div>
   </div>
+{{tableDatas}}
 </template>
 
 <script>
@@ -158,30 +141,16 @@ export default {
       label: 'deptName',
     }
     return {
-
-      //批量删除按钮是否被禁用
-      disableds:true,
-
-      //接收表格数据`
-      table:[],
-      //存放全选id
-      id:[],
-
       defaultProps,
       deptlists:[],
 
       time:'',
       //跳转页面路径
-      path:"/social/social_payment/someone_insured_particulars",
+      paths:'/social/social_payment/someone_insured_particularss',
       // 部门名称
       deptName: '',
       // 员工姓名搜索框
       empName_search:"",
-      //员工状态下拉选择器
-      empState_options: [
-        { value: 0, label: "试用期" },
-        { value: 1, label: "在职" },
-      ],
       empState:"",//员工状态下拉选择器的值
       // 分页参数
       pageInfo: {
@@ -189,14 +158,12 @@ export default {
         pagesize: 3,
         total: 0,
         //部门编号
-        deptId:'',
+        deptName:'',
         //员工姓名
-        staffName:'',
+        insArchiveStaffName:'',
         //员工状态
         staffState:'',
-
       },
-
 
       tableDatas:[
         {
@@ -212,113 +179,32 @@ export default {
   },
   created() {
     this.selectAlldepts();
-    this.selectPaers()
-    this.getCurrentTime()
+    this.pageInsuredArchive()
     this.detail()
   },
-
   methods:{
-    /**
-     * 批量删除
-     * @param val
-     */
-    deleteList(){
-      this.id=[];
-      for (let i=0 ; i<this.table.length ; i++){
-        this.id.push(this.table[i].insuredPaymentId)
-      }
-      this.axios({
-        method:'post',
-        url:"http://localhost:8007/provider/insuredPayment/delete",
-        data:{
-          insuredPaymentId:this.id,
-        },
-        responseType:'json',
-        responseEncoding:'utf-8',
-      }).then(response=>{
-        if(response.data.data === '删除成功'){
-          ElMessage({
-            type:'success',
-            message:'删除成功'
-          })
-          this.selectPaers()
-        }else{
-          ElMessage.error("删除失败")
-        }
-      })
-    },
-
-    //判断删除按钮是否可用
-    deletepl(val){
-      this.table=val
-      if(this.table != ''){
-        this.disableds=false
-      }else {
-        this.disableds=true
-      }
-    },
-
-    /**
-     * 是否要归档操作
-     */
-    remove(){
-      ElMessageBox.confirm(
-          '是否将本月社保归档！！！',
-          '友情提示',
-          {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: '友情提示',
-          }
-      )
-          .then(() => {
-            this.pigeonhole();
-          })
-
-
-    },
-    /**
-     * 归档操作
-     */
-    pigeonhole(){
-      this.axios({
-        method:'get',
-        url:"http://localhost:8007/provider/insuredArchive/pigeonhole",
-        responseType:'json',
-        responseEncoding:'utf-8',
-      }).then((response)=>{
-            if(response.data.data === '归档成功'){
-              ElMessage({
-                type:'success',
-                message:'归档成功'
-              })
-            this.selectPaers()
-            }else {
-              ElMessage.error("归档失败")
-            }
-      })
-    },
 
     /**
      * 参保明细金额数据
      */
     detail(){
-
       this.axios({
-        method:'get',
-        url:"http://localhost:8007/provider/insuredDetail/detail",
+        method:'post',
+        url:"http://localhost:8007/provider/insuredArchive/insuredArchiveCalculate",
+        data:{
+          time:this.$route.query.ids
+        },
         responseType:'json',
         responseEncoding:'utf-8',
       }).then((response)=>{
-
+        console.error(response.data.data)
         this.tableDatas[0].quantity=response.data.data.length
 
         for(let i=0;i<response.data.data.length;i++){
           //个人
-          this.tableDatas[0].personage+=response.data.data[i].insDetailSocialPersonPay+response.data.data[i].insDetailFundPersonPay
+          this.tableDatas[0].personage+=response.data.data[i].insArchiveSocialPersonPay+response.data.data[i].insArchiveFundPersonPay
           //企业
-          this.tableDatas[0].enterprise+=response.data.data[i].insDetailSocialFirmPay+response.data.data[i].insDetailFundFirmPay
-
+          this.tableDatas[0].enterprise+=response.data.data[i].insArchiveSocialFirmPay+response.data.data[i].insArchiveFundFirmPay
         }
         //总金额
         this.tableDatas[0].total=this.tableDatas[0].personage+this.tableDatas[0].enterprise
@@ -332,16 +218,25 @@ export default {
     /**
      * 分页查询参保明细数据
      */
-    selectPaers(){
+    pageInsuredArchive(){
       this.axios({
         method:'post',
-        url:"http://localhost:8007/provider/insuredDetail/page",
-        data:this.pageInfo,
+        url:"http://localhost:8007/provider/insuredArchive/pageInsuredArchive",
+        data:{
+          currentPage:this.pageInfo.currentPage,
+          pagesize:this.pageInfo.pagesize,
+          total:this.pageInfo.total,
+          insArchiveDeptName:this.pageInfo.deptName,
+          insArchiveStaffName:this.pageInfo.insArchiveStaffName,
+          time:this.$route.query.ids,
+        },
         responseType:'json',
         responseEncoding:'utf-8',
       }).then((response)=>{
+
         this.tableData = response.data.data.records
         this.pageInfo.total=response.data.data.total
+
       })
     },
 
@@ -354,7 +249,7 @@ export default {
       //获取所有选中的节点 start
       let res = this.$refs.tree.getCheckedNodes()
       res.forEach((item) => {
-        this.pageInfo.deptId = item.deptId
+        this.pageInfo.deptName = item.deptName
         this.deptName = item.deptName
         //关闭Select选择器
         this.$refs.vueSelect.blur();
@@ -375,15 +270,7 @@ export default {
         console.log('获取列表失败')
       })
     },
-    /**
-     * 获取系统当前时间
-     */
-    getCurrentTime() {
-      //获取当前时间并打印
-      let yy = new Date().getFullYear();
-      let mm = new Date().getMonth()+1;
-      this.time= yy+'/'+mm;
-    },
+
   }
 }
 
@@ -416,7 +303,6 @@ export default {
   margin-left: 80px;
   margin-bottom: -157px;
   float: left;
-  margin-top: 68px;
 
 }
 

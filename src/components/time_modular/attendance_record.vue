@@ -1,225 +1,204 @@
-<!--考勤记录-->
+<!-- 考勤记录汇总 -->
 <template>
-  <!--  考勤记录页面-->
-  <div class="head">
-    <div class="head-right">
-      <!--  搜索框-->
-      <el-input v-model="input3" placeholder="填写需要查询的！" style="width: 300px;margin-left: 10px;">
-        <template #prepend>
-          <el-select v-model="select" placeholder="查询" style="width: 80px">
-            <el-option label="名称" value="名称"></el-option>
-            <el-option label="编号" value="编号"></el-option>
-          </el-select>
-        </template>
-        <template #append>
-          <el-button>02
-            <el-icon style="font-size: 16px">
-              <i-search/>
-            </el-icon>
-          </el-button>
-        </template>
-      </el-input>
+  <div class="saas-main-content">
+    <div class="j-card j-card-bordered mainContent">
+      <div class="j-card-body ">
+        <div class="my-cead">
+          <div style="width:97%;padding-left: 20px;display: flex;align-items: center;justify-content: space-between;">
+            <div style="display: flex;align-items: center;">
+              <div class="my-span1" style="display: flex;">
+                <i class="iconfont" style="font-size: 20px">&#xe7d9;</i>
+              </div>
+              <div class="my-span2">考勤记录汇总</div>
+            </div>
+          </div>
+        </div>
+        <div style="width: 100%;">
+          <div class="day-div1">
+            <ul style="margin-top: 20px">
+              <li v-for="items in daytimes">
+                <div style="display: flex;align-items: center">
+                  <div style="width: 80%;">
+                    <div style="height: 45px;font-weight: bold;font-size: 20px">
+                      {{items.years}}出勤统计
+                      <!--                       <el-tag class="ml-2" type="danger" size="small">已归档</el-tag>-->
+                    </div>
+                    <div style="padding-bottom: 5px;">
+                      <el-tag class="ml-2" type="danger" size="small">已归档</el-tag>
+                      <!--                       <el-row :gutter="20">-->
+                      <!--                         <el-col :span="3">-->
+                      <!--                           <span>全勤员工：0</span>-->
+                      <!--                         </el-col>-->
+                      <!--                         <el-col :span="3">-->
+                      <!--                           <span>迟到率：0%</span>-->
+                      <!--                         </el-col>-->
+                      <!--                         <el-col :span="3">-->
+                      <!--                           <span>早退率：0%</span>-->
+                      <!--                         </el-col>-->
+                      <!--                         <el-col :span="3">-->
+                      <!--                           <span>缺勤率：0%</span>-->
+                      <!--                         </el-col>-->
+                      <!--                         <el-col :span="4">-->
+                      <!--                           <span>总请假天数：0</span>-->
+                      <!--                         </el-col>-->
+                      <!--                         <el-col :span="3">-->
+                      <!--                           <span>总加班小时：0</span>-->
+                      <!--                         </el-col>-->
+                      <!--                       </el-row>-->
+                    </div>
+                  </div>
+                  <div style="width: 20%;text-align: center">
+                     <span>
+                       <router-link :to="{path:this.guidang,query:{path:this.$route.query.path,daymoth:items.years}}">
+                          <el-button type="primary" style="font-size: 15px" size="small">查看</el-button>
+                       </router-link>
+                     </span>
+                  </div>
+                </div>
 
-      <el-button type="primary" style="margin-left: 700px;">
-        <el-icon style="font-size: 16px">
-          <i-upload/>
-        </el-icon>
-        导出
-      </el-button>
-
-      <el-button type="primary">
-        <el-icon style="font-size: 16px">
-          <i-folder-opened/>
-        </el-icon>
-        导入
-      </el-button>
-      <el-button type="primary"> 历史归档</el-button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="select">
-      <span style="margin-top:2px">部门：</span>
-      <!-- 查询所有部门-->
-      <el-checkbox v-model="checked1" label="人事部" size="medium"></el-checkbox>
-      <el-checkbox v-model="checked2" label="行政部" size="medium"></el-checkbox>
-      <el-checkbox v-model="checked2" label="市场部" size="medium"></el-checkbox>
-      <el-checkbox v-model="checked2" label="运营部" size="medium"></el-checkbox>
-      <el-checkbox v-model="checked2" label="后勤部" size="medium"></el-checkbox>
-    </div>
-    <div class="selects">
-      <span style="margin-top:2px">考勤状态：</span>
-      <el-checkbox v-model="checked1" label="正常" size="medium"></el-checkbox>
-      <el-checkbox v-model="checked2" label="旷工" size="medium"></el-checkbox>
-      <el-checkbox v-model="checked2" label="迟到" size="medium"></el-checkbox>
-      <el-checkbox v-model="checked2" label="早退" size="medium"></el-checkbox>
-      <el-checkbox v-model="checked2" label="事假" size="medium"></el-checkbox>
-    </div>
-  </div>
-  <!--表格-->
-  <div class="bottom">
-    <el-table :data="tableData" border height="297">
-      <el-table-column prop="A" fixed label="序号" width="60"/>
-      <el-table-column prop="B" fixed label="名称" width="100"/>
-      <el-table-column prop="C" fixed label="部门" width="100"/>
-      <el-table-column prop="q" label="6/1"/>
-      <el-table-column prop="w" label="6/2"/>
-      <el-table-column prop="w" label="6/3"/>
-      <el-table-column prop="w" label="6/4"/>
-      <el-table-column prop="w" label="6/5"/>
-      <el-table-column prop="w" label="6/6"/>
-      <el-table-column prop="w" label="6/7"/>
-      <el-table-column prop="q" label="6/8"/>
-      <el-table-column prop="q" label="6/9"/>
-      <el-table-column prop="w" label="6/10"/>
-      <el-table-column prop="q" label="6/11"/>
-      <el-table-column prop="w" label="6/12"/>
-      <el-table-column prop="q" label="6/13"/>
-      <el-table-column prop="w" label="6/14"/>
-      <el-table-column prop="q" label="6/15"/>
-      <el-table-column prop="1" label="6/16"/>
-      <el-table-column prop="1" label="6/17"/>
-      <el-table-column prop="1" label="6/18"/>
-      <el-table-column prop="1" label="6/19"/>
-      <el-table-column prop="1" label="6/20"/>
-      <el-table-column prop="1" label="6/21"/>
-      <el-table-column prop="1" label="6/22"/>
-      <el-table-column prop="1" label="6/23"/>
-      <el-table-column prop="1" label="6/24"/>
-      <el-table-column prop="1" label="6/25"/>
-      <el-table-column prop="1" label="6/26"/>
-      <el-table-column prop="1" label="6/27"/>
-      <el-table-column prop="1" label="6/28"/>
-      <el-table-column prop="1" label="6/29"/>
-      <el-table-column prop="1" label="6/30"/>
-    </el-table>
-    <!--分页-->
-    <div class="demo-pagination-block">
-      <el-pagination
-          v-model:currentPage="pageInfo.currenPage"
-          :page-sizes="[3, 5, 10, 50]"
-          v-model:page-size="pageInfo.pagesize"
-          :default-page-size="pageInfo.pagesize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="pageInfo.total"
-          :pager-count="5"
-          background
-          @size-change="sele"
-          @current-change="sele"
-      >
-      </el-pagination>
-    </div>
-
   </div>
 </template>
 
-
 <script>
+import {ElMessage} from "element-plus";
+
 export default {
   data() {
     return {
-      input3: "",
-      select: "",
-      tableData: [
-        {
-          A: "1",
-          B: "王鑫",
-          C: "人事部",
-          q: "迟到",
-          w: "√",
-        },
-        {
-          A: "2",
-          B: "王鑫",
-          C: "人事部",
-          q: "迟到",
-          w: "√",
-        },
-        {
-          A: "2",
-          B: "王鑫",
-          C: "人事部",
-          q: "迟到",
-          w: "√",
-        },
-        {
-          A: "2",
-          B: "王鑫",
-          C: "人事部",
-          q: "迟到",
-          w: "√",
-        },
-        {
-          A: "2",
-          B: "王鑫",
-          C: "人事部",
-          q: "迟到",
-          w: "√",
-        }, {
-          A: "2",
-          B: "王鑫",
-          C: "人事部",
-          q: "迟到",
-          w: "√",
-        }, {
-          A: "2",
-          B: "王鑫",
-          C: "人事部",
-          q: "迟到",
-          w: "√",
-        },
-
-
-      ],
-      pageInfo: {
-        currenPage: 1,
-        /* 当前的页 */
-        pagesize: 3,
-        total: 0,
-      },
-    };
-
+      guidang:'/yyx/statistics/report',
+      daytimes:''
+    }
   },
-};
+  created() {
+    this.queryDayTimes();
+  },
+  methods: {
+    queryDayTimes(){
+      this.axios({
+        url: "http://localhost:8007/provider/Check/querydaytimes",
+        method: "post",
+        data: {
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.error(response.data.data)
+        this.daytimes = response.data.data;
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+  },
+
+
+}
 </script>
 
-<style scoped>
-
-
-.head-right {
-  margin-top: 10px;
+<style type="text/css" scoped>
+ul li{
+  list-style: none;
+  border-bottom: 1px solid #a7aeb085;
+  margin-bottom: 25px;
+}
+.day-div1 {
+  padding: 10px 20px;
+  min-height: 570px;
+}
+a {
+  color: #008df7;
 }
 
-.select {
-  margin-left: 15px;
-  margin-top: 10px;
+@font-face {
+  font-family: 'iconfont';  /* Project id 3164770 */
+  src: url('//at.alicdn.com/t/font_3164770_te5p4157fzj.woff2?t=1644419209354') format('woff2'),
+  url('//at.alicdn.com/t/font_3164770_te5p4157fzj.woff?t=1644419209354') format('woff'),
+  url('//at.alicdn.com/t/font_3164770_te5p4157fzj.ttf?t=1644419209354') format('truetype');
 }
 
-.selects {
-  margin-left: 15px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+.iconfont {
+  font-family: "iconfont" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+  margin: auto;
+  color: white;
 }
 
-.bottom {
-  margin-top: 27px;
-  margin-left: 20px;
-  margin-right: 5px;
-  margin-bottom: 10px;
-  padding: 1%;
+/deep/ .el-table td.el-table__cell div {
+  box-sizing: border-box;
+  text-align: center;
 }
-
 
 .demo-pagination-block {
-  margin-left: 800px;
-  margin-top: 20px;
-  margin-bottom: 10px;
+  margin-left: 15px;
+  margin-top: 10px;
+  margin-bottom: 30px;
 }
-/deep/ .el-table th.el-table__cell > .cell {
-  display: inline-block;
-  box-sizing: border-box;
-  position: relative;
-  vertical-align: middle;
+
+
+.my-cead {
+  height: 50px;
   width: 100%;
-  font-weight: initial;
+  display: flex;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.my-span1 {
+  width: 35px;
+  height: 35px;
+  border-radius: 20px;
+  background-color: rgb(87, 153, 229) !important;
+}
+
+.my-span2 {
+  margin-left: 10px;
+  font-size: 18px;
   color: black;
+}
+
+
+.saas-main-content {
+  min-height: 500px;
+}
+
+.j-card-bordered {
+  border: 1px solid #e9e9e9;
+}
+
+.j-card {
+  background: #fff;
+  border-radius: 4px;
+  font-size: 14px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  min-height: 100%;
+}
+
+.j-card:hover {
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+  border-color: transparent;
+}
+
+.j-card-bordered {
+  border: 1px solid #e9e9e9;
+  border-top-color: rgb(233, 233, 233);
+  border-right-color: rgb(233, 233, 233);
+  border-bottom-color: rgb(233, 233, 233);
+  border-left-color: rgb(233, 233, 233);
+}
+
+/deep/ .el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell {
+  background-color: #e9f7ff;
 }
 
 </style>

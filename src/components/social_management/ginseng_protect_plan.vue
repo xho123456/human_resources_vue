@@ -49,20 +49,25 @@
             </el-table-column>
             <el-table-column label="操作">
               <template #default="scope">
-                <router-link :to="{path:this.path,query:{path:this.$route.query.path,name:'修改'}}">
-                  <el-button size="small" type="text">
+                <router-link :to="{path:this.path,query:{path:this.$route.query.path,name:'修改',id:scope.row.defInsuredId}}">
+                  <el-button size="small" type="text" @click="gain(scope.row)">
                     <i class="iconfont" style="font-size: 13px;color: #5aaaff">&#xe606</i>
                     修改
                   </el-button>
                 </router-link>&nbsp;
 
-                <el-button type="text" size="small"> {{ scope.row.defInsuredState === 0 ? '禁用 ' : '启用 ' }}</el-button>
+                <el-popconfirm v-if="scope.row.defInsuredState === 0 ? '禁用 ' : '启用 '" @confirm="state(scope.row)" title="是否编辑此方案?">
+                  <template #reference >
+                    <el-button  type="text" size="small" >
+                      {{ scope.row.defInsuredState === 0 ? '禁用 ' : '启用 ' }}
+                    </el-button>
+                  </template>
+                </el-popconfirm>
 
                 <!-- 删除行确认框 -->
-                <el-popconfirm v-if="scope.row.defInsuredState===1"
-                               @confirm="deleteRow(scope.$index, tableData)" title="删除此方案?">
+                <el-popconfirm v-if="scope.row.defInsuredState===1" @confirm="deleteLine(scope.row)"  title="删除此方案?">
                   <template #reference>
-                    <el-button style="color:red" type="text" size="small">
+                    <el-button style="color:red" type="text" size="small" >
                       <i class="iconfont"  style="font-size: 13px;color: red">&#xe61c</i>
                       删除
                     </el-button>
@@ -107,6 +112,7 @@ import {ref, defineComponent} from "vue";
 import { ElMessage } from 'element-plus'
 
 export default {
+
   data() {
     return {
       path: "/social/basic_setup/new_amend_scheme",
@@ -125,12 +131,76 @@ export default {
 
       // 参保方案表数据
       tableData: [],
+
+
     };
   },
   created() {
    this.pageSelect()
   },
   methods: {
+    states(row){
+      if(row.defInsuredState===0){
+        return 1
+      }else {
+        return 0
+      }
+    },
+    /**
+     * 修改方案状态
+     */
+    state(row){
+      this.axios({
+        method:'post',
+        url:'http://localhost:8007/provider/defInsured/state',
+        data:{
+          defInsuredId: row.defInsuredId,
+          defInsuredState:this.states(row),
+        },
+        responseType:'json',
+        responseEncoding:'utf-8',
+      }).then(response=>{
+        if(response.data.data ==='编辑成功'){
+          ElMessage({
+            type:"success",
+            message:"编辑成功"
+          });
+        this.pageSelect()
+        }else {
+          ElMessage.error("编辑失败")
+        }
+
+      })
+    },
+    /**
+     * 删除参保方案
+     * @param row
+     */
+    deleteLine(row){
+      this.axios({
+        method:'post',
+        url:'http://localhost:8007/provider/defInsured/delete',
+        data:{
+          defInsuredId: row.defInsuredId
+        },
+        responseType:'json',
+        responseEncoding:'utf-8',
+      }).then(response=>{
+        if(response.data.data ==='删除成功'){
+          ElMessage({
+            type:"success",
+            message:"删除成功"
+          });
+          this.pageSelect()
+        }else {
+          ElMessage.error("删除失败")
+        }
+        this.pagingQuery();
+      })
+    },
+    /**
+     * 分页查询默认参保方案表
+     */
     pageSelect(){
       this.axios({
         method:'post',
@@ -139,7 +209,6 @@ export default {
         responseType:'json',
         responseEncoding:'utf-8',
       }).then((response)=>{
-        console.log(response)
         this.tableData = response.data.data.records
         this.pageInfo.total=response.data.data.total
       })

@@ -6,26 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="7782e118-91e8-4d6c-900a-0a4856553f34" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/organization_management/zz_evection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/organization_management/zz_evection.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/organization_management/zz_evection1.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/organization_management/zz_evection1.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/organization_management/zz_navigation.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/organization_management/zz_navigation.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/organization_management/zz_post.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/organization_management/zz_post.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/salary_management/salary_accountscheme.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/salary_management/salary_accountscheme.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/salary_management/salary_archive.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/salary_management/salary_archive.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/salary_management/salary_attendance.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/salary_management/salary_attendance.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/salary_management/salary_construction.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/salary_management/salary_construction.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/salary_management/salary_evection.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/salary_management/salary_evection.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/salary_management/salary_fixedsalary.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/salary_management/salary_fixedsalary.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/salary_management/salary_statistics.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/salary_management/salary_statistics.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/salary_management/salary_wagetable.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/salary_management/salary_wagetable.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/salary_management/salary_workovertimeplan.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/salary_management/salary_workovertimeplan.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/statistics_management/statistics_analysis1.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/statistics_management/statistics_analysis1.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/statistics_management/statistics_analysis2.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/statistics_management/statistics_analysis2.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/statistics_management/statistics_analysis3.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/statistics_management/statistics_analysis3.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/statistics_management/statistics_personnel1.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/statistics_management/statistics_personnel1.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/statistics_management/statistics_personnel2.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/statistics_management/statistics_personnel2.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/statistics_management/statistics_work1.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/statistics_management/statistics_work1.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/statistics_management/statistics_work3.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/statistics_management/statistics_work3.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,17 +15,6 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="GitSEFilterConfiguration">
-    <file-type-list>
-      <filtered-out-file-type name="LOCAL_BRANCH" />
-      <filtered-out-file-type name="REMOTE_BRANCH" />
-      <filtered-out-file-type name="TAG" />
-      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
-    </file-type-list>
-  </component>
-  <component name="GitToolBoxStore">
-    <option name="projectConfigVersion" value="4" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -77,9 +47,6 @@
       <updated>1645187290701</updated>
       <workItem from="1645187293451" duration="222000" />
       <workItem from="1645231399457" duration="7372000" />
-      <workItem from="1645749326381" duration="14130000" />
-      <workItem from="1645841085538" duration="22600000" />
-      <workItem from="1646008085014" duration="50013000" />
     </task>
     <task id="LOCAL-00001" summary="Changes">
       <created>1645240285645</created>
@@ -108,21 +75,5 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Changes" />
     <option name="LAST_COMMIT_MESSAGE" value="Changes" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/components/organization_management/zz_evection1.vue</url>
-          <line>37</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/components/organization_management/zz_evection.vue</url>
-          <line>253</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

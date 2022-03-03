@@ -134,8 +134,12 @@
                     <template #dropdown>
                       <el-dropdown-menu>
                         <el-dropdown-item @click="opendrawly(scope.row.employmentId)">放弃录用</el-dropdown-item>
-                        <el-dropdown-item >办理入职</el-dropdown-item>
-                        <el-dropdown-item >放弃入职</el-dropdown-item>
+                        <router-link :to="{path:this.biliz,query:{path:this.$route.query.path}}">
+                            <el-dropdown-item >办理入职</el-dropdown-item>
+                        </router-link>
+                        <router-link :to="{path:this.biliz,query:{path:this.$route.query.path}}">
+                            <el-dropdown-item >放弃入职</el-dropdown-item>
+                        </router-link>
                         <el-dropdown-item @click="remarks=true,elremarksId=tableData[scope.$index].resumeId">备注</el-dropdown-item>
                       </el-dropdown-menu>
                     </template>
@@ -226,6 +230,7 @@ export default {
       label: 'deptName',
     }
     return {
+      biliz:'/employee/transaction/entry/tobehired',
       defaultProps,
       //路由地址
       addresume: '/recruitment/recruit/addresume',

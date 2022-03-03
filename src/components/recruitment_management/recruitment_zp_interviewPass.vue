@@ -102,7 +102,6 @@
       <el-table :data="tableData" style="width: 100%; cursor: pointer" size="mini"
                 :header-cell-style="{background:'#eef1f6',color:'#606266'}"
                 @selection-change="deleteresumeall" :stripe=true>
-        <el-table-column fixed="left" align="center" prop="resumeId" type="selection" width="80"/>
         <el-table-column fixed="left" label="姓名" width="100">
           <template #default="scope">
             <router-link

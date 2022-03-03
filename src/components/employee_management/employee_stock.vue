@@ -13,21 +13,21 @@
 
     <br/>
     <el-table :data="tableData" stripe style="width: 100%">
-      <el-table-column fixed prop="resumename" label="姓名" width="180" />
-      <el-table-column prop="resumesex" label="姓别" width="180" />
+      <el-table-column fixed prop="resumeName" label="姓名" width="180" />
+      <el-table-column prop="resumeSex" label="姓别" width="180" />
       <el-table-column prop="deptName" label="部门" width="180" />
-      <el-table-column prop="postname" label="职位" width="180" />
+      <el-table-column prop="postName" label="职位" width="180" />
       <el-table-column prop="probationary" label="试用工资" width="180" />
-      <el-table-column prop="positivemonthly" label="正式工资" width="180" />
-      <el-table-column prop="resumephone" label="手机号" width="180" />
-      <el-table-column prop="resumemailbox" label="邮箱" width="180" />
-      <el-table-column prop="resumepoliticaloutlook" label="政治面貌" width="180" />
-      <el-table-column prop="resumeeducation" label="学历" width="180" />
-      <el-table-column prop="resumebirthday" label="出生日期" width="180" />
-      <el-table-column prop="resumeresidence" label="户口所在地" width="180" />
-      <el-table-column prop="resumezt" label="状态" width="200" >
+      <el-table-column prop="positiveMonthly" label="正式工资" width="180" />
+      <el-table-column prop="resumePhone" label="手机号" width="180" />
+      <el-table-column prop="resumeMailbox" label="邮箱" width="180" />
+      <el-table-column prop="resumePoliticalOutlook" label="政治面貌" width="180" />
+      <el-table-column prop="resumeEducation" label="学历" width="180" />
+      <el-table-column prop="resumeBirthday" label="出生日期" width="180" />
+      <el-table-column prop="resumeResidence" label="户口所在地" width="180" />
+      <el-table-column prop="resumeZt" label="状态" width="200" >
         <template #default="scope">
-          <span v-if="scope.row.resumezt==6">待入职</span>
+          <span v-if="scope.row.resumeZt==8">待入职</span>
         </template>
       </el-table-column>
 
@@ -84,6 +84,8 @@ import {ElMessage,ElMessageBox} from "element-plus";
 export default defineComponent({
   data(){
     return{
+      staffId:this.$store.state.userall.staffId,
+      postName:"",
       input:null,
       waivereason:"",
       pageInfo: {
@@ -92,6 +94,7 @@ export default defineComponent({
         pagesize: 3, // 页大小
         total: 0, // 总页数
 
+        staffId:"",
         resumeid:'',
         resumename: '',
         waivereason:'',
@@ -163,24 +166,33 @@ export default defineComponent({
     },
 
     addInduction(row){
-      this.axios({
-        method:'post',
-        url:"http://localhost:8007/provider/staff/addStaff",
-        data:this.tableData,
-        responseType:'json',
-        responseEncoding:'utf-8',
-      }).then(response=>{
-        console.log(response)
-        if (response.data.data === "入职成功") {
-          ElMessage({
-            type: "success",
-            message: "入职成功",
-          });
-        } else if(response.data.data === "入职失败"){
-          ElMessage.error("入职失败");
-        }
-      })
-
+      this.selectPostName();
+      if (this.postName="经理"){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/staff/addStaff",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "入职成功",
+            });
+            this.selectInduction(null);
+          } else {
+            ElMessage.error("入职失败");
+            this.selectInduction(null);
+          }
+        })
+      }else {
+        ElMessage({
+          message:"权限不够",
+          type:"warning"
+        })
+      }
     },
 
     giveupInduction(row){
@@ -233,7 +245,23 @@ export default defineComponent({
       }
     },
 
-
+    selectPostName(){
+      this.pageInfo.staffId=this.staffId;
+      var _this = this;
+      _this.axios({
+        method: 'post',
+        url: "http://localhost:8007/provider/staff/postName",
+        data: this.pageInfo,
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response)=>{
+        console.log(response);
+       this.postName=response.data.data.postName
+      }).catch(function (error){
+        console.log('获取表单失败')
+        console.log(error)
+      })
+    }
 
   }
 })

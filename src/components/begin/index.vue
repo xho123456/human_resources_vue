@@ -1,6 +1,6 @@
 <template>
 
-      <router-link to="/beginIndex/Login" active-class="active" replace></router-link><br/>
+      <router-link to="/beginIndex/Login" active-class="active" replace></router-link>
       <router-view></router-view>
 
 </template>

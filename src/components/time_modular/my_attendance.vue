@@ -14,7 +14,20 @@
         </div>
         <div class="my-cead my-time">
           <div style="padding-left: 20px;display: flex;align-items: center;">
-            年月日时分秒
+           <span style="font-size: 13px;margin-left: 10px">年<span style="color:cornflowerblue;margin-left: 10px">月</span></span>
+
+            <el-date-picker
+                @change="querycdAlldk()"
+              v-model="value1"
+              type="month"
+              size="mini"
+              :clearable="false"
+              style="padding-right: 10px;padding-left: 10px;width: 100px;"
+              placeholder="选择日期"
+              value-format="YYYY-MM"
+            >
+          </el-date-picker>
+
           </div>
         </div>
 
@@ -31,14 +44,14 @@
                 <div>
                   <div class="div-a3">
                     <div style="width: 100%">
-                      <div class="div-a4 ant-rows1">234</div>
+                      <div class="div-a4 ant-rows1">{{atttimedayx}}</div>
                       <div class="div-a4">
                         <span class="ant-rows-span1"></span>
                         <span style="font-size: 12px;color: black">实际出勤（天）</span>
                       </div>
                     </div>
                     <div style="width: 100%">
-                      <div class="div-a4 ant-rows2">234</div>
+                      <div class="div-a4 ant-rows2">{{atttimedays-atttimedayx}}</div>
                       <div class="div-a4">
                         <span class="ant-rows-span2"></span>
                         <span style="font-size: 12px;color: black">未出勤（天）</span>
@@ -53,40 +66,40 @@
                 <div>
                   <div class="my-caerdq">
 
-                    <div class="my-ant">
+                    <div class="my-ant" @click="querychid()">
                       <div class="my-ant-show" style="background-color: rgb(72, 198, 81);">
                         <i class="iconfont" style="font-size: 30px">&#xeb17;</i>
                       </div>
                       <div class="show-dv1">
-                        <div class="show-dv2">9</div>
+                        <div class="show-dv2">{{numbers.numbercd}}</div>
                         <div class="show-dv3" title="迟到(次)">迟到(天)</div>
                       </div>
                     </div>
 
-                    <div class="my-ant">
+                    <div class="my-ant" @click="queryzaot()">
                       <div class="my-ant-show" style="background-color: rgb(79, 140, 255);">
                         <i class="iconfont" style="font-size: 24px">&#xe638;</i>
                       </div>
                       <div class="show-dv1">
-                        <div class="show-dv2">9</div>
-                        <div class="show-dv3" title="早退(次)">早退(天)</div>
+                        <div class="show-dv2">{{numbers.numberzt}}</div>
+                        <div class="show-dv3" title="早退(次)">早退(次)</div>
                       </div>
                     </div>
-                    <div class="my-ant">
+                    <div class="my-ant" @click="querykuang()">
                       <div class="my-ant-show" style="background-color: rgb(141, 107, 243);">
                         <i class="iconfont" style="font-size: 32px">&#xeb34;</i>
                       </div>
                       <div class="show-dv1">
-                        <div class="show-dv2">9</div>
-                        <div class="show-dv3" title="旷工(次)">旷工(天)</div>
+                        <div class="show-dv2">{{numbers.numberkg}}</div>
+                        <div class="show-dv3" title="旷工(次)">旷工(次)</div>
                       </div>
                     </div>
-                    <div class="my-ant">
+                    <div class="my-ant" @click="querybuudks()">
                       <div class="my-ant-show" style="background-color: rgb(72, 198, 81);">
                         <i class="iconfont" style="font-size: 29px">&#xe61e;</i>
                       </div>
                       <div class="show-dv1">
-                        <div class="show-dv2">9</div>
+                        <div class="show-dv2">{{numbers.numberlq}}</div>
                         <div class="show-dv3" title="漏签(次)">漏签(天)</div>
                       </div>
                     </div>
@@ -106,7 +119,7 @@
                         <i class="iconfont" style="font-size: 29px">&#xe69f;</i>
                       </div>
                       <div class="show-dv1">
-                        <div class="show-dv2">9</div>
+                        <div class="show-dv2">{{numbers.numberjab}}</div>
                         <div class="show-dv3" title="加班(天)">加班(天)</div>
                       </div>
                     </div>
@@ -133,11 +146,25 @@
               </el-table-column>
               <el-table-column label="上班一">
                 <el-table-column prop="smornClock" label="打卡时间" />
-                <el-table-column prop="smornResult" label="打卡结果" width="100" />
+                <el-table-column label="打卡结果" width="100">
+                  <template #default="scope">
+                    <span v-if="scope.row.smornResult=='正常'">{{scope.row.smornResult}}</span>
+                    <span style="color: red" v-if="scope.row.smornResult=='迟到' || scope.row.smornResult=='旷工'">
+                      {{scope.row.smornResult}}
+                    </span>
+                  </template>
+                </el-table-column>
               </el-table-column>
               <el-table-column label="下班一">
                 <el-table-column prop="xafternoonClock" label="打卡时间"/>
-                <el-table-column prop="xafternoonResult" label="打卡结果" width="100" />
+                <el-table-column label="打卡结果" width="100">
+                  <template #default="scope">
+                    <span v-if="scope.row.xafternoonResult=='正常'">{{scope.row.xafternoonResult}}</span>
+                    <span style="color: red" v-if="scope.row.xafternoonResult=='早退' || scope.row.xafternoonResult=='旷工'">
+                      {{scope.row.xafternoonResult}}
+                    </span>
+                  </template>
+                </el-table-column>
               </el-table-column>
               <el-table-column prop="atsShould" label="应出勤天数" width="140"/>
               <el-table-column prop="atShould" label="实际出勤天数" width="140"/>
@@ -147,8 +174,6 @@
               <el-table-column prop="zhaisLate" label="早退时长（小时）" width="140"/>
               <el-table-column prop="kangLate" label="旷工（次数）" width="140"/>
               <el-table-column prop="kangsLate" label="旷工时长（小时）" width="140"/>
-              <el-table-column prop="workYing" label="应工作时长" width="140"/>
-              <el-table-column prop="worksYing" label="实际工作时长" width="140"/>
             </el-table>
             <div class="demo-pagination-block" style="margin-top: 10px">
               <el-pagination
@@ -161,11 +186,9 @@
                   :pager-count="5"
                   background
                   @size-change="querycdAlldk()"
-                  @current-change="querycdAlldk()"
-              >
+                  @current-change="querycdAlldk()">
               </el-pagination>
             </div>
-
           </div>
 
 
@@ -242,7 +265,7 @@
     </div>
     <template #footer>
                   <span class="dialog-footer">
-                    <el-button size="mini" type="primary" @click="dialogTableVisible=false">取消</el-button>
+                    <el-button size="mini" type="primary" @click="dialogTableVisible1=false">取消</el-button>
                   </span>
     </template>
     <div class="demo-pagination-block">
@@ -262,32 +285,34 @@
     </div>
   </el-dialog>
 
-
   <!-- 迟到明细对话框 -->
-  <el-dialog v-model="dialogTableVisible2" title="请假明细" destroy-on-close width="60%">
+  <el-dialog v-model="dialogTableVisible2" title="迟到明细" destroy-on-close width="60%">
     <div style="height: 350px">
       <el-table :data="tableDatacd" style="cursor: pointer" size="mini"
                 :header-cell-style="{color:'#606266',background:'rgb(234, 237, 241)',textAlign: 'center'}" :stripe=true>
-        <el-table-column align="center" prop="staffName1" label="姓名"/>
+        <el-table-column align="center" prop="staffName" label="姓名"/>
         <el-table-column align="center" prop="deptName" label="部门"/>
-        <el-table-column align="center" prop="leaveSDate" label="开始时间" width="130px"/>
-        <el-table-column align="center" prop="leaveEDate" label="结束时间" width="130px"/>
-        <el-table-column align="center" prop="leaveType" label="请假类型"/>
-        <el-table-column align="center" prop="leaveMatter" label="请假事由"/>
-        <el-table-column align="center" prop="auditflowStaff" label="审批状态">
+        <el-table-column align="center" prop="dayDate" label="日期" width="130px"/>
+        <el-table-column prop="name" label="班次" width="130" :show-overflow-tooltip="true">
           <template #default="scope">
-            <span v-if="scope.row.auditflowStaff==0">待审</span>
-            <span v-if="scope.row.auditflowStaff==1">通过</span>
-            <span v-if="scope.row.auditflowStaff==2">驳回</span>
-            <span v-if="scope.row.auditflowStaff==3">撤销</span>
+            一般工作时间(
+            {{scope.row.classesTimeones}}-{{scope.row.classesTimeonex}}
+            &nbsp;
+            {{scope.row.classesTimetwos}}-{{scope.row.classesTimetwox}}
+            )
           </template>
         </el-table-column>
-        <el-table-column align="center" prop="leaveTotalDate" label="请假总时长"/>
+        <el-table-column align="center" prop="smornClock" label="打卡时间"/>
+        <el-table-column align="center" label="迟到(小时)">
+          <template #default="scope">
+            {{scope.row.chesLate}}
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <template #footer>
                   <span class="dialog-footer">
-                    <el-button size="mini" type="primary" @click="dialogTableVisible=false">取消</el-button>
+                    <el-button size="mini" type="primary" @click="dialogTableVisible2=false">取消</el-button>
                   </span>
     </template>
     <div class="demo-pagination-block">
@@ -306,9 +331,122 @@
     </div>
   </el-dialog>
 
+  <!-- 早退明细对话框 -->
+  <el-dialog v-model="dialogTableVisible3" title="早退明细" destroy-on-close width="60%">
+    <div style="height: 350px">
+      <el-table :data="tableDatazt" style="cursor: pointer" size="mini"
+                :header-cell-style="{color:'#606266',background:'rgb(234, 237, 241)',textAlign: 'center'}" :stripe=true>
+        <el-table-column align="center" prop="staffName" label="姓名"/>
+        <el-table-column align="center" prop="deptName" label="部门"/>
+        <el-table-column align="center" prop="dayDate" label="日期" width="130px"/>
+        <el-table-column prop="name" label="班次" width="130" :show-overflow-tooltip="true">
+          <template #default="scope">
+            一般工作时间(
+            {{scope.row.classesTimeones}}-{{scope.row.classesTimeonex}}
+            &nbsp;
+            {{scope.row.classesTimetwos}}-{{scope.row.classesTimetwox}}
+            )
+          </template>
+        </el-table-column>
+        <el-table-column align="center" prop="xafternoonClock" label="打卡时间"/>
+        <el-table-column align="center" prop="zhaisLate" label="早退(小时)"/>
+      </el-table>
+    </div>
+    <template #footer>
+                  <span class="dialog-footer">
+                    <el-button size="mini" type="primary" @click="dialogTableVisible3=false">取消</el-button>
+                  </span>
+    </template>
+    <div class="demo-pagination-block">
+      <el-pagination
+          v-model:currentPage="pageInfocdzts.currenPage"
+          :page-sizes="[5, 10, 30, 50]"
+          v-model:page-size="pageInfocdzts.pagesize"
+          :default-page-size="pageInfocdzts.pagesize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="pageInfocdzts.total"
+          :pager-count="5"
+          background
+          @size-change="querycdAllcd()"
+          @current-change="querycdAllcd()">
+      </el-pagination>
+    </div>
+  </el-dialog>
 
+  <!-- 旷工明细对话框 -->
+  <el-dialog v-model="dialogTableVisible4" title="旷工明细" destroy-on-close width="60%">
+    <div style="height: 350px">
+      <el-table :data="tableDatakg" style="cursor: pointer" size="mini"
+                :header-cell-style="{color:'#606266',background:'rgb(234, 237, 241)',textAlign: 'center'}" :stripe=true>
+        <el-table-column align="center" prop="staffName" label="姓名"/>
+        <el-table-column align="center" prop="deptName" label="部门"/>
+        <el-table-column align="center" prop="dayDate" label="日期" width="130px"/>
+        <el-table-column prop="name" label="班次" width="130" :show-overflow-tooltip="true">
+          <template #default="scope">
+            一般工作时间(
+            {{scope.row.classesTimeones}}-{{scope.row.classesTimeonex}}
+            &nbsp;
+            {{scope.row.classesTimetwos}}-{{scope.row.classesTimetwox}}
+            )
+          </template>
+        </el-table-column>
+        <el-table-column align="center" prop="xafternoonClock" label="打卡时间"/>
+        <el-table-column align="center" prop="kangsLate" label="旷工(小时)"/>
+      </el-table>
+    </div>
+    <template #footer>
+                  <span class="dialog-footer">
+                    <el-button size="mini" type="primary" @click="dialogTableVisible4=false">取消</el-button>
+                  </span>
+    </template>
+    <div class="demo-pagination-block">
+      <el-pagination
+          v-model:currentPage="pageInfocdkuang.currenPage"
+          :page-sizes="[5, 10, 30, 50]"
+          v-model:page-size="pageInfocdkuang.pagesize"
+          :default-page-size="pageInfocdkuang.pagesize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="pageInfocdkuang.total"
+          :pager-count="5"
+          background
+          @size-change="querycdAllcd()"
+          @current-change="querycdAllcd()">
+      </el-pagination>
+    </div>
+  </el-dialog>
 
-
+  <!-- 补打卡明细对话框 -->
+  <el-dialog v-model="dialogTableVisible5" title="漏签明细" destroy-on-close width="60%">
+    <div style="height: 350px">
+      <el-table :data="tableDatebudk" style="cursor: pointer" size="mini"
+                :header-cell-style="{color:'#606266',background:'rgb(234, 237, 241)',textAlign: 'center'}" :stripe=true>
+        <el-table-column align="center" prop="staffName" label="姓名"/>
+        <el-table-column align="center" prop="deptName" label="部门"/>
+        <el-table-column align="center" prop="cardType" label="补打卡类型" width="130px"/>
+        <el-table-column align="center" prop="cardDate" label="补打卡时间"/>
+        <el-table-column align="center" prop="cardRemarks" label="备注"/>
+      </el-table>
+    </div>
+    <template #footer>
+                  <span class="dialog-footer">
+                    <el-button size="mini" type="primary" @click="dialogTableVisible4=false">取消</el-button>
+                  </span>
+    </template>
+    <div class="demo-pagination-block">
+      <el-pagination
+          v-model:currentPage="pageInfocdkuang.currenPage"
+          :page-sizes="[5, 10, 30, 50]"
+          v-model:page-size="pageInfocdkuang.pagesize"
+          :default-page-size="pageInfocdkuang.pagesize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="pageInfocdkuang.total"
+          :pager-count="5"
+          background
+          @size-change="querycdAllcd()"
+          @current-change="querycdAllcd()">
+      </el-pagination>
+    </div>
+  </el-dialog>
 
 </template>
 
@@ -321,9 +459,18 @@ export default {
     return {
       //当前登录用户消息
       useralls:this.$store.state.userall,
+
+      //年月：查询范围
+      value1:'',
+
       //数据次数统计
       numbers:{
-        numberqj:'',
+        numberqj:'', //请假
+        numbercd:'', //迟到
+        numberzt:'', //早退
+        numberkg:'', //旷工
+        numberjab:'',//加班
+        numberlq:'',//漏签
       },
       tableData: [],
       //分页
@@ -369,13 +516,95 @@ export default {
         pagesize: 5,
         total: 0,
       },
+
+      //早退明细对话框
+      dialogTableVisible3:false,
+      //早退数据
+      tableDatazt: [],
+      //早退明细分页
+      pageInfocdzts: {
+        currenPage: 1,
+        /* 当前的页 */
+        pagesize: 5,
+        total: 0,
+      },
+
+      //旷工明细对话框
+      dialogTableVisible4:false,
+      //旷工数据
+      tableDatakg: [],
+      //旷工明细分页
+      pageInfocdkuang: {
+        currenPage: 1,
+        /* 当前的页 */
+        pagesize: 5,
+        total: 0,
+      },
+
+      //补打卡明细对话框
+      dialogTableVisible5:false,
+      //补打卡数据
+      tableDatebudk: [],
+      //补打卡明细分页
+      pageInfocdbudks: {
+        currenPage: 1,
+        /* 当前的页 */
+        pagesize: 5,
+        total: 0,
+      },
+      //应出勤天数
+      atttimedays:'',
+      //实际出勤天数
+      atttimedayx:'',
     }
   },
   created() {
+    //获取当前月分
+    this.getCurrentTime();
+    //请假次数统计
     this.querynumber();
+    //当前登录用户考勤打卡记录查询（按照月份查询）
     this.querycdAlldk();
+    this.atttimes_y();
+    this.querybudkcun();
+
   },
   methods: {
+    atttimes_y(){//应出勤天数
+      var today = new Date();
+      // 获取当月天数 curretMonthDayCount
+      var curretMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      var curretMonthDayCount = curretMonth.getDate();
+      this.atttimedays = curretMonthDayCount-((curretMonthDayCount/7)*2).toString().substring(0,1);
+      this.axios({
+        url: "http://localhost:8007/provider/leave/querydkcounts",
+        method: "post",
+        data: {
+          staffId: this.useralls.staffId,
+          dates:this.value1
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.atttimedayx = response.data.data
+        console.error(response.data.data)
+        //统计图
+        this.$nextTick(function () {
+          this.two("mains");
+        });
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    //获取当前月分
+    getCurrentTime() {
+      //获取当前时间并打印
+      var _this = this;
+      let yy = new Date().getFullYear();
+      let mm = new Date().getMonth()+1 <10 ? '0'+(new Date().getMonth()+1) : new Date().getMonth()+1;
+      _this.value1 = yy+'-'+mm;
+    },
     two(mains) {
       this.charts = echarts.init(document.getElementById(mains));
       this.charts.setOption({
@@ -384,7 +613,7 @@ export default {
         },
         series: [
           {
-            name: 'Access From',
+            name: '出勤统计',
             type: 'pie',
             radius: ['40%', '70%'],
             avoidLabelOverlap: false,
@@ -403,12 +632,42 @@ export default {
               show: false
             },
             data: [
-              {value: 1048, name: 'Search Engine'},
-              {value: 735, name: 'Direct'}
+              {value: this.atttimedayx, name: '实际出勤天数'},
+              {value:this.atttimedays-this.atttimedayx, name: '未出勤天数'}
             ]
           }
         ]
       });
+    },
+    //当前登录用户考勤打卡记录查询（按照月份查询）
+    querycdAlldk(){
+      this.axios({
+        url: "http://localhost:8007/provider/leave/queryalldk",
+        method: "post",
+        data: {
+          currenPage: this.pageInfo.currenPage,
+          pagesize:this.pageInfo.pagesize,
+          staffId: this.useralls.staffId,
+          dates:this.value1
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.tableData = response.data.data.records
+        this.pageInfo.total = response.data.data.total
+        //迟到次数统计
+        this.chidnumber();
+        //早退次数统计
+        this.zaotnumbers();
+        //旷工次数统计
+        this.kgnumber();
+        //加班次数统计
+        this.jiabnumber();
+        this.atttimes_y();
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
     },
     //当前登录用户考勤请假记录查询
     querycdAll(){
@@ -470,48 +729,226 @@ export default {
         console.log(error);
       })
     },
-
-
-
-
-
-    //当前登录用户考勤打卡记录查询（按照月份查询）
-    querycdAlldk(){
+    //当前登录用户考勤打卡迟到记录查询
+    querychid(){
+      this.dialogTableVisible2 = true;
       this.axios({
-        url: "http://localhost:8007/provider/leave/queryalldk",
+        url: "http://localhost:8007/provider/clock/queryallcds",
         method: "post",
         data: {
-          currenPage: this.pageInfo.currenPage,
-          pagesize:this.pageInfo.pagesize,
-          staffId: this.useralls.staffId
+          currenPage: this.pageInfocd.currenPage,
+          pagesize:this.pageInfocd.pagesize,
+          staffId:this.useralls.staffId,
+          dates:this.value1
         },
         responseType: 'json',
         responseEncoding: 'utf-8',
       }).then((response) => {
-        this.tableData = response.data.data.records
-        this.pageInfo.total = response.data.data.total
+        console.error(response)
+        this.tableDatacd = response.data.data.records
+        this.pageInfocd.total = response.data.data.total
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+
+    },
+    //迟到次数统计
+    chidnumber() {
+      this.axios({
+        url: "http://localhost:8007/provider/clock/querycdnumbers",
+        method: "post",
+        data: {
+          staffId:this.useralls.staffId,
+          dates:this.value1
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.numbers.numbercd = response.data.data
       }).catch(function (error) {
         console.log('获取列表失败')
         console.log(error);
       })
     },
-    queryjiab(){
-      this.dialogTableVisible1 = true;
+    //迟到次数统计
+    jiabnumber() {
+      this.axios({
+        url: "http://localhost:8007/provider/clock/queryjabnumbers",
+        method: "post",
+        data: {
+          staffId:this.useralls.staffId,
+          dates:this.value1
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.error(response)
+        this.numbers.numberjab = response.data.data
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
     },
+    //当前登录用户考勤打卡早退记录查询
+    queryzaot(){
+      this.dialogTableVisible3 = true;
+      this.axios({
+        url: "http://localhost:8007/provider/clock/queryallzts",
+        method: "post",
+        data: {
+          currenPage: this.pageInfocd.currenPage,
+          pagesize:this.pageInfocd.pagesize,
+          staffId:this.useralls.staffId,
+          dates:this.value1
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.error(response)
+        this.tableDatazt = response.data.data.records
+        this.pageInfocdzts.total = response.data.data.total
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
 
-
-
-  },
-  mounted() {
-    this.$nextTick(function () {
-      this.two("mains");
-    });
+    },
+    //早退次数统计
+    zaotnumbers() {
+      this.axios({
+        url: "http://localhost:8007/provider/clock/queryzhaotnumbers",
+        method: "post",
+        data: {
+          staffId:this.useralls.staffId,
+          dates:this.value1
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.numbers.numberzt = response.data.data
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    //当前登录用户考勤打卡旷工记录查询
+    querykuang(){
+      this.dialogTableVisible4 = true;
+      this.axios({
+        url: "http://localhost:8007/provider/clock/queryallkuangs",
+        method: "post",
+        data: {
+          currenPage: this.pageInfocd.currenPage,
+          pagesize:this.pageInfocd.pagesize,
+          staffId:this.useralls.staffId,
+          dates:this.value1
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.error(response)
+        this.tableDatakg = response.data.data.records
+        this.pageInfocdkuang.total = response.data.data.total
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    //旷工次数统计
+    kgnumber() {
+      this.axios({
+        url: "http://localhost:8007/provider/clock/querykgnumbers",
+        method: "post",
+        data: {
+          staffId:this.useralls.staffId,
+          dates:this.value1
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.numbers.numberkg = response.data.data
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    //当前登录用户考勤打卡旷工记录查询
+    querybuudks(){
+      this.dialogTableVisible5 = true;
+      this.axios({
+        url: "http://localhost:8007/provider/clock/querybudk",
+        method: "post",
+        data: {
+          currenPage: this.pageInfocdbudks.currenPage,
+          pagesize:this.pageInfocdbudks.pagesize,
+          staffId:this.useralls.staffId,
+          dates:this.value1
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.error(response)
+        this.tableDatebudk = response.data.data.records
+        this.pageInfocdbudks.total = response.data.data.total
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+    //漏签次数统计
+    querybudkcun() {
+      this.axios({
+        url: "http://localhost:8007/provider/clock/querybudks",
+        method: "post",
+        data: {
+          staffId:this.useralls.staffId,
+          dates:this.value1
+        },
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        this.numbers.numberlq = response.data.data
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
   },
 }
 
 </script>
 
 <style type="text/css" scoped>
+/deep/.my-cead .el-input {
+  --el-input-border: none;
+}
+.el-radio-group {
+  font-size: 0;
+  display: block;
+}
+.el-radio-button{
+  padding-right: 10px;
+}
+/deep/.el-radio-button--mini .el-radio-button__inner {
+  padding: 7px 15px;
+  font-size: 12px;
+  border-radius: 5px;
+  border: none;
+}
+.el-button--mini {
+  min-height: 23px;
+  padding: 6px 8px;
+  font-size: 12px;
+  border-radius: 5px;
+}
+/deep/.el-input__prefix-inner {
+  pointer-events: all;
+  display: none;
+}
+/deep/.el-input--prefix .el-input__inner {
+  padding-left: 18px;
+}
 /deep/.el-table td.el-table__cell div {
   box-sizing: border-box;
   text-align: center;

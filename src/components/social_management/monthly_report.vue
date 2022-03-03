@@ -1,97 +1,88 @@
+
 <template>
 <!-- 月度报表 -->
   <div class="saas-main-content">
     <div class="j-card j-card-bordered mainContent">
       <div class="j-card-body">
+        <div class="my-cead">
+                    <div style="width:97%;padding-left: 20px;display: flex;align-items: center;justify-content: space-between;">
+                      <div style="display: flex;align-items: center;">
+                        <div class="my-span1" style="display: flex;">
+                          <i class="iconfont" style="font-size: 20px">&#xe7d9;</i>
+                        </div>
+                        <div class="my-span2">月度报表</div>
+                      </div>
+                    </div>
+                  </div>
+        <!-- 搜索框 -->
         <!-- 单个 -->
-        <div class="main_div">
-          <div class="interior_left_div">
-            <span class="social_accumulation">
-              <span>2022-06</span> 社保公积金</span
-            >
-            <span style="font-size: 12px"> &nbsp;已归档</span>
-            <br />
-            <el-button type="text">导出参保明细</el-button>
-            <el-button type="text">删除 </el-button>
+        <div class="main_div" >
+          <el-table
+              :data="tableData" style="width: 100%;margin-top: 10px "
+              :header-cell-style="{textAlign: 'center',background:'#F0F0F0',color:'#6C6C6C'}"
+              :default-sort="{ prop: 'date', order: 'descending' }"
+              @selection-change="deletepl"
+              :cell-style="{ textAlign: 'center', padding:'25px'}">
+            <el-table-column
+                align="center"
+                label="归档时间"
+                prop="dates"
+                width="210px">
+
+            </el-table-column>
+            <el-table-column
+                align="center"
+                label="参保人数"
+                prop="quantity"
+                width="280px">
+            </el-table-column>
+            <el-table-column
+                align="center"
+                label="个人缴费"
+                prop="person"
+                width="280px">
+            </el-table-column>
+
+            <el-table-column
+                align="center"
+                label="企业缴费"
+                prop="enterprise"
+                width="280px">
+            </el-table-column>
+
+            <el-table-column
+                align="center"
+                label="操作"
+                width="210px">
+              <template #default="scope">
+                <router-link :to="{path:this.paths,query:{path:this.$route.query.path,ids:scope.row.dates}}">
+                  <el-button type="text">归档详情</el-button>
+                </router-link>
+              </template>
+            </el-table-column>
+
+          </el-table>
           </div>
 
-          <div class="interior_right_div">
-            <div style="display: inline-block">
-              <span style="margin: 35px">参保人数</span><br />
-              <span style="margin: 35px">1</span>
-            </div>
 
-            <div style="display: inline-block">
-              <span style="margin: 35px">个人缴费</span><br />
-              <span style="margin: 35px">2</span>
-            </div>
 
-            <div style="display: inline-block">
-              <span style="margin: 35px">企业缴费</span><br />
-              <span style="margin: 35px">3</span>
-            </div>
-
-            <div style="display: inline-block; margin-left: 20px">
-              <router-link to="sb3_2">
-                <el-button type="text"><i class="iconfont">&#xe60b;</i></el-button></router-link
-              >
-            </div>
-          </div>
-          <br />
-          <!-- 分割线 -->
-          <div class="cut_off"></div>
-        </div>
-
-        <!-- 单个 -->
-        <div class="main_div">
-          <div class="interior_left_div">
-            <span class="social_accumulation">
-              <span>2022-06</span> 社保公积金</span
-            >
-            <span style="font-size: 12px"> &nbsp;已归档</span>
-            <br />
-            <el-button type="text">导出参保明细</el-button>
-            <el-button type="text">删除 </el-button>
-          </div>
-
-          <div class="interior_right_div">
-            <div style="display: inline-block">
-              <span style="margin: 35px">参保人数</span><br />
-              <span style="margin: 35px">1</span>
-            </div>
-
-            <div style="display: inline-block">
-              <span style="margin: 35px">个人缴费</span><br />
-              <span style="margin: 35px">2</span>
-            </div>
-
-            <div style="display: inline-block">
-              <span style="margin: 35px">企业缴费</span><br />
-              <span style="margin: 35px">3</span>
-            </div>
-
-            <div style="display: inline-block; margin-left: 20px">
-              <el-button type="text"><i class="iconfont">&#xe60b;</i></el-button>
-            </div>
-          </div>
-          <br />
-          <!-- 分割线 -->
-          <div class="cut_off"></div>
-        </div>
-
-        <!-- 分页插件 -->
+        <!-- 分页 -->
         <div class="demo-pagination-block">
           <el-pagination
-            v-model:currentPage="pageInfo.currentPage"
-            :page-sizes="[3, 5, 10, 50]"
-            v-model:page-size="pageInfo.pagesize"
-            :default-page-size="pageInfo.pagesize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="pageInfo.total"
-            :pager-count="5"
-            background
-            @size-change="selectUsers"
-            @current-change="selectUsers"
+              v-model:current-page="pageInfo.currentPage"
+              v-model:currentPage="pageInfo.currentPage"
+              v-model:page-size="pageInfo.pagesize"
+              :default-page-size="pageInfo.pagesize"
+              :page-sizes="[3, 4, 5, 6]"
+              :page-size="3"
+              :pager-count="4"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="pageInfo.total"
+              @size-change="monthlyReport()"
+              @current-change="monthlyReport()"
+              prev-text="上一页"
+              next-text="下一页"
+              background
           >
           </el-pagination>
         </div>
@@ -105,63 +96,64 @@
 export default {
   data() {
     return {
+      paths:'/social/social_payment/payment_details',
       pageInfo: {
-        // 分页参数
-        currentPage: 1, //当前页
-        pagesize: 3, // 页大小
-        total: 0, // 总页数
+        currentPage: 1,
+        pagesize: 3,
+        total: 0,
+        //社保归档时间
       },
-      tableData: [
-        {
-          date: "2016-05-03",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-        {
-          date: "2016-05-02",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-        {
-          date: "2016-05-04",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-        {
-          date: "2016-05-01",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-        {
-          date: "2016-05-08",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-        {
-          date: "2016-05-06",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-        {
-          date: "2016-05-07",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles",
-        },
-      ],
-      multipleSelection: [],
+      tableData: [],
+      person:[]
     };
   },
+  created() {
+
+    this.monthlyReport();
+
+
+  },
+  methods:{
+    monthlyReport(){
+      this.axios({
+        url: "http://localhost:8007/provider/insuredArchive/monthlyReport",
+        method: "post",
+        data: this.pageInfo,
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+
+        this.tableData = response.data.data.records
+        for(let i=0;i<this.tableData.length;i++){
+         let enterprise=this.tableData[i].b+this.tableData[i].d
+          this.tableData[i].enterprise=enterprise.toFixed(2)
+          let person=this.tableData[i].a+this.tableData[i].c
+          this.tableData[i].person=person.toFixed(2)
+        }
+
+        this.pageInfo.total = response.data.data.total
+      }).catch(function (error) {
+        console.log('获取列表失败')
+        console.log(error);
+      })
+    },
+
+
+  }
+
+
 };
 </script>
 
 <style scoped>
-
 @font-face {
-  font-family: 'iconfont';  /* Project id 2994452 */
-  src: url('//at.alicdn.com/t/font_2994452_cj8my5ezezl.woff2?t=1640705098291') format('woff2'),
-  url('//at.alicdn.com/t/font_2994452_cj8my5ezezl.woff?t=1640705098291') format('woff'),
-  url('//at.alicdn.com/t/font_2994452_cj8my5ezezl.ttf?t=1640705098291') format('truetype');
+  font-family: 'iconfont';  /* Project id 3164770 */
+  src: url('//at.alicdn.com/t/font_3164770_te5p4157fzj.woff2?t=1644419209354') format('woff2'),
+  url('//at.alicdn.com/t/font_3164770_te5p4157fzj.woff?t=1644419209354') format('woff'),
+  url('//at.alicdn.com/t/font_3164770_te5p4157fzj.ttf?t=1644419209354') format('truetype');
 }
+
+
 
 /* 分割线 */
 .cut_off {
@@ -190,6 +182,7 @@ export default {
 /* 大div */
 .main_div {
   margin-bottom: 10px;
+
 }
 
 /* 分页的样式 */
@@ -248,5 +241,17 @@ export default {
 .j-card-body{
   padding:2%;
 }
+
+.my-span1 {
+     width: 35px;
+     height: 35px;
+     border-radius: 20px;
+      background-color: rgb(87, 153, 229) !important;
+}
+.my-span2 {
+      margin-left: 10px;
+      font-size: 18px;
+      color: black;
+    }
 
 </style>

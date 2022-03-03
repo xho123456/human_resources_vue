@@ -4,7 +4,7 @@
     <el-tabs type="border-card">
       <!-- 待办申请页面 -->
       <el-tab-pane label="待办申请">
-        <el-button @click="resetDateFilter1">重置日期过滤</el-button>
+        <el-button @click="leaaveMe(null)">重置</el-button>
         &nbsp;
         <el-input
             v-model="input"
@@ -12,40 +12,28 @@
             style="width: 130px"
         />
         &nbsp;
-        <el-button type="success" plain>搜索</el-button>
+        <el-button type="success" @click="leaaveMe(input)">搜索</el-button>
         <!--  表格 -->
         <el-table
             ref="filterTable1"
             row-key="date1"
-            :data="tableData1"
+            :data="tableData"
             style="width: 100%"
         >
-          <el-table-column
-              prop="date1"
-              label="日期"
-              sortable
-              width="140"
-              column-key="date1"
-              :filters="[
-              { text: '2016-05-01', value: '2016-05-01' },
-              { text: '2016-05-02', value: '2016-05-02' },
-              { text: '2016-05-03', value: '2016-05-03' },
-              { text: '2016-05-04', value: '2016-05-04' },
-            ]"
-              :filter-method="filterHandler"
-          />
-          <el-table-column prop="AUDITFLOW_ID" label="审批编号" width="100"/>
-          <el-table-column prop="AUDITFLOW_TYPE" label="流程" width="100"/>
-          <el-table-column prop="STAFF_ID" label="申请人" width="150"/>
-          <!-- <el-table-column prop="name" label="操作人" width="100" /> -->
-          <el-table-column prop="AUDITFLOW_STATE" label="状态" width="100"/>
-          <el-table-column prop="STAFF_NAME" label="当前审批人" width="150"/>
-          <el-table-column prop="UPDATED_TIME" label="最近处理" width="150"/>
+          <el-table-column prop="auditflowdetaiDate" label="日期" width="140"/>
+          <el-table-column prop="auditflowId" label="审批编号" width="100"/>
+          <el-table-column prop="auditflowType" label="流程" width="100"/>
+          <el-table-column prop="staffName" label="申请人" width="150"/>
+          <el-table-column prop="auditflowdetaiState" label="状态" width="100">
+            <template #default="scope">
+              <span v-if="scope.row.auditflowdetaiState==0">审批中</span>
+              <span v-if="scope.row.auditflowdetaiState==1">待我审批</span>
+              <span v-if="scope.row.auditflowdetaiState==2">已审批</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="staffName2" label="当前审批人" width="150"/>
+          <el-table-column prop="createdTime" label="最近处理" width="150"/>
 
-          <!-- <el-table-column prop="tag" label="操作" width="100">
-						<el-button type="success" plain>通过</el-button>
-						<el-button type="danger" plain>驳回</el-button>
-					</el-table-column> -->
           <el-table-column label="操作">
             <template #default="scope">
               <el-popconfirm
@@ -54,7 +42,7 @@
                   :icon="InfoFilled"
                   icon-color="red"
                   title="确定通过吗?"
-                  @confirm="through1()"
+                  @confirm="through1(scope.row)"
               >
                 <template #reference>
                   <el-button type="success" plain>通过</el-button>
@@ -66,19 +54,19 @@
                   :icon="InfoFilled"
                   icon-color="red"
                   title="确定驳回吗?"
-                  @confirm="through2()"
+                  @confirm="through2(scope.row)"
               >
                 <template #reference>
                   <el-button type="danger" plain>驳回</el-button>
                 </template>
               </el-popconfirm>
-              <el-button
-                  type="primary"
-                  style="margin-left: 16px"
-                  @click="drawer = true"
-              >
-                详情
-              </el-button>
+<!--              <el-button-->
+<!--                  type="primary"-->
+<!--                  style="margin-left: 16px"-->
+<!--                  @click="drawer = true"-->
+<!--              >-->
+<!--                详情-->
+<!--              </el-button>-->
             </template>
           </el-table-column>
         </el-table>
@@ -92,6 +80,10 @@
               layout="total, sizes, prev, pager, next, jumper"
               :total="pageInfo.total"
               :pager-count="5"
+              @size-change="leaaveMe(input)"
+              @current-change="leaaveMe(input)"
+              prev-text="上一页"
+              next-text="下一页"
               background
           >
             <!--  @size-change="selectUsers" @current-change="selectUsers" -->
@@ -104,55 +96,47 @@
       </el-drawer>
       <!-- 已办申请页面 -->
       <el-tab-pane label="已办申请">
-        <el-button @click="resetDateFilter">重置日期过滤</el-button>
+        <el-button @click="leaved(null)">重置</el-button>
         &nbsp;
         <el-input
-            v-model="input"
+            v-model="input1"
             placeholder="输入名称搜索nima"
             style="width: 130px"
         />
         &nbsp;
-        <el-button type="success" plain>搜索</el-button>
+        <el-button type="success" @click="leaved(input1)">搜索</el-button>
 
         <el-table
             ref="filterTable"
             row-key="date"
-            :data="tableData"
+            :data="tableData1"
             style="width: 100%"
         >
-          <el-table-column
-              prop="date"
-              label="日期"
-              sortable
-              width="140"
-              column-key="date"
-              :filters="[
-              { text: '2016-05-01', value: '2016-05-01' },
-              { text: '2016-05-02', value: '2016-05-02' },
-              { text: '2016-05-03', value: '2016-05-03' },
-              { text: '2016-05-04', value: '2016-05-04' },
-            ]"
-              :filter-method="filterHandler"
-          />
-          <el-table-column prop="AUDITFLOW_ID" label="审批编号" width="100"/>
-          <el-table-column prop="AUDITFLOW_TYPE" label="流程" width="100"/>
-          <el-table-column prop="STAFF_ID" label="申请人" width="150"/>
-          <!-- <el-table-column prop="name" label="操作人" width="100" /> -->
-          <el-table-column prop="AUDITFLOW_STATE" label="状态" width="100"/>
-          <el-table-column prop="STAFF_NAME" label="历史审批人" width="150"/>
-          <el-table-column prop="UPDATED_TIME" label="最近处理" width="140"/>
-
-          <el-table-column label="操作">
+          <el-table-column prop="auditflowdetaiDate" label="日期" width="140"/>
+          <el-table-column prop="auditflowId" label="审批编号" width="100"/>
+          <el-table-column prop="auditflowType" label="流程" width="100"/>
+          <el-table-column prop="staffName" label="申请人" width="150"/>
+          <el-table-column prop="auditflowdetaiState" label="状态" width="100">
             <template #default="scope">
-              <el-button
-                  type="primary"
-                  style="margin-left: 5px"
-                  @click="drawer = true"
-              >
-                详情
-              </el-button>
+              <span v-if="scope.row.auditflowdetaiState==0">审批中</span>
+              <span v-if="scope.row.auditflowdetaiState==1">待我审批</span>
+              <span v-if="scope.row.auditflowdetaiState==2">已审批</span>
             </template>
           </el-table-column>
+          <el-table-column prop="staffName2" label="当前审批人" width="150"/>
+          <el-table-column prop="createdTime" label="最近处理" width="150"/>
+
+<!--          <el-table-column label="操作">-->
+<!--            <template #default="scope">-->
+<!--              <el-button-->
+<!--                  type="primary"-->
+<!--                  style="margin-left: 5px"-->
+<!--                  @click="drawer = true"-->
+<!--              >-->
+<!--                详情-->
+<!--              </el-button>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
         </el-table>
 
         <!-- 分页插件 -->
@@ -165,6 +149,10 @@
               layout="total, sizes, prev, pager, next, jumper"
               :total="pageInfo.total"
               :pager-count="5"
+              @size-change="leaved(input1)"
+              @current-change="leaved(input1)"
+              prev-text="上一页"
+              next-text="下一页"
               background
           >
             <!--  @size-change="selectUsers"
@@ -176,7 +164,7 @@
 	  <!-- 我的申请页面：请假 -->
 	  <el-tab-pane label="我的申请">
 	  	  
-	          <el-button @click="resetDateFilter">重置日期过滤</el-button>
+	          <el-button @click="leavemy">重置</el-button>
 	          <el-button   @click="sick = true" >发起申请</el-button>
 	          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -190,40 +178,35 @@
 	          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	  	  
 	  	  
-	          <el-input
-	              v-model="input"
-	              placeholder="输入名称搜索"
-	              style="width: 130px"
-	          />
-	          &nbsp;
-	          <el-button type="success" plain>搜索</el-button>
+
 	          <!-- 表格   -->
 	          <el-table
 	              ref="filterTable"
 	              row-key="date"
-	              :data="tableData"
+	              :data="tableData2"
 	              style="width: 100%"
 	          >
-	            <el-table-column
-	                prop="date"
-	                label="日期"
-	                sortable
-	                width="140"
-	                column-key="date"
-	                :filters="[
-	          { text: '2016-05-01', value: '2016-05-01' },
-	          { text: '2016-05-02', value: '2016-05-02' },
-	          { text: '2016-05-03', value: '2016-05-03' },
-	          { text: '2016-05-04', value: '2016-05-04' },
-	        ]"
-	                :filter-method="filterHandler"
-	            />
-	            <el-table-column prop="name" label="审批编号" width="150"/>
-	            <el-table-column prop="name" label="流程" width="150"/>
-	            <el-table-column prop="name" label="申请人" width="160"/>
-	            <el-table-column prop="name" label="状态" width="160"/>
-	            <el-table-column prop="name" label="当前审批人" width="160"/>
-	            <el-table-column prop="name" label="最近处理" width="160"/>
+              <el-table
+                  ref="filterTable"
+                  row-key="date"
+                  :data="tableData2"
+                  style="width: 100%"
+              >
+                <el-table-column prop="auditflowdetaiDate" label="日期" width="140"/>
+                <el-table-column prop="auditflowId" label="审批编号" width="100"/>
+                <el-table-column prop="auditflowType" label="流程" width="100"/>
+                <el-table-column prop="staffName" label="申请人" width="150"/>
+                <el-table-column prop="auditflowState" label="状态" width="100">
+                  <template #default="scope">
+                    <span v-if="scope.row.auditflowState===0">审批中</span>
+                    <span v-if="scope.row.auditflowState===1">通过</span>
+                    <span v-if="scope.row.auditflowState===2">驳回</span>
+                    <span v-if="scope.row.auditflowState===3">撤销</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="staffName2" label="历史审批人" width="150"/>
+                <el-table-column prop="createdTime" label="最近处理" width="140"/>
+
 	            <el-table-column label="操作" >
 	              <template #default="scope" >
 	                <el-popconfirm
@@ -232,19 +215,19 @@
 	                    :icon="InfoFilled"
 	                    icon-color="red"
 	                    title="确定撤销吗?"
-	                    @confirm="through1()"
+	                    @confirm="through3(scope.row.auditflowId)"
 	                >
 	                  <template #reference>
 	                    <el-button type="success" plain>撤销</el-button>
 	                  </template>
 	                </el-popconfirm>
-	                <el-button
-	                    type="primary"
-	                    style="margin-left: 16px"
-	                    @click="drawer = true"
-	                >
-	                  详情
-	                </el-button>
+<!--	                <el-button-->
+<!--	                    type="primary"-->
+<!--	                    style="margin-left: 16px"-->
+<!--	                    @click="drawer = true"-->
+<!--	                >-->
+<!--	                  详情-->
+<!--	                </el-button>-->
 	              </template>
 	            </el-table-column>
 	          </el-table>
@@ -259,6 +242,10 @@
 	                layout="total, sizes, prev, pager, next, jumper"
 	                :total="pageInfo.total"
 	                :pager-count="5"
+                  @size-change="leavemy()"
+                  @current-change="leavemy()"
+                  prev-text="上一页"
+                  next-text="下一页"
 	                background
 	            >
 	            </el-pagination>
@@ -396,11 +383,17 @@ export default {
     return {
       drawer: ref(false),
       input: ref(""),
+      input1: ref(""),
 	  sick
     };
   },
   data() {
     return {
+      staffName:this.$store.state.userall.staffName,
+      deptPostId:this.$store.state.userall.deptPostId,
+      staffId:this.$store.state.userall.staffId,
+      deptId: this.$store.state.userall.deptId,
+
 		//请假表单
 		sick_1: {
 		  //名称
@@ -418,7 +411,8 @@ export default {
 		  //请假总时长
 		  date3: "",
 		},
-		options: [{
+		options: [
+        {
 		          value: '病假',
 		          label: '病假'
 		        }, {
@@ -566,16 +560,125 @@ export default {
           UPDATED_TIME: "2020-01-01",
         },
       ],
+
+      tableData2:[],
+
       // 分页
       pageInfo: {
         // 分页参数
         currentPage: 1, //当前页
-        pagesize: 3, // 页大小
+        pageSize: 3, // 页大小
         total: 0, // 总页数
+
+        staffName:"",
+        staffName1: "",
+        auditflowdetaiState:0,
       },
     };
   },
+  mounted() {
+    this.leaaveMe(null);
+    this.leaved(null);
+    this.leavemy();
+  },
   methods: {
+    leaaveMe(like){
+      if (Object.prototype.toString.call(like)===Object.prototype.toString.call(null)) {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.auditflowdetaiState=1;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/leaver/leaverMe",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }else {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.auditflowdetaiState=1;
+        this.pageInfo.staffName1 = like;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/leaver/LikeName",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }
+    },
+
+    leaved(like){
+      if (Object.prototype.toString.call(like)===Object.prototype.toString.call(null)) {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.auditflowdetaiState=2;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/leaver/leaverMe",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData1 = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }else {
+        this.pageInfo.staffName = this.staffName;
+        this.pageInfo.staffName1 = like;
+        this.pageInfo.auditflowdetaiState=2;
+        this.axios({
+          method: 'post',
+          url: "http://localhost:8007/provider/leaver/LikeName",
+          data: this.pageInfo,
+          responseType: 'json',
+          responseEncoding: 'utf-8',
+        }).then((response) => {
+          console.log(response);
+          this.tableData1 = response.data.data.records
+          this.pageInfo.total = response.data.data.total
+        }).catch(function (error) {
+          console.log('获取表单失败')
+          console.log(error)
+        })
+      }
+    },
+
+    leavemy(){
+      this.pageInfo.staffName = this.staffName;
+      this.axios({
+        method: 'post',
+        url: "http://localhost:8007/provider/leaver/leaverMy",
+        data: this.pageInfo,
+        responseType: 'json',
+        responseEncoding: 'utf-8',
+      }).then((response) => {
+        console.log(response);
+        this.tableData2 = response.data.data.records
+        this.pageInfo.total = response.data.data.total
+      }).catch(function (error) {
+        console.log('获取表单失败')
+        console.log(error)
+      })
+    },
+
+
 	  handleNative(val){
 		  let obj = {};//定义对象集合
 		  obj = this.options.find(item => {
@@ -594,7 +697,58 @@ export default {
 	    } else if (this.sick_1.date2.length === 0) {
 	      ElMessage("请选择结束时间");
 	    } else {
-	      alert(1);
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/erection/add",
+          data:{
+            staffId: this.staffId,
+            // 申请人
+            staffName: this.staffName,
+            // 部门编号
+            deptId: this.deptId,
+
+            // 请假类型
+            leaveType: this.sick_1.type_1,
+            // 请假事由
+            leaveMatter: this.sick_1.remarks_1,
+            // 请假开始日期
+            travelSDate: this.sick_1.date1,
+            //请假结束日期
+            travelEDate:this.sick_1.date2,
+            //请假总小时
+            travelTotalDate:this.sick_1.date2,
+
+            // 审批人1
+            staffName1: "刘金科1",
+            // 审批人2
+            staffName2: "刘金科2",
+            // 审批人3
+            staffName3: "刘金科3",
+            // 审批类型
+            auditflowType: "请假",
+            // 审批标题
+            auditflowTitle: this.staffName + "的" + this.sick_1.type_1
+          },
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then((response)=>{
+          console.log(response);
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "申请成功",
+            });
+            this.leavemy();
+            this.cancel_8();
+          } else {
+            ElMessage.error("申请失败");
+            this.cancel_8();
+            this.leavemy();
+          }
+        }).catch(function (error){
+          console.log('获取表单失败')
+          console.log(error)
+        })
 	    }
 	  },
 	  // 取消请假
@@ -686,14 +840,160 @@ export default {
       return row[property] === value;
     },
     // 点击通过确认按钮触发
-    through1() {
-      alert(1)
+    through1(row){
+      if (this.postId==16){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/positive",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "通过成功",
+            });
+          } else{
+            ElMessage.error("通过失败");
+          }
+        })
+      }else if (this.postId==17){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/positive",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "通过成功",
+            });
+          } else {
+            ElMessage.error("通过失败");
+          }
+        })
+      }else if (this.postId==18){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/positiveend",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "通过成功",
+            });
+          } else {
+            ElMessage.error("通过失败");
+          }
+        })
+      }else {
+        ElMessage({
+          message: "权限不够",
+          type: "warning"
+        })
+      }
     },
     // 点击驳回确认按钮触发
-    through2() {
-      alert(1)
+    through2(row){
+      if (this.postId==16){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/rejected",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "驳回成功",
+            });
+          } else{
+            ElMessage.error("驳回失败");
+          }
+        })
+      }else if (this.postId==17){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/rejected",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "驳回成功",
+            });
+          } else {
+            ElMessage.error("驳回失败");
+          }
+        })
+      }else if (this.postId==18){
+        this.axios({
+          method:'post',
+          url:"http://localhost:8007/provider/auditflow/rejected",
+          data:row,
+          responseType:'json',
+          responseEncoding:'utf-8',
+        }).then(response=>{
+          console.log(response)
+          if (response.data.info === 1111) {
+            ElMessage({
+              type: "success",
+              message: "驳回成功",
+            });
+          } else {
+            ElMessage.error("驳回失败");
+          }
+        })
+      }else {
+        ElMessage({
+          message: "权限不够",
+          type: "warning"
+        })
+      }
+    },
+
+    through3(id){
+      this.pageInfo.auditFlowId=id;
+      this.axios({
+        method:'post',
+        url:"http://localhost:8007/provider/undo",
+        data:this.pageInfo,
+        responseType:'json',
+        responseEncoding:'utf-8',
+      }).then((response)=>{
+        console.log(response);
+        if (response.data.info === 1111) {
+          ElMessage({
+            type: "success",
+            message: "撤销成功",
+          });
+          this.quitmy();
+        } else {
+          ElMessage.error("撤销失败");
+          this.quitmy();
+        }
+      }).catch(function (error){
+        console.log('获取表单失败')
+        console.log(error)
+      })
     }
-  },
+
+
+    },
 };
 </script>
 
