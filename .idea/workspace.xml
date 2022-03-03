@@ -6,16 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="7782e118-91e8-4d6c-900a-0a4856553f34" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/time_modular/attendance_history.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/time_modular/attendance_history.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/time_modular/attendance_month.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/time_modular/attendance_month.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/time_modular/attendance_record.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/time_modular/attendance_record.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/time_modular/attendance_statistics.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/time_modular/attendance_statistics.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/time_modular/leave_yyx.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/time_modular/leave_yyx.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/time_modular/my_attendance.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/time_modular/my_attendance.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/time_modular/outdifference_yyx.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/time_modular/outdifference_yyx.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/time_modular/workovertime_yyx.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/time_modular/workovertime_yyx.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/store/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/salary_management/salary_archive.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/salary_management/salary_archive.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/salary_management/salary_statistics.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/salary_management/salary_statistics.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +45,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="ts.external.directory.path" value="D:\WebStorm 2021.3\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -75,7 +68,21 @@
       <option name="project" value="LOCAL" />
       <updated>1645272404172</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Changes">
+      <created>1646273250841</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1646273250841</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Changes">
+      <created>1646273348336</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1646273348336</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
