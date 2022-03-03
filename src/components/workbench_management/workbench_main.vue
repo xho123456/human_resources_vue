@@ -212,7 +212,7 @@
                 <span>加班申请</span>
               </div>
             </router-link>
-            <router-link :to="{path:this.nine,query:{path:this.$route.query.path}}">
+            <router-link :to="{path:this.twelve,query:{path:this.$route.query.path}}">
               <div class="div_li">
                 <p><i class="iconfont">&#xe656;</i></p>
                 <span>请假申请</span>
@@ -324,7 +324,7 @@
         <el-button size="small" @click="dialogVisible = false">关闭</el-button>
       </span>
     </template>
-  </el-dialog>
+  </el-dialog>{{useralls}}
 </template>
 
 <script>
@@ -347,7 +347,7 @@ export default {
       nine: '/my/attendance', //我的考勤路由地址
       ten: '/statistics/staff_analyze/statistics_personnel1', //统计分析路由地址
       eleven: '/examine/examine_centre/overtime_examine',  //加班申请
-      twelve: '',
+      twelve: '/examine/examine_centre/leave_examine',
       thirteen: '/system/announcement_management/announcement_set', //公告管理
       fourteen: '/employee/message/employee_roster/book', //员工信息
 

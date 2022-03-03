@@ -1,8 +1,6 @@
 <!--招聘过程 人才库-->
 <template>
   <div class="saas-main-content">
-
-
     <div class="j-card j-card-bordered mainContent">
       <!--标题-->
       <div class="my-cead">
@@ -16,7 +14,7 @@
         </div>
       </div>
       <!--内容-->
-      <div class="j-card-body ">
+      <div class="j-card-body" style="height: 590px">
         <div class="j-tabs">
           <ul>
 

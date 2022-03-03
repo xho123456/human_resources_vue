@@ -11,13 +11,6 @@
             </el-button>
           </router-link>
           &nbsp;
-          <el-button size="small" type="primary" plain>
-            <el-icon style="font-size: 12px">
-              <i-upload/>
-            </el-icon>
-            导入
-          </el-button>
-
           <el-button size="small" type="primary" plain  @click="derive()">
             <el-icon style="font-size: 13px">
               <i-folder-opened/>

@@ -613,7 +613,7 @@ export default {
         },
         series: [
           {
-            name: 'Access From',
+            name: '出勤统计',
             type: 'pie',
             radius: ['40%', '70%'],
             avoidLabelOverlap: false,

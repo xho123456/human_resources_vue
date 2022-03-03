@@ -20,32 +20,19 @@
             :data="tableData"
             style="width: 100%"
         >
-          <el-table-column
-              prop="auditflowdetaiDate"
-              label="日期"
-              sortable
-              width="140"
-              column-key="date1"
-              :filters="[
-              { text: '2016-05-01', value: '2016-05-01' },
-              { text: '2016-05-02', value: '2016-05-02' },
-              { text: '2016-05-03', value: '2016-05-03' },
-              { text: '2016-05-04', value: '2016-05-04' },
-            ]"
-              :filter-method="filterHandler"
-          />
-          <el-table-column prop="auditflowid" label="审批编号" width="100"/>
-          <el-table-column prop="auditflowtype" label="流程" width="100"/>
-          <el-table-column prop="staffname1" label="申请人" width="150"/>
-          <el-table-column prop="auditflowdetaistate" label="状态" width="100">
+          <el-table-column prop="auditflowdetaiDate" label="日期" width="140"/>
+          <el-table-column prop="auditflowId" label="审批编号" width="100"/>
+          <el-table-column prop="auditflowType" label="流程" width="100"/>
+          <el-table-column prop="staffName" label="申请人" width="150"/>
+          <el-table-column prop="auditflowdetaiState" label="状态" width="100">
             <template #default="scope">
-              <span v-if="scope.row.auditflowdetaistate==0">审批中</span>
-              <span v-if="scope.row.auditflowdetaistate==1">待我审批</span>
-              <span v-if="scope.row.auditflowdetaistate==2">已审批</span>
+              <span v-if="scope.row.auditflowdetaiState==0">审批中</span>
+              <span v-if="scope.row.auditflowdetaiState==1">待我审批</span>
+              <span v-if="scope.row.auditflowdetaiState==2">已审批</span>
             </template>
           </el-table-column>
-          <el-table-column prop="staffname2" label="当前审批人" width="150"/>
-          <el-table-column prop="createdtime" label="最近处理" width="150"/>
+          <el-table-column prop="staffName2" label="当前审批人" width="150"/>
+          <el-table-column prop="createdTime" label="最近处理" width="150"/>
 
           <el-table-column label="操作">
             <template #default="scope">
@@ -73,13 +60,13 @@
                   <el-button type="danger" plain>驳回</el-button>
                 </template>
               </el-popconfirm>
-              <el-button
-                  type="primary"
-                  style="margin-left: 16px"
-                  @click="drawer = true"
-              >
-                详情
-              </el-button>
+<!--              <el-button-->
+<!--                  type="primary"-->
+<!--                  style="margin-left: 16px"-->
+<!--                  @click="drawer = true"-->
+<!--              >-->
+<!--                详情-->
+<!--              </el-button>-->
             </template>
           </el-table-column>
         </el-table>
@@ -171,30 +158,31 @@
               label="日期"
               width="140"
           />
-          <el-table-column prop="auditflowid" label="审批编号" width="100"/>
-          <el-table-column prop="auditflowtype" label="流程" width="100"/>
-          <el-table-column prop="staffname1" label="申请人" width="150"/>
-          <el-table-column prop="auditflowdetaistate" label="状态" width="100">
+          <el-table-column prop="auditflowdetaiDate" label="日期" width="140"/>
+          <el-table-column prop="auditflowId" label="审批编号" width="100"/>
+          <el-table-column prop="auditflowType" label="流程" width="100"/>
+          <el-table-column prop="staffName" label="申请人" width="150"/>
+          <el-table-column prop="auditflowdetaiState" label="状态" width="100">
             <template #default="scope">
-              <span v-if="scope.row.auditflowdetaistate==0">审批中</span>
-              <span v-if="scope.row.auditflowdetaistate==1">待我审批</span>
-              <span v-if="scope.row.auditflowdetaistate==2">已审批</span>
+              <span v-if="scope.row.auditflowdetaiState==0">审批中</span>
+              <span v-if="scope.row.auditflowdetaiState==1">待我审批</span>
+              <span v-if="scope.row.auditflowdetaiState==2">已审批</span>
             </template>
           </el-table-column>
-          <el-table-column prop="staffname2" label="当前审批人" width="150"/>
-          <el-table-column prop="createdtime" label="最近处理" width="150"/>
+          <el-table-column prop="staffName2" label="当前审批人" width="150"/>
+          <el-table-column prop="createdTime" label="最近处理" width="150"/>
 
-          <el-table-column label="操作">
-            <template #default="scope">
-              <el-button
-                  type="primary"
-                  style="margin-left: 5px"
-                  @click="drawer = true"
-              >
-                详情
-              </el-button>
-            </template>
-          </el-table-column>
+<!--          <el-table-column label="操作">-->
+<!--            <template #default="scope">-->
+<!--              <el-button-->
+<!--                  type="primary"-->
+<!--                  style="margin-left: 5px"-->
+<!--                  @click="drawer = true"-->
+<!--              >-->
+<!--                详情-->
+<!--              </el-button>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
         </el-table>
 
         <!-- 分页插件 -->
@@ -279,13 +267,13 @@
                   <el-button type="success" plain>撤销</el-button>
                 </template>
               </el-popconfirm>
-              <el-button
-                  type="primary"
-                  style="margin-left: 16px"
-                  @click="drawer = true"
-              >
-                详情
-              </el-button>
+<!--              <el-button-->
+<!--                  type="primary"-->
+<!--                  style="margin-left: 16px"-->
+<!--                  @click="drawer = true"-->
+<!--              >-->
+<!--                详情-->
+<!--              </el-button>-->
             </template>
           </el-table-column>
         </el-table>

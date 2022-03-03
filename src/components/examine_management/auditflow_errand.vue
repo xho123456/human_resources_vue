@@ -61,13 +61,13 @@
                   <el-button type="danger" plain>驳回</el-button>
                 </template>
               </el-popconfirm>
-              <el-button
-                type="primary"
-                style="margin-left: 16px"
-                @click="drawer = true"
-              >
-                详情
-              </el-button>
+<!--              <el-button-->
+<!--                type="primary"-->
+<!--                style="margin-left: 16px"-->
+<!--                @click="drawer = true"-->
+<!--              >-->
+<!--                详情-->
+<!--              </el-button>-->
             </template>
           </el-table-column>
         </el-table>
@@ -128,17 +128,17 @@
           <el-table-column prop="staffName2" label="历史审批人" width="150"/>
           <el-table-column prop="createdTime" label="最近处理" width="140"/>
 
-          <el-table-column label="操作">
-            <template #default="scope">
-              <el-button
-                type="primary"
-                style="margin-left: 5px"
-                @click="drawer = true"
-              >
-                详情
-              </el-button>
-            </template>
-          </el-table-column>
+<!--          <el-table-column label="操作">-->
+<!--            <template #default="scope">-->
+<!--              <el-button-->
+<!--                type="primary"-->
+<!--                style="margin-left: 5px"-->
+<!--                @click="drawer = true"-->
+<!--              >-->
+<!--                详情-->
+<!--              </el-button>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
         </el-table>
 
         <!-- 分页插件 -->
@@ -190,6 +190,7 @@
               </el-table-column>
               <el-table-column prop="staffName2" label="历史审批人" width="150"/>
               <el-table-column prop="createdTime" label="最近处理" width="140"/>
+
 	            <el-table-column label="操作" >
 	              <template #default="scope" >
 	                <el-popconfirm
@@ -204,13 +205,13 @@
 	                    <el-button type="success" plain>撤销</el-button>
 	                  </template>
 	                </el-popconfirm>
-	                <el-button
-	                    type="primary"
-	                    style="margin-left: 16px"
-	                    @click="drawer = true"
-	                >
-	                  详情
-	                </el-button>
+<!--	                <el-button-->
+<!--	                    type="primary"-->
+<!--	                    style="margin-left: 16px"-->
+<!--	                    @click="drawer = true"-->
+<!--	                >-->
+<!--	                  详情-->
+<!--	                </el-button>-->
 	              </template>
 	            </el-table-column>
 	          </el-table>
@@ -247,10 +248,10 @@
 	  >
 	    <el-form ref="form" :model="travel_1" label-width="120px">
 	      <el-form-item label="员工名称">
-	        <el-input v-model="travel_1.name" disabled></el-input>
+	        <el-input v-model="this.staffName" disabled></el-input>
 	      </el-form-item>
-	      <el-form-item label="部门名称">
-	        <el-input v-model="travel_1.dept" disabled></el-input>
+	      <el-form-item label="部门编号">
+	        <el-input v-model="this.deptId" disabled></el-input>
 	      </el-form-item>
 	      <!-- 出差地址选择器 -->
 	      <el-form-item label="出差地址">
@@ -303,7 +304,7 @@
 	            <div class="block">
 	              <el-avatar :size="50" :src="circleUrl"></el-avatar>
 	              <div class="sub-title" style="line-height: 10px">
-	                管理一号
+	                刘金科1
 	              </div>
 	            </div>
 	          </div>
@@ -313,7 +314,7 @@
 	            <div class="block">
 	              <el-avatar :size="50" :src="circleUrl"></el-avatar>
 	            </div>
-	            <div class="sub-title" style="line-height: 10px">管理二号</div>
+	            <div class="sub-title" style="line-height: 10px">刘金科2</div>
 	          </div>
 	        </el-col>
 	        <el-col :span="12">
@@ -321,7 +322,7 @@
 	            <div class="block">
 	              <el-avatar :size="50" :src="circleUrl"></el-avatar>
 	            </div>
-	            <div class="sub-title" style="line-height: 10px">管理三号</div>
+	            <div class="sub-title" style="line-height: 10px">刘金科3</div>
 	          </div>
 	        </el-col>
 	      </el-form-item>
