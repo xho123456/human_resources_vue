@@ -540,12 +540,8 @@ export default {
           .then(() => {
             this.deleteList();
           })
-          .catch(() => {
-            ElMessage({
-              message: '感谢你的参与',
-              type: 'warning',
-            })
-          })
+
+
     },
 
     //批量删除

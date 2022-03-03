@@ -721,4 +721,31 @@ const router = createRouter({
     history: createWebHistory(),
     routes
 })
+//
+// router.beforeEach((to,from,next)=>{
+//     var user=sessionStorage.getItem("user");
+//     if(to.path == '/beginIndex/Login' || to.path == '/register' || user!=null){
+//         next();
+//     }else{
+//         alert('您还没有登录，请先登录');
+//         next('/beginIndex/Login');
+//     }
+// })
+
+// router.beforeEach((to, from, next) => {
+//  if (to.path === '/beginIndex/Login') {
+//  next();
+// } else if (sessionStorage.getItem("user") === "true") {
+//  next();
+//  } else {
+//      alert('您还没有登录，请先登录');
+//         next('/beginIndex/Login');
+//  }
+// })
+
+// router.beforeEach((to, from, next) => {
+//     if (to.path == '/beginIndex/Login' && !isAuthenticated) next({ name: 'Login' })
+//     else next()
+// })
+
 export default router

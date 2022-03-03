@@ -34,7 +34,7 @@
         <!-- 表格按钮部分 -->
         <div class="mt-20 ml-20 mr-20">
           <!-- 按钮 -->
-          <el-button size="small"
+          <el-button style="margin-left: 8px;" size="small"
             ><i class="iconfont">&#xe6a2;</i>批量导出</el-button
           >
           <el-button size="small"
@@ -46,7 +46,7 @@
           </el-button>
 
           <!-- 搜索按钮 -->
-          <div style="width: 68px;margin-top: 1px;" class="resume-operation">
+          <div style="width: 68px;margin-top: 1px;margin-right: 10px;" class="resume-operation">
             <el-button size="mini" style="width: 68px;height: 29px" type="primary" @click="selectPaers()">
               搜索
             </el-button>
@@ -91,7 +91,7 @@
 
         <!-- 表格内容部分 -->
         <div class="sub-Content__primary">
-          <el-table :data="tableData" style="width: 100%;margin-top: 10px "
+          <el-table :data="tableData" style="width: 100%;margin-top: 10px ;margin-left: 2px"
                     :header-cell-style="{textAlign: 'center',background:'#F0F0F0',color:'#6C6C6C'}"
                     :cell-style="{ textAlign: 'center' }"
                     :default-sort="{ prop: 'date', order: 'descending' }"
@@ -100,7 +100,7 @@
             <el-table-column type="selection" width="55" />
             <el-table-column type="index" label="编号" width="100"/>
             <el-table-column prop="staffName" label="姓名" width="100"/>
-            <el-table-column prop="insDetailInsuredName"  label="参保方案" width="120"/>
+            <el-table-column prop="insDetailInsuredName"  label="参保方案" width="110"/>
             <el-table-column prop="insDetailInsuredMonth" label="社保缴纳月份" width="130" />
             <el-table-column prop="insDetailSocialPersonPay" label="社保个人缴费"  width="130" />
             <el-table-column prop="insDetailSocialFirmPay" label="社保企业缴费" width="130" />
@@ -145,6 +145,7 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -226,6 +227,7 @@ export default {
       this.id=[];
       for (let i=0 ; i<this.table.length ; i++){
         this.id.push(this.table[i].insuredPaymentId)
+
       }
       this.axios({
         method:'post',
@@ -250,6 +252,7 @@ export default {
 
     //判断删除按钮是否可用
     deletepl(val){
+
       this.table=val
       if(this.table != ''){
         this.disableds=false
@@ -401,7 +404,7 @@ export default {
 /* 月金额统计 */
 .month_sum {
   display: inline-block;
-  margin-left: 402px;
+  margin-left: 393px;
   width: 861px;
   height: 159px;
   margin-top: 32px;

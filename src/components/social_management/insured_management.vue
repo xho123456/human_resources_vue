@@ -65,7 +65,7 @@
                       v-model="insured.insuredPaymentNumber"
                       size="small"
                       placeholder="请输入社保基数"
-                  />
+                      onkeyup="this.value= this.value.match(/\d+(\.\d{0,2})?/) ? this.value.match(/\d+(\.\d{0,2})?/)[0] : ''" />
                 </el-form-item>
                 <el-form-item prop="name">
                   <span style="margin-left: -3px">参保月份：</span>
@@ -114,6 +114,7 @@
                       style="width: 244px"
                       size="small"
                       placeholder="请输入公积金基数"
+                      onkeyup="this.value= this.value.match(/\d+(\.\d{0,2})?/) ? this.value.match(/\d+(\.\d{0,2})?/)[0] : ''"
                   />
                 </el-form-item>
                 <el-form-item>
@@ -198,7 +199,7 @@
             <el-table-column prop="postName" label="职位"/>
             <el-table-column prop="staffPhone" label="电话号码"/>
             <el-table-column prop="staffHiredate" label="入职日期"/>
-            <el-table-column prop="workerDate" label="转正日期"/>
+
           </el-table>
         </div>
 

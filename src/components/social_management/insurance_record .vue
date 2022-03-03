@@ -69,6 +69,7 @@
       </el-pagination>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -137,7 +138,7 @@ export default {
   padding-left: 8px;
   float: right;
   width: 352px;
-  margin-top: -5px;
+
 }
 
 </style>
