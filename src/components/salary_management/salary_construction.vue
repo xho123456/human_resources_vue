@@ -2,40 +2,11 @@
 <template>
   <div class="demo-collapse">
     <div style="width: 95%;margin: auto">
-    <div class="">
-<!--      <span style="font-size: 14px;">1、选择一个部门</span>&nbsp;-->
-      <!--选择部门的下拉框-->
-      <el-form>
-      <el-form-item label="1、选择一个部门：" prop="dept">
-        <el-select v-model="ruleForm.dept" placeholder="请选择部门" style="width:240px;">
-          <el-option label="123" value="dept1" style="margin-left: 20px;"></el-option>
-          <el-option label="11" value="dept2" style="margin-left: 20px;"></el-option>
-          <el-option label="2333" value="dept3" style="margin-left: 20px;"></el-option>
-        </el-select>
-      </el-form-item>
-      </el-form><br>
-      <p class="font_size_p">2.根据您企业薪酬制度，选择需要的薪酬类别（勾选则表示系统需核算）</p>
 
-      <br>
-
-      <el-checkbox-group v-model="checkList" >
-        <el-tooltip class="item" effect="dark" content="固定员工核算基础数据,不可更改" placement="top-start">
-          <el-icon :size="16" style="margin-left: 20px;">
-            <i-question-filled />
-          </el-icon>
-
-        </el-tooltip>
-        <el-checkbox label="固定工资" disabled  style=" margin-left: 20px;"/>
-        <el-checkbox label="加班工资" disabled style=" margin-left: 20px;"/>
-        <el-checkbox label="考勤扣款" style=" margin-left: 20px;"/>
-        <el-checkbox label="社保" style=" margin-left: 20px;"/>
-        <el-checkbox label="公积金" style=" margin-left: 20px;"/>
-      </el-checkbox-group>
-    </div>
     <br />
     <div class="">
 
-      <span class="font_size_p">3、设置各薪酬类别下面的薪资项目（开启后在工资表中显示该项目）</span>
+      <span class="font_size_p">1、设置各薪酬类别下面的薪资项目</span>
 
       <br>
       <br>

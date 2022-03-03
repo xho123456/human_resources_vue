@@ -115,7 +115,6 @@
             <el-table-column fixed prop="staffName" label="姓名" width="150" />
             <el-table-column prop="staffId" label="工号" width="120" />
             <el-table-column prop="deptName" label="部门" width="120" />
-            <el-table-column prop="postName" label="职位" width="150" />
             <el-table-column prop="staffHiredate" label="入职日期" width="120" />
             <el-table-column prop="staffState" label="状态" width="120" />
             <el-table-column prop="fixedwagePeriodmoney" label="试用基本工资" width="120" />
@@ -596,4 +595,7 @@ export default {
 /deep/.el-table thead{
   color: #607d8b;
 }
+
+
+
 </style>

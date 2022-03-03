@@ -18,11 +18,7 @@
             :data="tableData"
             style="width: 100%"
         >
-          <el-table-column
-              prop="auditflowdetaidate"
-              label="日期"
-              width="140"
-          />
+          <el-table-column prop="auditflowdetaiDate" label="日期" width="140"/>
           <el-table-column prop="auditflowId" label="审批编号" width="100"/>
           <el-table-column prop="auditflowType" label="流程" width="100"/>
           <el-table-column prop="staffName" label="申请人" width="150"/>
@@ -62,13 +58,13 @@
                   <el-button type="danger" plain>驳回</el-button>>
                 </template>
               </el-popconfirm>
-              <el-button
-                  type="primary"
-                  style="margin-left: 16px"
-                  @click="popup1(scope.row.staffName)"
-              >
-                详情
-              </el-button>
+<!--              <el-button-->
+<!--                  type="primary"-->
+<!--                  style="margin-left: 16px"-->
+<!--                  @click="popup1(scope.row.staffName)"-->
+<!--              >-->
+<!--                详情-->
+<!--              </el-button>-->
             </template>
           </el-table-column>
         </el-table>
@@ -173,7 +169,7 @@
             style="width: 100%"
         >
           <el-table-column
-              prop="auditflowdetaidate"
+              prop="auditflowdetaiDate"
               label="日期"
               width="140"
           />
@@ -188,19 +184,19 @@
             </template>
           </el-table-column>
           <el-table-column prop="staffname2" label="当前审批人" width="150"/>
-          <el-table-column prop="createdtime" label="最近处理" width="150"/>
+          <el-table-column prop="createdTime" label="最近处理" width="150"/>
 
-          <el-table-column label="操作">
-            <template #default="scope">
-              <el-button
-                  type="primary"
-                  style="margin-left: 5px"
-                  @click="popup1(scope.row.staffName)"
-              >
-                详情
-              </el-button>
-            </template>
-          </el-table-column>
+<!--          <el-table-column label="操作">-->
+<!--            <template #default="scope">-->
+<!--              <el-button-->
+<!--                  type="primary"-->
+<!--                  style="margin-left: 5px"-->
+<!--                  @click="popup1(scope.row.staffName)"-->
+<!--              >-->
+<!--                详情-->
+<!--              </el-button>-->
+<!--            </template>-->
+<!--          </el-table-column>-->
         </el-table>
         <!-- 分页插件 -->
         <div class="demo-pagination-block">
@@ -284,13 +280,13 @@
                   <el-button type="success" plain>撤销</el-button>
                 </template>
               </el-popconfirm>
-              <el-button
-                  type="primary"
-                  style="margin-left: 16px"
-                  @click="popup1(scope.row.staffName)"
-              >
-                详情
-              </el-button>
+<!--              <el-button-->
+<!--                  type="primary"-->
+<!--                  style="margin-left: 16px"-->
+<!--                  @click="popup1(scope.row.staffName)"-->
+<!--              >-->
+<!--                详情-->
+<!--              </el-button>-->
             </template>
           </el-table-column>
         </el-table>

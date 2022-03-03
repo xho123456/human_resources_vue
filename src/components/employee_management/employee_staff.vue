@@ -69,15 +69,15 @@
             </template>
           </el-table-column>
           <el-table-column  prop="staffHIREDATE" label="入职日期" sortable  width="150"/>
-          <el-table-column fixed="right" label="操作" width="150">
-            <template #default="scope">
-              <router-link :to="{path:this.staffedit,query:{path: this.$route.query.path}}">
-                <el-button type="text" size="small" @click="handleClick(scope.row)"
-                >查看员工详细信息 </el-button>
-              </router-link>
+<!--          <el-table-column fixed="right" label="操作" width="150">-->
+<!--            <template #default="scope">-->
+<!--              <router-link :to="{path:this.staffedit,query:{path: this.$route.query.path}}">-->
+<!--                <el-button type="text" size="small" @click="handleClick(scope.row)"-->
+<!--                >查看员工详细信息 </el-button>-->
+<!--              </router-link>-->
 
-            </template>
-          </el-table-column>
+<!--            </template>-->
+<!--          </el-table-column>-->
         </el-table>
       </div>
 
