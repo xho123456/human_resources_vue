@@ -34,8 +34,6 @@
           <el-button style="margin-left: 8px;" size="small" @click="derive()">
             <i class="iconfont">&#xe6a2;</i>批量导出</el-button>
 
-          <el-button size="small" type="danger" plain
-          ><i class="iconfont">&#xe608;</i>批量删除</el-button>
 
           <!-- 搜索按钮 -->
           <div style="width: 68px;margin-top: 1px;margin-right: 10px;" class="resume-operation">

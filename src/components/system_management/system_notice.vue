@@ -90,30 +90,7 @@
                   </div>
                 </el-form-item>
 
-                <el-form-item label="部门" style="margin-top: -64px;margin-left: 386px;">
-                  <div>
-                    <el-select
-                        v-model="affiche.deptName"
-                        multiple
-                        filterable
-                        allow-create
-                        default-first-option
-                        size="small"
-                    >
-                      <el-option hidden></el-option>
-                      <el-tree
-                          accordion
-                          ref="tree"
-                          :data="affiche.deptlist"
-                          show-checkbox
-                          node-key="deptId"
-                          :props="defaultProps"
-                          @check-change="handleCheckChange()"
-                      />
-                    </el-select>
-                  </div>
 
-                </el-form-item>
                 <!-- 公告内容 -->
                 <span class="neirong" >内容</span>
                 <el-form-item>
@@ -125,6 +102,30 @@
                       margin-left: 77px;"
                       type="textarea">
                   </el-input>
+
+                  <el-form-item label="部门" style="margin-top: 20px;margin-left: 36px;">
+                    <div>
+                      <el-select
+                          v-model="affiche.deptName"
+                          multiple
+                          filterable
+                          allow-create
+                          default-first-option
+                          size="small"
+                      >
+                        <el-option hidden></el-option>
+                        <el-tree
+                            accordion
+                            ref="tree"
+                            :data="affiche.deptlist"
+                            show-checkbox
+                            node-key="deptId"
+                            :props="defaultProps"
+                            @check-change="handleCheckChange()"
+                        />
+                      </el-select>
+                    </div>
+                  </el-form-item>
 
                 </el-form-item>
 
