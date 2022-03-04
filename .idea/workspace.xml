@@ -6,12 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="7782e118-91e8-4d6c-900a-0a4856553f34" name="Changes" comment="完善">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/social_management/insurance_details.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/insurance_details.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/social_management/insurance_record .vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/insurance_record .vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/social_management/insured_management.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/insured_management.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/social_management/monthly_report.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/monthly_report.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/social_management/new_amend_scheme.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/new_amend_scheme.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/social_management/payment_details.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/payment_details.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/social_management/monthly_details.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/monthly_details.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/system_management/system_notice.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/system_management/system_notice.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
