@@ -22,31 +22,31 @@
         </el-col>
         <el-col :span="4">
           <el-card shadow="hover" style="background-color: #085fc3;font-size:14px;color: white">
-            <p>29</p>
+            <p>{{zsyg}}</p>
             <p>正式员工</p>
           </el-card>
         </el-col>
         <el-col :span="4">
           <el-card shadow="never" style="background-color:#085fc3;font-size:14px;color: white">
-            <p>22</p>
+            <p>{{syyg}}</p>
             <p>试用员工</p>
           </el-card>
         </el-col>
         <el-col :span="4">
           <el-card shadow="always" style="background-color: #085fc3;font-size:14px;color: white">
-            <p>22</p>
+            <p>{{dyrz}}</p>
             <p>本月新入职</p>
           </el-card>
         </el-col>
         <el-col :span="4">
           <el-card shadow="always" style="background-color: #085fc3;font-size:14px;color: white">
-            <p>22</p>
+            <p>{{tx}}</p>
             <p>本月调薪</p>
           </el-card>
         </el-col>
         <el-col :span="4">
           <el-card shadow="always" style="background-color: #085fc3;font-size:14px;color: white">
-            <p>22</p>
+            <p>{{value1}}</p>
             <p>本月离职</p>
           </el-card>
         </el-col>
@@ -55,7 +55,7 @@
 
 
     <div style="text-align: center;">
-      <el-table :data="tableData"  :summary-method="getSummaries" show-summary style="width: 100%;font-size: 12px;color:black;font-weight: normal;">
+      <el-table :data="tableData"   style="width: 100%;font-size: 12px;color:black;font-weight: normal;">
           <el-table-column  label="基本信息">
             <el-table-column     prop="staffId" label="ID" width="100" />
             <el-table-column     prop="staffName" label="姓名" width="100" />
@@ -146,10 +146,153 @@ export default {
     },
       sum:[2,2,2,2,2],
       sum1:{},
+      dyrz:'',
+      lz:'',
+      value1:'',
+      zsyg:'',
+      syyg:'',
+      tx:'',
     }
 
   },
   methods: {
+    //当月试用员工
+    selectbysyyg() {
+      this.axios
+          .get("http://localhost:8007/provider/selectbysyyg", {
+            params:this.syyg,
+          })
+          .then((response) => {
+            if(response.data.length<1){
+              this.syyg=0
+            }else {
+              for (var i = 0; i < response.data.length; i++) {
+
+                this.syyg = response.data[0].rs
+
+                console.log(this.value1)
+                /*    if(i>=1) {
+                    var Growth1 = (response.data[i].rs - response.data[i - 1].rs) / response.data[i].rs * 100
+                    this.data11.push(Growth1)
+
+                  }*/
+              }
+            }
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+    //当月正式员工
+    selectbyzsyg() {
+      this.axios
+          .get("http://localhost:8007/provider/selectbyzsyg", {
+            params:this.zsyg,
+          })
+          .then((response) => {
+            if(response.data.length<1){
+              this.zsyg=0
+            }else {
+              for (var i = 0; i < response.data.length; i++) {
+
+                this.zsyg = response.data[0].rs
+
+                console.log(this.value1)
+                /*    if(i>=1) {
+                    var Growth1 = (response.data[i].rs - response.data[i - 1].rs) / response.data[i].rs * 100
+                    this.data11.push(Growth1)
+
+                  }*/
+              }
+            }
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+    //当月员工离职
+    selectdylz() {
+      this.axios
+          .get("http://localhost:8007/provider/chadylz", {
+            params:this.lz,
+          })
+          .then((response) => {
+            if(response.data.length<1){
+              this.value1=0
+            }else {
+              for (var i = 0; i < response.data.length; i++) {
+
+                this.value1 = response.data[0].rs
+                console.log(this.value1)
+                /*    if(i>=1) {
+                    var Growth1 = (response.data[i].rs - response.data[i - 1].rs) / response.data[i].rs * 100
+                    this.data11.push(Growth1)
+
+                  }*/
+              }
+            }
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+
+    selectbytx() {
+      this.axios
+          .get("http://localhost:8007/provider/selectbytx", {
+            params:this.tx,
+          })
+          .then((response) => {
+            if(response.data.length<1){
+              this.tx=0
+            }else {
+              for (var i = 0; i < response.data.length; i++) {
+
+                this.tx = response.data[0].rs
+
+                /*    if(i>=1) {
+                    var Growth1 = (response.data[i].rs - response.data[i - 1].rs) / response.data[i].rs * 100
+                    this.data11.push(Growth1)
+
+                  }*/
+              }
+            }
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
+    //本月入职
+    selectdyrz() {
+      this.axios
+          .get("http://localhost:8007/provider/chabyrz", {
+            params:this.lz,
+          })
+          .then((response) => {
+            if (response.data.length<1) {
+              this.dyrz=0
+            }else {
+              for (var i = 0; i < response.data.length; i++) {
+
+                this.dyrz = response.data[0].rs
+
+              }
+            }
+          })
+          .catch(function (error) {
+            console.log("失败")
+            console.log(error);
+
+          });
+    },
      js(){
        this.tableData=this.sum;
      },
@@ -268,6 +411,11 @@ export default {
     },
   },created() {
     this.selectEndAuditflow();
+    this.selectdyrz();
+    this.selectdylz();
+    this.selectbyzsyg();
+    this.selectbysyyg();
+    this.selectbytx();
 this.goblack();
   },watch: {
     pageInfo: {
