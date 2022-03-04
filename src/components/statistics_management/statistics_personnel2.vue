@@ -24,7 +24,7 @@
 
       <span class="ziti">当前月离职率</span>
       <br>
-      <span class="ziti">{{rs2}}</span>
+      <span class="ziti">{{rs2}}%</span>
       <br>
 
 
@@ -311,8 +311,6 @@ export default ({
 
                 this.xj.push(response.data[i].rs)
                 this.xj1.push(response.data[i].year)
-
-
                 if(i>=1){
 
                   var Growth1 =  (response.data[i-1].rs+response.data[i].rs)/2
@@ -375,7 +373,9 @@ export default ({
                 if (this.xjpj==0){
                   this.xjpj.push(1)
                 }
-                var Growth3= this.data11[i]/this.xjpj[i]*100
+                var Growth3= this.data11[i]/this.xjpj[i]*1000
+
+
                 this.xjpjxj2.push(Growth3)
                 this.rs2=this.xjpjxj2[this.xjpjxj2.length-1]
               }

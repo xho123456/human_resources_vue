@@ -6,10 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="7782e118-91e8-4d6c-900a-0a4856553f34" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/organization_management/zz_post.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/organization_management/zz_post.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/salary_management/salary_wagetable.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/salary_management/salary_wagetable.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/social_management/insurance_details.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/social_management/insurance_details.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/workbench_management/workbench_main.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/workbench_management/workbench_main.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/salary_management/salary_fixedsalary.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/salary_management/salary_fixedsalary.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/statistics_management/statistics_personnel2.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/statistics_management/statistics_personnel2.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/statistics_management/statistics_personnel3.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/statistics_management/statistics_personnel3.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/statistics_management/statistics_work1.vue" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/statistics_management/statistics_work1.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

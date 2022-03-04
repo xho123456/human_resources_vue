@@ -731,7 +731,7 @@ const router = createRouter({
 //         next('/beginIndex/Login');
 //     }
 // })
-
+//
 // router.beforeEach((to, from, next) => {
 //  if (to.path === '/beginIndex/Login') {
 //  next();
@@ -742,10 +742,21 @@ const router = createRouter({
 //         next('/beginIndex/Login');
 //  }
 // })
+/*router.beforeEach((to, from, next) => {
+    let isLogin = sessionStorage.getItem("user") === "true" // 获取登录的状态
+    //如果登录过 且是登录成功的
+    if (isLogin) {
+        next()  // 直接放行
+    } else {
+        // 否则
+        // 如果去的是登录页
+        if (to.path === '/beginIndex/Login') {
+            next() // 直接放行
+        } else {
+            next('/') // 如果去的是别的页面 直接跳转到登录页
+        }
+    }
+})*/
 
-// router.beforeEach((to, from, next) => {
-//     if (to.path == '/beginIndex/Login' && !isAuthenticated) next({ name: 'Login' })
-//     else next()
-// })
 
 export default router
