@@ -249,7 +249,7 @@
           </div>
           <!--未看人员-->
           <div class="zhuagtai">未看人员：
-            <span v-for="item in staffName">&nbsp;{{item}}</span>
+            <span v-for="item in staffNames">&nbsp;{{item}}</span>
           </div>
           <!--发布时间-->
           <div class="zhuagtai">发布时间：
@@ -342,7 +342,7 @@ export default {
 
       },
       //已读人员
-      staffName:[],
+      staffNames:[],
       //未读
       unreadName:[],
 
@@ -480,9 +480,10 @@ export default {
         responseType:'json',
         responseEncoding:'utf-8',
       }).then(request=>{
-        this.staffName=[]
+        this.staffNames=[]
         for(var i=0; i<request.data.data.length;i++){
-          this.staffName.push(request.data.data[i].staffName)
+
+          this.staffNames.push(request.data.data[i].staffId)
         }
       })
     },
@@ -516,6 +517,7 @@ export default {
         //部门名称
         deptName:[]
       }
+
       this.examine.noticeId=row.noticeId;
       this.examine.noticeType=row.noticeType;
       this.examine.noticeMatter=row.noticeMatter;
@@ -525,6 +527,7 @@ export default {
       this.examine.noticePost=row.noticePost;
       this.examine.createdTime=row.createdTime;
       this.examine.staffId=row.staffId
+      this.examine.updatedTime=row.updatedTime
       this.noticeName(row);
     },
     //批量删除提示框
