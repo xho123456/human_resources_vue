@@ -22,7 +22,7 @@
     <div id="main1" style="width: 952px;height:460px;"></div>
     <div style="width: 17%;height: 320px; float: right; margin-top: -390px;">
 
-      <span class="ziti">当前月离职率</span>
+      <span class="ziti">当前月出差人数</span>
       <br>
       <span class="ziti">{{dyccrs}}</span>
       <br>

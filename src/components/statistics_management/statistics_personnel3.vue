@@ -50,7 +50,7 @@
       </div>
     </div>
   </div>
-  {{data1}}
+
 </template>
 
 <script>

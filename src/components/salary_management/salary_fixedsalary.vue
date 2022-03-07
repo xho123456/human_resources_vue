@@ -166,20 +166,7 @@
             >
             </el-option>
           </el-select>
-          <div style="float: right;">
-            <div class="block">
-              <span class="demonstration"></span>
-              <el-date-picker
-                  v-model="seek2"
-                  type="datetimerange"
-                  range-separator="-"
-                  start-placeholder="开始时间"
-                  end-placeholder="结束时间"
-              >
-              </el-date-picker>
-            </div>
 
-          </div>
 
           <el-table :data="tableData1" style="width: 100%">
             <el-table-column fixed prop="staffName" label="姓名" width="150" />
@@ -223,7 +210,6 @@
         </el-tab-pane>
       </el-tabs>
 
-      {{tableData}}
     </div>
       </div>
     </div>
